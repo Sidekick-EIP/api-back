@@ -4,6 +4,6 @@ import { UserInfoService } from './user_infos.service';
 
 @Module({
   providers: [UserInfoService],
-  controllers: [UserInfoService]
+  controllers: [UserInfosController]
 })
-export class AuthModule {}
+export class UserInfosModule {}
