@@ -1,16 +1,17 @@
 import { Controller, Get, Post } from '@nestjs/common';
+import { UserInfoService } from './user_infos.service';
 
-@Controller('user-infos')
+@Controller('user_infos')
 export class UserInfosController {
-    constructor() {}
+    constructor(private userInfoService: UserInfoService) { }
 
-    @Get("login")
-    login() {
-      console.log("login");
+    @Get("getUserInfos")
+    getUserInfos() {
+      this.userInfoService.getUserInfo();
     }
   
-    @Post("register")
-    register() {
-      console.log("register")
+    @Post("setUserInfos")
+    setUserInfos() {
+      this.userInfoService.setUserInfo();
     }
 }
