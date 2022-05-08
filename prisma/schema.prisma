@@ -7,12 +7,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  PREFER_NOT_TO_SAY
+}
+
+enum SportFrequence {
+  NEVER
+  LESS_THAN_ONCE_A_MONTH
+  ONCE_A_MONTH
+  ONCE_IN_TWO_WEEKS
+  ONCE_A_WEEK
+  TWICE_A_WEEK
+  THREE_A_WEEK
+  FOUR_A_WEEK
+  FIVE_A_WEEK
+  MORE_THEN_FIVE_A_WEEK
+}
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  firstname String
+  lastname  String
+  size      Int
+  weight    Int
+  gender    Gender
+  description String
+  sport_frequence SportFrequence
 
   @@map("users")
 }
