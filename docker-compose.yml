@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/data/postgres
+    restart: always
+    ports:
+      - "5432:5432"
+
+  back:
+    restart: unless-stopped
+    build:
+      context: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  db-data:
