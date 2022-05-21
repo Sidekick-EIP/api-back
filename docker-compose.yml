@@ -1,28 +1,17 @@
-version: '3.5'
+version: '3.9'
 
 services:
   db:
-    image: postgres
+    image: postgres:14.3
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     volumes:
       - db-data:/var/lib/data/postgres
-    restart: always
+    restart: unless-stopped
     ports:
       - "5432:5432"
-
-  back:
-    restart: unless-stopped
-    build:
-      context: ./
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./src:/app/src
-      - ./prisma:/app/prisma
-    depends_on:
-      - db
 
 volumes:
   db-data:
