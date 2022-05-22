@@ -5,12 +5,17 @@ import { getEnvPath } from './common/helper/env.helper';
 import { ConfigModule } from '@nestjs/config'
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AtGuard } from './common/guards';
 
 const envFilePath = getEnvPath(`${__dirname}`);
 
 @Module({
   imports: [ConfigModule.forRoot({envFilePath, isGlobal: true}), PrismaModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: APP_GUARD,
+    useClass: AtGuard
+  }],
 })
 export class AppModule {}
