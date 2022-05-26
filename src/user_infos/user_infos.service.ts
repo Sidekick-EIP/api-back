@@ -6,10 +6,11 @@ import UserNotFoundException from './exceptions/not-found.exception';
 export class UserInfoService {
     constructor(private _prismaService: PrismaService) {}
 
-    public getAllUserInfo() {
+    async getAllUserInfo() {
         return this._prismaService.user.findMany();
     }
-    public getUserInfoById(id: string) {
+
+    async getUserInfoById(id: string) {
         const user = this._prismaService.user.findUnique({ 
             where: {
                 id
@@ -22,8 +23,15 @@ export class UserInfoService {
 
     }
 
-
-    async setUserInfo(id : string, ) {
-        console.log("setter");
+    async setUserInfo(id: string, username : string, description: string, email: string, weight: number) {
+        return this._prismaService.user.update({
+          where: { id: String(id) },
+          data: { 
+              username: username,
+              email: email,
+              description: description,
+              weight: weight
+            },
+        });
     }
 }
