@@ -7,14 +7,13 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './common/guards';
-import { UserInfosController } from './user_infos/user_infos.controller';
-import { UserInfosModule } from './user_infos/user_infos.module';
+import { FormModule } from './form/form.module';
 
 const envFilePath = getEnvPath(`${__dirname}`);
 
 @Module({
-  imports: [ConfigModule.forRoot({envFilePath, isGlobal: true}), PrismaModule, AuthModule, UserInfosModule],
-  controllers: [AppController, UserInfosController],
+  imports: [ConfigModule.forRoot({envFilePath, isGlobal: true}), PrismaModule, AuthModule, FormModule],
+  controllers: [AppController],
   providers: [AppService, {
     provide: APP_GUARD,
     useClass: AtGuard
