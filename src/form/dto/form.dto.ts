@@ -1,6 +1,12 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { Gender, SportFrequence } from './../../../node_modules/.prisma/client/index.d';
+
+import { IsInt, IsNotEmpty, IsString } from 'class-validator'; 
 
 export class FormDto {
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
+
   @IsNotEmpty()
   @IsString()
   firstname: string;
@@ -18,8 +24,8 @@ export class FormDto {
   weight: number;
 
   @IsNotEmpty()
-  @IsString()
-  gender: string;
+  @IsInt()
+  gender: Gender;
 
   @IsNotEmpty()
   @IsString()
@@ -27,5 +33,5 @@ export class FormDto {
 
   @IsNotEmpty()
   @IsInt()
-  sport_frequence: number;
+  sport_frequence: SportFrequence;
 } 
