@@ -1,11 +1,17 @@
-version: "3"
+version: '3.9'
+
 services:
-  postgres:
-    image: postgres
+  db:
+    image: postgres:14.3
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
+    volumes:
+      - db-data:/var/lib/data/postgres
+    restart: unless-stopped
     ports:
       - "5432:5432"
 
+volumes:
+  db-data:
