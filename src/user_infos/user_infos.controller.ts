@@ -1,5 +1,7 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserInfoService } from './user_infos.service';
+import {UserInfosDto } from './dto/user.dto';
+import { Public } from 'src/common/decorators';
 
 @Controller('user_infos')
 export class UserInfosController {
@@ -7,11 +9,11 @@ export class UserInfosController {
 
     @Get("getUserInfos")
     getUserInfos() {
-      this.userInfoService.getUserInfo();
+      this.userInfoService.getUserInfoById("0");
     }
-  
+    @Public() 
     @Post("setUserInfos")
-    setUserInfos() {
-      this.userInfoService.setUserInfo();
+    setUserInfos(@Body() dto: UserInfosDto) {
+      return this.userInfoService.setUserInfo(dto);
     }
 }
