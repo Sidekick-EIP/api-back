@@ -47,4 +47,6 @@ model UserData {
   gender          Gender
   description     String
   sport_frequence SportFrequence
+
+  @@map("users_data")
 }
