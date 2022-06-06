@@ -8,11 +8,11 @@ export class UserInfosDto {
 
     @IsNotEmpty()
     @IsString()
-    Username: string;
+    firstname: string;
 
     @IsNotEmpty()
     @IsString()
-    email: string;
+    lastname: string;
 
     @IsNotEmpty()
     @IsString()
