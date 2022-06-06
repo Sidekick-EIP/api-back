@@ -11,14 +11,14 @@ export class UserInfoService {
         return this._prismaService.user.findMany();
     }
 
-    public async getUserInfoById(id: string) {
-        const user = this._prismaService.user.findUnique({ 
+    public async getUserInfoById(userId: string) {
+        const user = this._prismaService.userData.findUnique({ 
             where: {
-                id
+                userId
             }
             });
         if (!user) {
-            throw new UserNotFoundException(id);
+            throw new UserNotFoundException(userId);
         }
         return user;
 

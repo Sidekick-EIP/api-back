@@ -6,16 +6,16 @@ import { Public } from 'src/common/decorators';
 @Controller('user_infos')
 export class UserInfosController {
     constructor(private userInfoService: UserInfoService) { }
-    
+
     @Public()
     @Get("getUserInfos")
     getUserInfos() {
-      this.userInfoService.getUserInfoById("0");
+      return this.userInfoService.getUserInfoById("0");
     }
 
     @Public() 
     @Post("setUserInfos")
     setUserInfos(@Body() dto: UserInfosDto) {
-      return this.userInfoService.setUserInfo(dto);
+       return this.userInfoService.setUserInfo(dto);
     }
 }
