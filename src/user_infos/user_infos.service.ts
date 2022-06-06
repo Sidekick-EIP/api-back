@@ -25,8 +25,8 @@ export class UserInfoService {
     }
 
     public async setUserInfo(datas: UserInfosDto) {
-        return this._prismaService.user.update({
-          where: { id: String(datas.userId) },
+        return this._prismaService.userData.update({
+          where: { userId: String(datas.userId) },
           data: datas
         });
     }
