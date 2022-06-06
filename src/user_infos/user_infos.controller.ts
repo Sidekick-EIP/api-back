@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserInfoService } from './user_infos.service';
 import {UserInfosDto } from './dto/user.dto';
-import { Public } from 'src/common/decorators';
+import { Public } from '../common/decorators';
 
 @Controller('user_infos')
 export class UserInfosController {
