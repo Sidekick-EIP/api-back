@@ -12,9 +12,9 @@ export class UserInfoService {
     }
 
     public async getUserInfoById(userId: string) {
-        const user = this._prismaService.userData.findUnique({ 
+        const user = await this._prismaService.userData.findUnique({ 
             where: {
-                userId
+                userId: userId
             }
             });
         if (!user) {
