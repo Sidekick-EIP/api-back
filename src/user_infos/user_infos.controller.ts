@@ -10,7 +10,7 @@ export class UserInfosController {
     @Public()
     @Get("getUserInfos")
     getUserInfos() {
-      return this.userInfoService.getUserInfoById("0");
+      return this.userInfoService.getUserInfoById("583ad75e-0f49-4c42-b389-2a66bdec4091");
     }
 
     @Public() 
