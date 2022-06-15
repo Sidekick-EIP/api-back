@@ -40,13 +40,15 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    # needs: test
+    needs: test
 
     steps:
       - uses: actions/setup-node@v1
         with:
           node-version: '16.x'
-      - run: npm run migrate:deploy 
+      - run: | 
+          npm ci
+          npm run migrate:deploy 
         env:
           DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
             
