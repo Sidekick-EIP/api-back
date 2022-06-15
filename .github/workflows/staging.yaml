@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: '16.x'
 
-        run: |
+      - run: |
           npm ci
           npm run db:push
           npm test
@@ -48,7 +48,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '16.x'
-        run: npm run migrate:deploy 
+      - run: npm run migrate:deploy 
         env:
           DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
             
