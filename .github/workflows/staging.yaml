@@ -53,6 +53,7 @@ jobs:
           username: ${{ secrets.USERNAME_STAGING }}
           key: ${{ secrets.KEY_STAGING }}
           script: |
+            exec bash \-l
             cd api-back
             npm run build
             npm run migrate:deploy
