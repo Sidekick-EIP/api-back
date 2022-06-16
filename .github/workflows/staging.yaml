@@ -52,7 +52,8 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             cd api-back
-            git checkout staging && git pull
+            git pull
+            git checkout staging
             npm run build
             npm run migrate:deploy:staging
             pm2 stop all && pm2 delete all
