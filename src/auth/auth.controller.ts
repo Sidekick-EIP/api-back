@@ -1,16 +1,26 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Public } from '../common/decorators';
-import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
+import { BadRequestException, Body, Controller, Get, Post } from "@nestjs/common";
+import { Public } from "../common/decorators";
+import { AuthService } from "./auth.service";
+import { AuthDto } from "./dto";
 
-@Controller('auth')
+@Controller("auth")
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Public()
   @Post("login")
   login(@Body() dto: AuthDto) {
     return this.authService.login(dto);
+  }
+
+  @Public()
+  @Post("aws")
+  async aws(@Body() authenticateRequest: { name: string; password: string }) {
+    try {
+      return await this.authService.authenticateUser(authenticateRequest);
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
   @Public()
