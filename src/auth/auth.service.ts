@@ -1,12 +1,19 @@
-import { ForbiddenException, Inject, Injectable } from "@nestjs/common";
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import * as argon from "argon2";
 import {
   AuthenticationDetails,
+  CognitoRefreshToken,
   CognitoUser,
   CognitoUserPool,
+  CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthConfig } from "./auth.config";
@@ -19,7 +26,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private authConfig: AuthConfig,
-    private jwtService: JwtService,
+    // private jwtService: JwtService,
     private configService: ConfigService
   ) {
     this.userPool = new CognitoUserPool({
@@ -28,15 +35,45 @@ export class AuthService {
     });
   }
 
-  authenticateUser(user: { name: string, password: string}) {
-    const { name, password } = user;
+  async registerUser(dto: AuthDto) {
+    const { email, password } = dto;
+
+    return new Promise((resolve, reject) => {
+      this.userPool.signUp(email, password, [], null, (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        const newUser = new CognitoUser({
+          Username: email,
+          Pool: this.userPool,
+        });
+
+        const authenticationDetails = new AuthenticationDetails({
+          Username: email,
+          Password: password,
+        });
+
+        return newUser.authenticateUser(authenticationDetails, {
+          onSuccess: (res) => {
+            resolve(res);
+          },
+          onFailure: (err) => {
+            reject(err);
+          },
+        });
+      });
+    });
+  }
+
+  async authenticateUser(dto: AuthDto) {
+    const { email, password } = dto;
 
     const authenticationDetails = new AuthenticationDetails({
-      Username: name,
+      Username: email,
       Password: password,
     });
     const userData = {
-      Username: name,
+      Username: email,
       Pool: this.userPool,
     };
 
@@ -44,14 +81,19 @@ export class AuthService {
 
     return new Promise((resolve, reject) => {
       return newUser.authenticateUser(authenticationDetails, {
-        onSuccess: result => {
-          resolve(result);
+        onSuccess: (result) => {
+          resolve({
+            access_token: result.getIdToken().getJwtToken(),
+          });
         },
-        onFailure: err => {
+        onFailure: (err) => {
           reject(err);
         },
       });
     });
+  }
+
+  async refreshTokens(refresh_token: string) {
   }
 
   public async login(dto: AuthDto) {
@@ -96,32 +138,36 @@ export class AuthService {
   }
 
   async getTokens(userId: string, email: string): Promise<Tokens> {
-    const [at, rt] = await Promise.all([
-      this.jwtService.signAsync(
-        {
-          userId,
-          email,
-        },
-        {
-          secret: this.configService.get<string>("AT_SECRET"),
-          expiresIn: 60 * 60,
-        }
-      ),
-      this.jwtService.signAsync(
-        {
-          userId,
-          email,
-        },
-        {
-          secret: this.configService.get<string>("RT_SECRET"),
-          expiresIn: 60 * 60 * 24 * 7,
-        }
-      ),
-    ]);
-
     return {
-      access_token: at,
-      refresh_token: rt,
-    };
+      access_token: "",
+      refresh_token: "",
+    }
+  //   const [at, rt] = await Promise.all([
+  //     this.jwtService.signAsync(
+  //       {
+  //         userId,
+  //         email,
+  //       },
+  //       {
+  //         secret: this.configService.get<string>("AT_SECRET"),
+  //         expiresIn: 60 * 60,
+  //       }
+  //     ),
+  //     this.jwtService.signAsync(
+  //       {
+  //         userId,
+  //         email,
+  //       },
+  //       {
+  //         secret: this.configService.get<string>("RT_SECRET"),
+  //         expiresIn: 60 * 60 * 24 * 7,
+  //       }
+  //     ),
+  //   ]);
+  //
+  //   return {
+  //     access_token: at,
+  //     refresh_token: rt,
+  //   };
   }
 }

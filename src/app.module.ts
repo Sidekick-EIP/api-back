@@ -12,9 +12,10 @@ import { UserInfosModule } from './user_infos/user_infos.module';
 @Module({
   imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule],
   controllers: [AppController],
-  providers: [AppService, {
-    provide: APP_GUARD,
-    useClass: AtGuard
-  }],
+  providers: [AppService]
+  // providers: [AppService, {
+  //   provide: APP_GUARD,
+  //   useClass: AtGuard
+  // }],
 })
 export class AppModule {}
