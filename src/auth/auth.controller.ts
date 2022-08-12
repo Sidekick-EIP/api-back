@@ -1,4 +1,5 @@
-import { BadRequestException, Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { Public } from "../common/decorators";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto";
@@ -15,18 +16,38 @@ export class AuthController {
 
   @Public()
   @Post("aws")
-  async aws(@Body() authenticateRequest: { name: string; password: string }) {
+  async aws(@Body() dto: AuthDto) {
+    return this.authService.authenticateUser(dto);
+  }
+
+  @Public()
+  @Post("aws/register")
+  async awsRegister(@Body() dto: AuthDto) {
     try {
-      return await this.authService.authenticateUser(authenticateRequest);
+      return this.authService.registerUser(dto);
     } catch (e) {
-      throw new BadRequestException(e.message);
+      throw e;
+    }
+  }
+
+  @Public()
+  @Post("aws/refresh")
+  async refresh(@Body() tokens: { refreshToken: string, accessToken: string }) {
+    try {
+      return this.authService.refreshTokens("wip");
+    } catch (e) {
+      throw e;
     }
   }
 
   @Public()
   @Post("register")
   register(@Body() dto: AuthDto) {
-    return this.authService.register(dto);
+    try {
+      return this.authService.register(dto);
+    } catch (e) {
+      throw e;
+    }
   }
 
   @Get("me")
@@ -34,7 +55,9 @@ export class AuthController {
     return "connected";
   }
 
+
   @Public()
+  @UseGuards(AuthGuard("jwt"))
   @Get("public")
   public() {
     return "public";
