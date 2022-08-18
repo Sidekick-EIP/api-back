@@ -1,22 +1,38 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Public } from '../common/decorators';
-import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Public } from "../common/decorators";
+import { AuthService } from "./auth.service";
+import { AuthDto } from "./dto";
 
-@Controller('auth')
+@Controller("auth")
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Public()
   @Post("login")
-  login(@Body() dto: AuthDto) {
+  async aws(@Body() dto: AuthDto) {
     return this.authService.login(dto);
   }
 
   @Public()
   @Post("register")
-  register(@Body() dto: AuthDto) {
-    return this.authService.register(dto);
+  async awsRegister(@Body() dto: AuthDto) {
+    try {
+      return this.authService.register(dto);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @Public()
+  @Post("logout")
+  async logout(@Body() email: string) {
+    return this.authService.logout(email);
+  }
+
+  @Public()
+  @Post("delete")
+  async delete(@Body() dto: AuthDto) {
+    return this.authService.delete(dto);
   }
 
   @Get("me")
