@@ -1,78 +1,155 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import * as argon from 'argon2';
-import { PrismaService } from '../prisma/prisma.service';
-import { AuthDto } from './dto';
-import { Tokens } from './types';
+import { Injectable } from "@nestjs/common";
+import * as argon from "argon2";
+import {
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserPool,
+} from "amazon-cognito-identity-js";
+import { PrismaService } from "../prisma/prisma.service";
+import { AuthConfig } from "./auth.config";
+import { AuthDto } from "./dto";
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService, private configService: ConfigService) { }
-
-  public async login(dto: AuthDto) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: dto.email,
-      }
+  private userPool: CognitoUserPool;
+  constructor(private prisma: PrismaService, private authConfig: AuthConfig) {
+    this.userPool = new CognitoUserPool({
+      UserPoolId: this.authConfig.userPoolId,
+      ClientId: this.authConfig.clientId,
     });
-
-    if (!user)
-      throw new ForbiddenException('Credentials incorrect');
-
-    const isValid = await argon.verify(user.password, dto.password);
-    if (!isValid)
-      throw new ForbiddenException('Credentials incorrect');
-
-    const tokens = await this.getTokens(user.id, user.email);
-
-    return tokens;
   }
 
-  public async register(dto: AuthDto): Promise<Tokens> {
+  async register(dto: AuthDto) {
+    const { email, password } = dto;
+
+    return new Promise((resolve, reject) => {
+      this.userPool.signUp(email, password, [], null, (err, _result) => {
+        if (err) {
+          reject(err);
+        }
+        const newUser = new CognitoUser({
+          Username: email,
+          Pool: this.userPool,
+        });
+
+        const authenticationDetails = new AuthenticationDetails({
+          Username: email,
+          Password: password,
+        });
+
+        return newUser.authenticateUser(authenticationDetails, {
+          onSuccess: async (res) => {
+            try {
+              await this.createUser(dto);
+            } catch (e) {
+              reject(e);
+            }
+            resolve({
+              access_token: res.getIdToken().getJwtToken(),
+              refresh_token: res.getRefreshToken().getToken(),
+            });
+          },
+          onFailure: (err) => {
+            reject(err);
+          },
+        });
+      });
+    });
+  }
+
+  async login(dto: AuthDto) {
+    const { email, password } = dto;
+
+    const authenticationDetails = new AuthenticationDetails({
+      Username: email,
+      Password: password,
+    });
+    const userData = {
+      Username: email,
+      Pool: this.userPool,
+    };
+
+    const newUser = new CognitoUser(userData);
+
+    return new Promise((resolve, reject) => {
+      return newUser.authenticateUser(authenticationDetails, {
+        onSuccess: (result) => {
+          resolve({
+            access_token: result.getIdToken().getJwtToken(),
+            refresh_token: result.getRefreshToken().getToken(),
+          });
+        },
+        onFailure: (err) => {
+          reject(err);
+        },
+      });
+    });
+  }
+
+  async logout(email: string) {
+    const user = new CognitoUser({
+      Username: email,
+      Pool: this.userPool,
+    });
+
+    return user.signOut();
+  }
+
+  async delete(dto: AuthDto) {
+    const user = new CognitoUser({
+      Username: dto.email,
+      Pool: this.userPool,
+    });
+
+    const authenticationDetails = new AuthenticationDetails({
+      Username: dto.email,
+      Password: dto.password,
+    });
+
+    return new Promise((resolve, reject) => {
+      user.authenticateUser(authenticationDetails, {
+        onSuccess: (_res) => {
+          user.deleteUser((err, result) => {
+            if (err) {
+              reject(err);
+            }
+            try {
+              this.deleteUser(dto.email);
+            } catch (e) {}
+            resolve(result);
+          });
+        },
+        onFailure: (err) => {
+          reject(err);
+        },
+      });
+    });
+  }
+
+  private async createUser(dto: AuthDto): Promise<void> {
     const hash = await argon.hash(dto.password);
 
-    const user = await this.prisma.user.create({
-      data: {
-        email: dto.email,
-        password: hash,
-      }
-    }).catch(error => {
-      if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new ForbiddenException('Credentials incorrect');
-        }
-      }
-      throw error;
-    });
-
-    const tokens = await this.getTokens(user.id, user.email);
-
-    return tokens;
+    await this.prisma.user
+      .create({
+        data: {
+          email: dto.email,
+          password: hash,
+        },
+      })
+      .catch((error) => {
+        throw error;
+      });
   }
 
-  async getTokens(userId: string, email: string): Promise<Tokens> {
-    const [at, rt] = await Promise.all([
-      this.jwtService.signAsync({
-        userId,
-        email,
-      }, {
-        secret: this.configService.get<string>('AT_SECRET'),
-        expiresIn: 60 * 60,
-      }),
-      this.jwtService.signAsync({
-        userId,
-        email,
-      }, {
-        secret: this.configService.get<string>('RT_SECRET'),
-        expiresIn: 60 * 60 * 24 * 7,
+  private async deleteUser(email: string): Promise<void> {
+    await this.prisma.user
+      .delete({
+        where: {
+          email,
+        },
       })
-    ]);
-
-    return {
-      access_token: at,
-      refresh_token: rt,
-    }
+      .catch((error) => {
+        throw error;
+      });
   }
 }
