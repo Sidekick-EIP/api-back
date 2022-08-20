@@ -8,8 +8,17 @@ async function main() {
     data: {
       email: 'test@gmail.com',
       password: await argon.hash('password'),
+      firstname: 'Test',
+      lastname: 'Touste',
+      size: 185,
+      weight: 85,
+      gender: 'MALE',
+      description: 'je suis présent',
+      sport_frequence: 'ONCE_A_MONTH'
     }
   })
+
+  console.log(user)
 }
 
 main().catch(e => {

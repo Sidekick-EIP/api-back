@@ -4,7 +4,7 @@ import {IsInt, IsNotEmpty, IsString} from 'class-validator';
 export class UserInfosDto {
     @IsNotEmpty()
     @IsString()
-    userId: string;
+    id: string;
 
     @IsNotEmpty()
     @IsString()
