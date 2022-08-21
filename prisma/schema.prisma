@@ -32,21 +32,14 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  userData  UserData?
+  firstname       String?
+  lastname        String?
+  size            Int?
+  weight          Int?
+  gender          Gender?
+  description     String?
+  sport_frequence SportFrequence?
+  isDarkMode      Boolean @default(false)
 
   @@map("users")
-}
-
-model UserData {
-  userId          String    @id @default(uuid())
-  user            User      @relation(fields: [userId], references: [id])
-  firstname       String
-  lastname        String
-  size            Int
-  weight          Int
-  gender          Gender
-  description     String
-  sport_frequence SportFrequence
-
-  @@map("users_data")
 }
