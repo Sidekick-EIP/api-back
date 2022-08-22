@@ -49,22 +49,12 @@ describe('FormService', () => {
     dto.firstname = "Alexandre";
     dto.lastname = "Antoniutti";
     dto.weight = 65;
-    dto.userId = user.id;
     dto.sport_frequence = "NEVER";
 
 
-    await service.saveFormDatas(dto);
-    expect(createFormDatas).toHaveBeenCalledWith(dto);
+    await service.saveFormDatas(dto, user.id);
+    expect(createFormDatas).toHaveBeenCalledWith(dto, user.id);
 
-    await prisma.userData.findFirst({
-      where: {
-        description: "Bonjour",
-      }
-    })
-
-    await prisma.userData.delete({where: {
-      userId: user.id,
-    }})
     await prisma.user.delete({where: {
       id: user.id,
     }})

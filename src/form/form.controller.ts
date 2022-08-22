@@ -10,8 +10,8 @@ export class FormController {
 
   @Public()
   @Post('save')
-  async saveFormDatas(@Body() dto: FormDto) {
-    return await this.formservice.saveFormDatas(dto);
+  async saveFormDatas(@Body() dto: FormDto, userId: string) {
+    return await this.formservice.saveFormDatas(dto, userId);
   }
   
 }
