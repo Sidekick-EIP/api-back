@@ -48,14 +48,10 @@ describe('FormController', () => {
     dto.firstname = "Alexandre";
     dto.lastname = "Antoniutti";
     dto.weight = 65;
-    dto.userId = user.id;
     dto.sport_frequence = "NEVER";
 
-    expect(await service.saveFormDatas(dto)).not.toEqual(null);
+    expect(await service.saveFormDatas(dto, user.id)).not.toEqual(null);
 
-    await prisma.userData.delete({where: {
-      userId: user.id,
-    }})
     await prisma.user.delete({where: {
       id: user.id,
     }})
@@ -84,17 +80,13 @@ describe('FormController', () => {
     dto.firstname = "Alexandre";
     dto.lastname = "Antoniutti";
     dto.weight = 65;
-    dto.userId = user.id;
     dto.sport_frequence = "NEVER";
 
     jest.spyOn(service, 'saveFormDatas');
-    await controller.saveFormDatas(dto);
+    await controller.saveFormDatas(dto, user.id);
     expect(service.saveFormDatas).toHaveBeenCalled();
-    expect(service.saveFormDatas).toHaveBeenCalledWith(dto);
+    expect(service.saveFormDatas).toHaveBeenCalledWith(dto, user.id);
 
-    await prisma.userData.delete({where: {
-      userId: user.id,
-    }})
     await prisma.user.delete({where: {
       id: user.id,
     }})

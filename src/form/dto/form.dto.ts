@@ -4,10 +4,6 @@ import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 export class FormDto {
   @IsNotEmpty()
   @IsString()
-  userId: string;
-
-  @IsNotEmpty()
-  @IsString()
   firstname: string;
 
   @IsNotEmpty()

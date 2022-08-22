@@ -9,11 +9,11 @@ import { kill } from 'process';
 export class FormService {
   constructor(private prisma: PrismaService) { }
 
-  public async saveFormDatas(datas: FormDto) {
+  public async saveFormDatas(datas: FormDto, userId: string) {
     const res = await this.prisma.user.update({
       data: datas,
       where: {
-        id: datas.userId
+        id: userId
       }
     }).catch(error => {
       if (error instanceof PrismaClientKnownRequestError) {
