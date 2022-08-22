@@ -23,7 +23,7 @@ jobs:
           - 5432:5432
 
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sidekick
+      DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
 
     steps:
       - uses: actions/checkout@v2
