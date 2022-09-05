@@ -92,7 +92,12 @@ export class AuthService {
       Pool: this.userPool,
     });
 
-    return user.signOut();
+    user.globalSignOut({
+      onSuccess: () => {},
+      onFailure: (err) => {
+        throw err;
+      },
+    });
   }
 
   async delete(dto: AuthDto) {
