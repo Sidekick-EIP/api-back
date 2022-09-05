@@ -10,11 +10,8 @@ export class FormService {
   constructor(private prisma: PrismaService) { }
 
   public async saveFormDatas(datas: FormDto, userId: string) {
-    const res = await this.prisma.user.update({
-      data: datas,
-      where: {
-        id: userId
-      }
+    const res = await this.prisma.userData.create({
+      data: datas
     }).catch(error => {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
