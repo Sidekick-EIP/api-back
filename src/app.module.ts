@@ -8,9 +8,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './common/guards';
 import { FormModule } from './form/form.module';
 import { UserInfosModule } from './user_infos/user_infos.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule],
   controllers: [AppController],
   providers: [AppService, {
     provide: APP_GUARD,
