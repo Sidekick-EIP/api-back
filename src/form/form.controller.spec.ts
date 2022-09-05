@@ -30,16 +30,19 @@ describe('FormController', () => {
     const hash = await argon.hash("password");
     await prisma.user.create({
       data: {
-        email: "test.test@gmail.com",
+        email: "pardon@gmail.com",
         password: hash,
       }
     })
 
     const user = await prisma.user.findFirst({
       where: {
-        email: "test.test@gmail.com"
+        email: "pardon@gmail.com"
       }
     })
+
+    console.log(user.id)
+    console.log("PAPAPAPPAPAPAPPAPAPPAPAAPP")
 
     const dto = new FormDto();
     dto.description = "Bonjour";
@@ -49,12 +52,17 @@ describe('FormController', () => {
     dto.lastname = "Antoniutti";
     dto.weight = 65;
     dto.sport_frequence = "NEVER";
+    dto.userId = user.id;
 
     expect(await service.saveFormDatas(dto, user.id)).not.toEqual(null);
 
+    await prisma.userData.delete({where: {
+      userId: user.id,
+    }})
     await prisma.user.delete({where: {
       id: user.id,
     }})
+    console.log(test)
   });
 
   it("calling saveFormDatas method", async () => {
@@ -81,12 +89,17 @@ describe('FormController', () => {
     dto.lastname = "Antoniutti";
     dto.weight = 65;
     dto.sport_frequence = "NEVER";
+    dto.userId = user.id;
 
     jest.spyOn(service, 'saveFormDatas');
     await controller.saveFormDatas(dto, user.id);
     expect(service.saveFormDatas).toHaveBeenCalled();
     expect(service.saveFormDatas).toHaveBeenCalledWith(dto, user.id);
 
+
+    await prisma.userData.delete({where: {
+      userId: user.id,
+    }})
     await prisma.user.delete({where: {
       id: user.id,
     }})
