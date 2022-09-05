@@ -13,9 +13,9 @@ export class UserInfoService {
     }
 
     public async getUserInfoById(userId: string) {
-        const user = await this._prismaService.user.findUnique({ 
+        const user = await this._prismaService.userData.findUnique({ 
             where: {
-                id: userId
+                userId: userId
             }
             });
         if (!user) {
@@ -26,8 +26,8 @@ export class UserInfoService {
     }
 
     public async setUserInfo(datas: UserInfosDto) {
-        return this._prismaService.user.update({
-          where: { id: String(datas.id) },
+        return this._prismaService.userData.update({
+          where: { userId: String(datas.userId) },
           data: datas
         });
     }
