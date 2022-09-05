@@ -8,6 +8,12 @@ async function main() {
     data: {
       email: 'test@gmail.com',
       password: await argon.hash('password'),
+    }
+  })
+
+  const userDatas = await prisma.userData.create({
+    data: {
+      userId: user.id,
       firstname: 'Test',
       lastname: 'Touste',
       size: 185,
@@ -17,8 +23,6 @@ async function main() {
       sport_frequence: 'ONCE_A_MONTH'
     }
   })
-
-  console.log(user)
 }
 
 main().catch(e => {
