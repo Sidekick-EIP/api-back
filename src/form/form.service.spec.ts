@@ -6,6 +6,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FormService } from './form.service';
 import * as argon from 'argon2';
 import { FormDto } from './dto';
+import { exit } from 'process';
+import { ConsoleLogger } from '@nestjs/common';
 
 describe('FormService', () => {
   let service: FormService;
@@ -32,16 +34,18 @@ describe('FormService', () => {
     const hash = await argon.hash("password");
     await prisma.user.create({
       data: {
-        email: "test.test@gmail.com",
+        email: "pardon@gmail.com",
         password: hash,
       }
     })
-
     const user = await prisma.user.findFirst({
       where: {
-        email: "test.test@gmail.com"
+        email: "pardon@gmail.com"
       }
     })
+
+    console.log(user.id)
+    console.log("CENARINVNERVNEKVNERKVER")
 
     dto.description = "Bonjour";
     dto.gender = "MALE",
@@ -50,13 +54,18 @@ describe('FormService', () => {
     dto.lastname = "Antoniutti";
     dto.weight = 65;
     dto.sport_frequence = "NEVER";
-
+    dto.userId = user.id;
 
     await service.saveFormDatas(dto, user.id);
     expect(createFormDatas).toHaveBeenCalledWith(dto, user.id);
 
-    await prisma.user.delete({where: {
+    await prisma.userData.delete({where: {
+      userId: user.id,
+    }})
+    const test = await prisma.user.delete({where: {
       id: user.id,
     }})
+
+    console.log(test)
   });
 });
