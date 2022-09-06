@@ -1,6 +1,6 @@
 import { MessagesService } from './messages.service';
 import { Controller, Get, Query } from '@nestjs/common';
-import { Public } from 'src/common/decorators';
+import { Public } from '../common/decorators';
 
 @Controller('messages')
 export class MessagesController {

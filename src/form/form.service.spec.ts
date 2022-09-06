@@ -44,9 +44,6 @@ describe('FormService', () => {
       }
     })
 
-    console.log(user.id)
-    console.log("CENARINVNERVNEKVNERKVER")
-
     dto.description = "Bonjour";
     dto.gender = "MALE",
     dto.size = 165;
@@ -62,10 +59,8 @@ describe('FormService', () => {
     await prisma.userData.delete({where: {
       userId: user.id,
     }})
-    const test = await prisma.user.delete({where: {
+    await prisma.user.delete({where: {
       id: user.id,
     }})
-
-    console.log(test)
   });
 });

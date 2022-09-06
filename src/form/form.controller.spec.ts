@@ -41,9 +41,6 @@ describe('FormController', () => {
       }
     })
 
-    console.log(user.id)
-    console.log("PAPAPAPPAPAPAPPAPAPPAPAAPP")
-
     const dto = new FormDto();
     dto.description = "Bonjour";
     dto.gender = "MALE",
@@ -62,7 +59,6 @@ describe('FormController', () => {
     await prisma.user.delete({where: {
       id: user.id,
     }})
-    console.log(test)
   });
 
   it("calling saveFormDatas method", async () => {
