@@ -8,7 +8,6 @@ export class UserInfoService {
     constructor(private _prismaService: PrismaService) {}
 
     public async getAllUserInfo() {
-        console.log(this._prismaService.user.findMany())
         return this._prismaService.user.findMany();
     }
 
