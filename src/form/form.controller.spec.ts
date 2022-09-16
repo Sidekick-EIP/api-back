@@ -26,41 +26,6 @@ describe('FormController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('calling saveFormDatas', async () => {
-    const hash = await argon.hash("password");
-    await prisma.user.create({
-      data: {
-        email: "pardon@gmail.com",
-        password: hash,
-      }
-    })
-
-    const user = await prisma.user.findFirst({
-      where: {
-        email: "pardon@gmail.com"
-      }
-    })
-
-    const dto = new FormDto();
-    dto.description = "Bonjour";
-    dto.gender = "MALE",
-    dto.size = 165;
-    dto.firstname = "Alexandre";
-    dto.lastname = "Antoniutti";
-    dto.weight = 65;
-    dto.sport_frequence = "NEVER";
-    dto.userId = user.id;
-
-    expect(await service.saveFormDatas(dto, user.id)).not.toEqual(null);
-
-    await prisma.userData.delete({where: {
-      userId: user.id,
-    }})
-    await prisma.user.delete({where: {
-      id: user.id,
-    }})
-  });
-
   it("calling saveFormDatas method", async () => {
     const hash = await argon.hash("password");
     await prisma.user.create({
