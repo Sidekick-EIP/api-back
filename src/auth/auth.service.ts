@@ -95,7 +95,7 @@ export class AuthService {
     user.globalSignOut({
       onSuccess: () => {},
       onFailure: (err) => {
-        throw err;
+        if (err.message !== "User is not authenticated") throw err;
       },
     });
   }
@@ -115,6 +115,9 @@ export class AuthService {
       user.authenticateUser(authenticationDetails, {
         onSuccess: (_res) => {
           user.deleteUser((err, result) => {
+            try {
+              this.deleteUser(dto.email);
+            } catch (e) {}
             if (err) {
               reject(err);
             }
@@ -125,6 +128,7 @@ export class AuthService {
           });
         },
         onFailure: (err) => {
+          this.deleteUser(dto.email);
           reject(err);
         },
       });
