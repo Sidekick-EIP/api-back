@@ -16,12 +16,20 @@ export class UserInfoService {
             where: {
                 userId: userId
             }
-            });
+        });
         if (!user) {
             throw new UserNotFoundException(userId);
         }
+        const userEmail = await this._prismaService.user.findUnique({
+            where: {
+                id: userId
+            }
+        })
+        if (!userEmail) {
+            throw new UserNotFoundException(userId);
+        }
+        user['email'] = userEmail['email'];
         return user;
-
     }
 
     public async setUserInfo(datas: UserInfosDto) {
