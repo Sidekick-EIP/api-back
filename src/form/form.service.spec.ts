@@ -34,13 +34,13 @@ describe('FormService', () => {
     const hash = await argon.hash("password");
     await prisma.user.create({
       data: {
-        email: "pardon@gmail.com",
+        email: "truc@gmail.com",
         password: hash,
       }
     })
     const user = await prisma.user.findFirst({
       where: {
-        email: "pardon@gmail.com"
+        email: "truc@gmail.com"
       }
     })
 
