@@ -7,7 +7,6 @@ import { Public } from '../common/decorators';
 export class UserInfosController {
     constructor(private userInfoService: UserInfoService) { }
 
-    @Public()
     @Get("getUserInfos")
     getUserInfos(@Query() query : { id : string}) {
       return this.userInfoService.getUserInfoById(query.id);
@@ -16,6 +15,6 @@ export class UserInfosController {
     @Public() 
     @Post("setUserInfos")
     setUserInfos(@Body() dto: UserInfosDto) {
-       return this.userInfoService.setUserInfo(dto);
+      return this.userInfoService.setUserInfo(dto);
     }
 }
