@@ -4,6 +4,7 @@ import {
   AuthenticationDetails,
   CognitoUser,
   CognitoUserPool,
+  CognitoIdToken
 } from "amazon-cognito-identity-js";
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthConfig } from "./auth.config";
@@ -74,6 +75,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       return newUser.authenticateUser(authenticationDetails, {
         onSuccess: (result) => {
+          console.log(result);
           resolve({
             access_token: result.getIdToken().getJwtToken(),
             refresh_token: result.getRefreshToken().getToken(),
