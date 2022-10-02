@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Headers, Post, Request } from "@nestjs/common";
 import { Public } from "../common/decorators";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto";
@@ -36,7 +36,8 @@ export class AuthController {
   }
 
   @Get("me")
-  me() {
+  me(@Request() req: any) {
+    console.log(req.user);
     return "connected";
   }
 
