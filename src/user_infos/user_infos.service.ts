@@ -1,3 +1,4 @@
+import { Gender, SportFrequence } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import UserNotFoundException from './exceptions/not-found.exception';
@@ -11,31 +12,41 @@ export class UserInfoService {
         return this._prismaService.user.findMany();
     }
 
-    public async getUserInfoById(userId: string) {
-        const user = await this._prismaService.userData.findUnique({ 
+    public async getUserInfoById(userEmail: string) {
+        const user = await this._prismaService.user.findUnique({
             where: {
-                userId: userId
+                email: userEmail
             }
         });
         if (!user) {
-            throw new UserNotFoundException(userId);
+            throw new UserNotFoundException(user.id);
         }
-        const userEmail = await this._prismaService.user.findUnique({
+        const userDatas = await this._prismaService.userData.findUnique({ 
             where: {
-                id: userId
+                userId: user.id
             }
-        })
-        if (!userEmail) {
-            throw new UserNotFoundException(userId);
+        });
+        if (!userDatas) {
+            throw new UserNotFoundException(user.id);
         }
-        user['email'] = userEmail['email'];
-        return user;
+        userDatas['email'] = userEmail;
+        return userDatas;
     }
 
-    public async setUserInfo(datas: UserInfosDto) {
-        return this._prismaService.userData.update({
-          where: { userId: String(datas.userId) },
-          data: datas
+    public async setUserInfo(datas: UserInfosDto, userEmail: string) {
+        var newDatas = datas;
+        newDatas['size'] = Number(datas['size']);
+        newDatas['weight'] = Number(datas['weight']);
+        newDatas['gender'] = Gender[datas['gender']];
+        newDatas['sport_frequence'] = SportFrequence[datas['sport_frequence'].toUpperCase()];
+        var user = await this._prismaService.user.findUnique({
+            where: {
+                email: userEmail
+            }
+        });
+        newDatas['userId'] = user.id;
+        return this._prismaService.userData.create({
+          data: newDatas
         });
     }
 }

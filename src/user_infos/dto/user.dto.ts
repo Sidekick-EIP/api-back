@@ -4,10 +4,6 @@ import {IsInt, IsNotEmpty, IsString} from 'class-validator';
 export class UserInfosDto {
     @IsNotEmpty()
     @IsString()
-    userId: string;
-
-    @IsNotEmpty()
-    @IsString()
     firstname: string;
 
     @IsNotEmpty()
@@ -17,4 +13,18 @@ export class UserInfosDto {
     @IsNotEmpty()
     @IsString()
     description: string;
+
+    @IsNotEmpty()
+    @IsString()
+    size: number;
+
+    @IsNotEmpty()
+    @IsString()
+    weight: number;
+
+    @IsNotEmpty()
+    gender: Gender;
+
+    @IsNotEmpty()
+    sport_frequence: SportFrequence;
 }
