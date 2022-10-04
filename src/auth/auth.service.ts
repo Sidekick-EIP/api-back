@@ -65,6 +65,7 @@ export class AuthService {
       Username: email,
       Password: password,
     });
+
     const userData = {
       Username: email,
       Pool: this.userPool,
@@ -84,6 +85,19 @@ export class AuthService {
         onFailure: (err) => {
           reject(err);
         },
+
+        newPasswordRequired: function(userAttributes, requiredAttributes) {
+          newUser.completeNewPasswordChallenge(authenticationDetails.getPassword(), {}, {
+            onSuccess: (result) => {
+              resolve({
+                access_token: result.getIdToken().getJwtToken(),
+                refresh_token: result.getRefreshToken().getToken(),
+              });
+            }, onFailure(err: any): void {
+              reject(err);
+            }
+          });
+        }
       });
     });
   }
