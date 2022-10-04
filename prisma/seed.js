@@ -8,6 +8,56 @@ async function main() {
     data: {
       email: 'test@gmail.com',
       password: await argon.hash('password'),
+      calories: {
+        create: [
+          {
+            nbCalories: 1500
+          },
+          {
+            nbCalories: 1700
+          },
+          {
+            nbCalories: 1880
+          },
+          {
+            nbCalories: 2000
+          },
+          {
+            nbCalories: 2400
+          },
+          {
+            nbCalories: 1700
+          },
+          {
+            nbCalories: 1900
+          },
+        ]
+      },
+      steps: {
+        create: [
+          {
+            nbOfSteps: 500
+          },
+          {
+            nbOfSteps: 1000
+          },
+          {
+            nbOfSteps: 1500
+          },
+          {
+            nbOfSteps: 200
+          },
+          {
+            nbOfSteps: 2000
+          },
+          {
+            nbOfSteps: 5000
+          },
+          {
+            nbOfSteps: 10000
+          },
+        ]
+      }
     }
   })
 
@@ -23,6 +73,20 @@ async function main() {
       sport_frequence: 'ONCE_A_MONTH'
     }
   })
+
+  let calory = [];
+  for (let i = 0; i < 7; i++) {
+    let k = Math.floor(Math.random() * 2500);
+    calory.push({
+      where : {
+        nbCalories: k
+      },
+      create: {
+        userId: user.id,
+        nbCalories: k
+      }
+    });
+  }
 }
 
 main().catch(e => {
