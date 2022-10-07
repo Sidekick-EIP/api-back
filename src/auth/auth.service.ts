@@ -1,10 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import * as argon from "argon2";
 import {
   AuthenticationDetails,
   CognitoUser,
   CognitoUserPool,
-  CognitoIdToken
+  CognitoIdToken,
+  CognitoRefreshToken,
 } from "amazon-cognito-identity-js";
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthConfig } from "./auth.config";
@@ -146,6 +147,27 @@ export class AuthService {
           this.deleteUser(dto.email);
           reject(err);
         },
+      });
+    });
+  }
+
+  async refresh(rt: string, email: string) {
+    const user = new CognitoUser({
+      Username: email,
+      Pool: this.userPool,
+    });
+
+    const refreshToken = new CognitoRefreshToken({ RefreshToken: rt });
+
+    return new Promise((resolve, reject) => {
+      user.refreshSession(refreshToken, (_, res) => {
+        if (!res) {
+          reject(new ForbiddenException());
+        }
+        resolve({
+          access_token: res?.getIdToken()?.getJwtToken(),
+          refresh_token: res?.getRefreshToken()?.getToken(),
+        });
       });
     });
   }
