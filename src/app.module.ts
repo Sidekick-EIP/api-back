@@ -13,13 +13,16 @@ import { CaloriesController } from './calories/calories.controller';
 import { CaloriesService } from './calories/calories.service';
 import { CaloriesModule } from './calories/calories.module';
 import { StepsModule } from "./steps/steps.module";
+import { MealsService } from './meals/meals.service';
+import { MealsController } from './meals/meals.controller';
+import { MealsModule } from './meals/meals.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule],
-  controllers: [AppController, CaloriesController],
+  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule],
+  controllers: [AppController, CaloriesController, MealsController],
   providers: [AppService, {
     provide: APP_GUARD,
     useClass: AtGuard
-  }, CaloriesService],
+  }, CaloriesService, MealsService],
 })
 export class AppModule {}

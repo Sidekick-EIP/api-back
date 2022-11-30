@@ -36,6 +36,7 @@ model User {
   calories  Calories[]
   steps     Steps[]
   messages  Message[]
+  meals     Meals[]
 
   @@map("users")
 }
@@ -75,9 +76,13 @@ model UserData {
 
 model Meals {
   userId      String   @id @default(uuid())
-  name        String
+  user        User     @relation(fields: [userId], references: [id])
+  name        String   @unique
   ingredients Json
-  balanced    Int
+  proteins    Int
+  lipids      Int
+  carbohydrates    Int
+  date        DateTime @default(now())
   createdAt   DateTime @default(now())
   updateAt    DateTime @default(now())
 
