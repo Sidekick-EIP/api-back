@@ -32,11 +32,12 @@ model User {
   password  String
   createdAt DateTime   @default(now())
   updatedAt DateTime   @default(now())
-  userData  UserData?
+  user      UserData?  @relation("user")
   calories  Calories[]
   steps     Steps[]
   messages  Message[]
   meals     Meals[]
+  sidekick  UserData? @relation("sidekick")
 
   @@map("users")
 }
@@ -61,7 +62,7 @@ model Steps {
 
 model UserData {
   userId          String         @id @default(uuid())
-  user            User           @relation(fields: [userId], references: [id])
+  user            User           @relation(name: "user", fields: [userId], references: [id])
   firstname       String
   lastname        String
   size            Int
@@ -69,6 +70,8 @@ model UserData {
   gender          Gender
   description     String
   sport_frequence SportFrequence
+  sidekick_id     String?       @unique
+  sidekick        User?  @relation(name: "sidekick", fields: [sidekick_id], references: [id]) 
   isDarkMode      Boolean        @default(false)
 
   @@map("users_data")
