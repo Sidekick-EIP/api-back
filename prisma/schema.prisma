@@ -70,7 +70,7 @@ model UserData {
   gender          Gender
   description     String
   sport_frequence SportFrequence
-  sidekick_id     String?
+  sidekick_id     String?       @unique
   sidekick        User?  @relation(name: "sidekick", fields: [sidekick_id], references: [id]) 
   isDarkMode      Boolean        @default(false)
 
