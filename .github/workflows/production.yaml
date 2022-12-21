@@ -58,6 +58,6 @@ jobs:
             git checkout main
             npm ci
             npm run build
-            npm run migrate:deploy:production
+            npm run migrate:deploy:prod
             pm2 stop all && pm2 delete all
             pm2 start "npm run start:prod" --name api
