@@ -1,5 +1,5 @@
 import { Gender, SportFrequence } from '@prisma/client';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import UserNotFoundException from './exceptions/not-found.exception';
 import {UserInfosDto } from './dto/user.dto';
@@ -48,5 +48,30 @@ export class UserInfoService {
         return this._prismaService.userData.create({
           data: newDatas
         });
+    }
+
+    public async linkUsers(req: {id1: string, id2: string}) {
+      let {id1, id2} = req;
+
+      await Promise.all([
+        this._prismaService.userData.update({
+          where: {
+            userId: id1,
+          },
+          data: {
+          sidekick_id: id2,
+        }
+      }),
+      this._prismaService.userData.update({
+        where: {
+          userId: id2,
+        },
+        data: {
+        sidekick_id: id1,
+        }
+      })
+    ]);
+
+    return HttpStatus.OK;
     }
 }
