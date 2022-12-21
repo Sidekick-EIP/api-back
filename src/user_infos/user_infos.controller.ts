@@ -16,4 +16,10 @@ export class UserInfosController {
     setUserInfos(@Request() req: any, @Body() dto: UserInfosDto) {
       return this.userInfoService.setUserInfo(dto, req.user.email);
     }
+
+    @Public()
+    @Post("link_users")
+    linkUsers(@Body() req: {id1: string, id2: string}) {
+      return this.userInfoService.linkUsers(req);
+    }
 }
