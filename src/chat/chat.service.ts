@@ -38,6 +38,8 @@ export class ChatService {
       userId: userId,
       sidekickId: sidekick,
     });
+
+    socket.emit("message", "You are connected to the room " + roomName);
   }
 
   handleDisconnect(socket: any) {
