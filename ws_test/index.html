@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html style="height: 100%;" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body style="height: 100%;">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+  <div
+    style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-items: center; justify-content: center;">
+    <button id="connect">
+      Connect
+    </button>
+    <form>
+      <input type="text" id="message" name="message">
+      <input type="submit" value="Send">
+    </form>
+
+    <button id="writing">
+      writing event
+    </button>
+    <button id="seen">
+      seen event
+    </button>
+  </div>
+
+  <script>
+    let socket;
+
+    const connect = () => {
+      socket = io("13.39.85.8", {
+        auth: {
+          token: '80a23425-baa1-42e1-b726-9599be7a392c'
+        }
+      });
+      socket.on('message', (data) => {
+        console.log('Message received: ' + data);
+      });
+
+      socket.on('writing', (data) => {
+        console.log('Writing received: ' + data);
+      });
+
+      socket.on('seen', (data) => {
+        console.log('Seen received: ' + data);
+      });
+    }
+
+    const form = document.querySelector('form');
+    const input = document.querySelector('input');
+    const writing = document.querySelector('#writing');
+    const seen = document.querySelector('#seen');
+    const connectBtn = document.querySelector('#connect');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      socket.emit('message', input.value);
+      input.value = '';
+    });
+
+    writing.addEventListener('click', (e) => {
+      e.preventDefault();
+      socket.emit('writing', 'writing');
+    });
+
+    seen.addEventListener('click', (e) => {
+      e.preventDefault();
+      socket.emit('seen', 'seen');
+    });
+
+    connectBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      connect();
+    });
+  </script>
+
+</body>
+
+</html>
