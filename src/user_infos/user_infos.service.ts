@@ -58,7 +58,7 @@ export class UserInfoService {
     data["size"] = Number(dto["size"]);
     data["weight"] = Number(dto["weight"]);
     data["gender"] = Gender[data["gender"]];
-    data["sport_frequence"] = SportFrequence[dto["sport_frequence"].toUpperCase()];
+    data["sport_frequence"] = SportFrequence[dto["sport_frequence"]?.toUpperCase()];
 
     return await this._prismaService.userData.update({
       where: {
