@@ -3,6 +3,7 @@ import { HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import UserNotFoundException from "./exceptions/not-found.exception";
 import { UserInfosDto } from "./dto/user.dto";
+import { EditInfosDto } from "./dto/edit.dto";
 
 @Injectable()
 export class UserInfoService {
@@ -51,8 +52,9 @@ export class UserInfoService {
     });
   }
 
-  async updateInfos(dto: UserInfosDto, email: string) {
+  async updateInfos(dto: EditInfosDto, email: string) {
     const data = dto;
+    // check if fields are not empty
     data["size"] = Number(dto["size"]);
     data["weight"] = Number(dto["weight"]);
     data["gender"] = Gender[data["gender"]];
