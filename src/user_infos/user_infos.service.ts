@@ -55,16 +55,11 @@ export class UserInfoService {
   async updateInfos(dto: EditInfosDto, email: string) {
     const data = dto;
     // check if fields are not empty
-    // delete empty fields
-    for (const [key, value] of Object.entries(data)) {
-      if (!value) {
-        delete data[key];
-      }
-    }
     data.size ? data.size = Number(dto.size) : null;
     data.weight ? data.weight = Number(dto.weight) : null;
     data.gender ? data.gender = Gender[data.gender] : null;
     data.sport_frequence ? data.sport_frequence = SportFrequence[dto.sport_frequence?.toUpperCase()] : null;
+    console.log(data);
 
     return await this._prismaService.userData.update({
       where: {
