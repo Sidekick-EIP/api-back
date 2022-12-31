@@ -55,6 +55,7 @@ export class UserInfoService {
   async updateInfos(dto: EditInfosDto, email: string) {
     const data = dto;
     // check if fields are not empty
+    console.log(data);
     data.size ? data.size = Number(dto.size) : null;
     data.weight ? data.weight = Number(dto.weight) : null;
     data.gender ? data.gender = Gender[data.gender] : null;
