@@ -62,9 +62,14 @@ export class UserInfoService {
     data.sport_frequence ? data.sport_frequence = SportFrequence[dto.sport_frequence?.toUpperCase()] : null;
     console.log(data);
 
+    const user = await this._prismaService.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
     return await this._prismaService.userData.update({
       where: {
-        userId: email,
+        userId: user.id,
       },
       data: data,
     });
