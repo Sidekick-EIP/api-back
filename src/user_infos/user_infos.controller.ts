@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Query, Request } from "@nestjs/common";
 import { UserInfoService } from "./user_infos.service";
 import { UserInfosDto } from "./dto/user.dto";
 import { Public } from "../common/decorators";
+import { EditInfosDto } from "./dto/edit.dto";
 
 @Controller("user_infos")
 export class UserInfosController {
@@ -18,7 +19,7 @@ export class UserInfosController {
   }
 
   @Post("update/infos")
-  updateInfos(@Request() req: any, @Body() dto: UserInfosDto) {
+  updateInfos(@Request() req: any, @Body() dto: EditInfosDto) {
     return this.userInfoService.updateInfos(dto, req.user.email);
   }
 
