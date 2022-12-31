@@ -51,6 +51,21 @@ export class UserInfoService {
     });
   }
 
+  async updateInfos(dto: UserInfosDto, email: string) {
+    const data = dto;
+    data["size"] = Number(dto["size"]);
+    data["weight"] = Number(dto["weight"]);
+    data["gender"] = Gender[data["gender"]];
+    data["sport_frequence"] = SportFrequence[dto["sport_frequence"].toUpperCase()];
+
+    return await this._prismaService.userData.update({
+      where: {
+        userId: email,
+      },
+      data: data,
+    });
+  }
+
   public async linkUsers(req: { id1: string; id2: string }) {
     let { id1, id2 } = req;
 
