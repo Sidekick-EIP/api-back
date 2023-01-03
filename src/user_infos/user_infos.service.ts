@@ -2,6 +2,7 @@ import { Gender, SportFrequence } from '@prisma/client';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import UserNotFoundException from './exceptions/not-found.exception';
+import { UserWithoutSidekickException } from './exceptions/not-found.exception';
 import {UserInfosDto } from './dto/user.dto';
 
 @Injectable()
@@ -31,6 +32,36 @@ export class UserInfoService {
         }
         userDatas['email'] = userEmail;
         return userDatas;
+    }
+
+    public async getSidekickInfo(userEmail: string) {
+      const user = await this._prismaService.user.findUnique({
+        where: {
+            email: userEmail
+        }
+      });
+      if (!user) {
+          throw new UserNotFoundException(user.id);
+      }
+      const userDatas = await this._prismaService.userData.findUnique({ 
+        where: {
+            userId: user.id
+        }
+      });
+      if (!userDatas.sidekick_id) {
+          throw new UserWithoutSidekickException(user.id);
+      }
+      const sidekickDatas = await this._prismaService.userData.findUnique({
+        where: {
+          userId: userDatas.sidekick_id
+        }
+      })
+      return {
+        lastname: sidekickDatas.lastname,
+        firstname: sidekickDatas.firstname,
+        bio: sidekickDatas.description,
+        frequence_sportive: sidekickDatas.sport_frequence
+      };
     }
 
     public async setUserInfo(datas: UserInfosDto, userEmail: string) {

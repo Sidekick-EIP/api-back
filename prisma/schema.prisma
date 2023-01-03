@@ -78,9 +78,10 @@ model UserData {
 }
 
 model Meals {
-  userId      String   @id @default(uuid())
+  id          Int   @unique @id @default(autoincrement())
   user        User     @relation(fields: [userId], references: [id])
-  name        String   @unique
+  userId      String
+  name        String
   ingredients Json
   proteins    Int
   lipids      Int
