@@ -7,32 +7,32 @@ import {UserInfosDto } from './dto/user.dto';
 
 @Injectable()
 export class UserInfoService {
-    constructor(private _prismaService: PrismaService) {}
+  constructor(private _prismaService: PrismaService) {}
 
-    public async getAllUserInfo() {
-        return this._prismaService.user.findMany();
-    }
+  public async getAllUserInfo() {
+    return this._prismaService.user.findMany();
+  }
 
-    public async getUserInfoById(userEmail: string) {
-        const user = await this._prismaService.user.findUnique({
-            where: {
-                email: userEmail
-            }
-        });
-        if (!user) {
-            throw new UserNotFoundException(user.id);
-        }
-        const userDatas = await this._prismaService.userData.findUnique({ 
-            where: {
-                userId: user.id
-            }
-        });
-        if (!userDatas) {
-            throw new UserNotFoundException(user.id);
-        }
-        userDatas['email'] = userEmail;
-        return userDatas;
+  public async getUserInfoById(userEmail: string) {
+    const user = await this._prismaService.user.findUnique({
+      where: {
+        email: userEmail,
+      },
+    });
+    if (!user) {
+      throw new UserNotFoundException(user.id);
     }
+    const userDatas = await this._prismaService.userData.findUnique({
+      where: {
+        userId: user.id,
+      },
+    });
+    if (!userDatas) {
+      throw new UserNotFoundException(user.id);
+    }
+    userDatas["email"] = userEmail;
+    return userDatas;
+  }
 
     public async getSidekickInfo(userEmail: string) {
       const user = await this._prismaService.user.findUnique({
@@ -81,28 +81,79 @@ export class UserInfoService {
         });
     }
 
-    public async linkUsers(req: {id1: string, id2: string}) {
-      let {id1, id2} = req;
+  async updateInfos(dto: EditInfosDto, email: string) {
+    const data = dto;
+    // check if fields are not empty
+    console.log(data);
+    data.size ? data.size = Number(dto.size) : null;
+    data.weight ? data.weight = Number(dto.weight) : null;
+    data.gender ? data.gender = Gender[data.gender] : null;
+    data.sport_frequence ? data.sport_frequence = SportFrequence[dto.sport_frequence?.toUpperCase()] : null;
+    console.log(data);
 
-      await Promise.all([
-        this._prismaService.userData.update({
-          where: {
-            userId: id1,
-          },
-          data: {
+    const user = await this._prismaService.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    return await this._prismaService.userData.update({
+      where: {
+        userId: user.id,
+      },
+      data: data,
+    });
+  }
+
+  public async linkUsers(req: { id1: string; id2: string }) {
+    let { id1, id2 } = req;
+
+    await Promise.all([
+      this._prismaService.userData.update({
+        where: {
+          userId: id1,
+        },
+        data: {
           sidekick_id: id2,
-        }
+        },
       }),
       this._prismaService.userData.update({
         where: {
           userId: id2,
         },
         data: {
-        sidekick_id: id1,
-        }
-      })
+          sidekick_id: id1,
+        },
+      }),
     ]);
 
     return HttpStatus.OK;
+  }
+
+  async getSidekick(id: string) {
+    const user = await this._prismaService.userData.findUnique({
+      where: {
+        userId: id,
+      },
+    });
+    if (!user) {
+      throw new UserNotFoundException(id);
     }
+    return this._prismaService.userData.findUnique({
+      where: {
+        userId: user.sidekick_id,
+      },
+    });
+  }
+
+  async getUserfromId(id: string) {
+    const user = await this._prismaService.userData.findUnique({
+      where: {
+        userId: id,
+      },
+    });
+    if (!user) {
+      throw new UserNotFoundException(id);
+    }
+    return user;
+  }
 }
