@@ -12,6 +12,11 @@ export class UserInfosController {
       return this.userInfoService.getUserInfoById(req.user.email);
     }
 
+    @Get("getSidekickInfos")
+    getSidekickInfo(@Request() req: any) {
+      return this.userInfoService.getSidekickInfo(req.user.email);
+    }
+
     @Post("setUserInfos")
     setUserInfos(@Request() req: any, @Body() dto: UserInfosDto) {
       return this.userInfoService.setUserInfo(dto, req.user.email);

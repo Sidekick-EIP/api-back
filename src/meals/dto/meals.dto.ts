@@ -12,6 +12,9 @@ export class MealsDto {
     @IsInt()
     carbohydrates: number;
 
+    userId: string;
+    id: number;
+
     @IsNotEmpty()
     @IsString()
     name: string;
