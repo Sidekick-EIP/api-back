@@ -1,7 +1,6 @@
 import { MealsDto } from './dto/meals.dto';
 import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { MealsService } from './meals.service';
-import { Public } from 'src/common/decorators';
 
 @Controller('meals')
 export class MealsController {
@@ -12,8 +11,18 @@ export class MealsController {
       return this.mealsService.addMeal(dto, req.user.email);
     }
 
+    @Post("modifyMeal")
+    modifyMeal(@Body() dto: MealsDto) {
+      return this.mealsService.modifyMeal(dto);
+    }
+
     @Post("removeMeal")
-    removeMeal(@Request() req: any) {
-      return this.mealsService.removeMeal(req.user.email);
+    removeMeal(@Body() mealId: {id: number}) {
+      return this.mealsService.removeMeal(mealId);
+    }
+
+    @Post("getMealsForOneDay")
+    getMealsForOneDay(@Request() req: any, @Body() mealDate: {date: string}) {
+      return this.mealsService.getMealsForOneDay(req.user.email, mealDate.date)
     }
 }
