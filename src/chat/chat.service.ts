@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Socket } from "socket.io";
+import { PrismaService } from "src/prisma/prisma.service";
 import { UserInfoService } from "../user_infos/user_infos.service";
 import { Rooms } from "./chat.helper";
 
@@ -7,7 +8,10 @@ import { Rooms } from "./chat.helper";
 export class ChatService {
   private rooms = new Rooms();
 
-  constructor(private userInfosService: UserInfoService) {}
+  constructor(
+    private userInfosService: UserInfoService,
+    private prismaService: PrismaService
+  ) {}
 
   async handleConnection(socket: Socket) {
     const userId = socket.handshake.auth.token;
@@ -64,5 +68,20 @@ export class ChatService {
 
   handleSeen(socket: Socket, payload: any) {
     socket.emit("seen", "Received seen event");
+  }
+
+  async getAll(id: string) {
+    return await this.prismaService.message.findMany({
+      where: {
+        OR: [
+          {
+            from_id: id,
+          },
+          {
+            to: id,
+          },
+        ],
+      },
+    });
   }
 }
