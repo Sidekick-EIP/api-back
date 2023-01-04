@@ -106,5 +106,7 @@ model Message {
   createdAt DateTime @default(now())
   updateAt  DateTime @default(now())
 
+  seen Boolean @default(false)
+
   @@map("messages")
 }
