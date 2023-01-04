@@ -7,6 +7,7 @@ import { ChatService } from './chat.service';
 describe('ChatService', () => {
   let service: ChatService;
   let userInfoService: UserInfoService;
+  let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -15,6 +16,7 @@ describe('ChatService', () => {
 
     service = module.get<ChatService>(ChatService);
     userInfoService = module.get<UserInfoService>(UserInfoService);
+    prismaService = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
