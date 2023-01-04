@@ -43,7 +43,9 @@ export class ChatService {
       sidekickId: sidekick,
     });
 
-    socket.emit("message", "You are connected to the room " + roomName);
+    socket.join(roomName);
+
+    /* socket.emit("message", "You are connected to the room " + roomName); */
   }
 
   handleDisconnect(socket: any) {
@@ -55,19 +57,52 @@ export class ChatService {
     }
 
     this.rooms.removeUserFromRoom(user.userId, socket.id);
-    console.log(this.rooms);
+
+    if (this.rooms.getRoom(user.userId)?.users.length === 0) {
+      this.rooms.removeRoom(user.userId);
+    }
   }
 
-  handleMessage(socket: Socket, payload: any) {
-    socket.emit("message", "You sent : " + payload);
+  async handleMessage(socket: Socket, payload: any) {
+    socket.broadcast.emit("message", payload);
+
+    // save message to db
+    const user = this.rooms.findUserBySocketId(socket.id);
+
+    if (!user) return;
+
+    await this.prismaService.message.create({
+      data: {
+        from_id: user.userId,
+        to: user.sidekickId,
+        content: payload,
+      },
+    });
+
+    /* socket.emit("message", "You sent : " + payload); */
   }
 
-  handleWriting(socket: Socket, payload: any) {
-    socket.emit("writing", "Received writing event");
+  async handleWriting(socket: Socket, payload: any) {
+    socket.broadcast.emit("writing", {});
+
+    /* socket.emit("writing", "Received writing event"); */
   }
 
-  handleSeen(socket: Socket, payload: any) {
-    socket.emit("seen", "Received seen event");
+  async handleSeen(socket: Socket, payload: any) {
+    socket.broadcast.emit("seen", {});
+
+    const user = this.rooms.findUserBySocketId(socket.id);
+
+    await this.prismaService.message.updateMany({
+      where: {
+        from_id: user.sidekickId,
+        seen: false,
+      },
+      data: {
+        seen: true,
+      },
+    });
+    /* socket.emit("seen", "Received seen event"); */
   }
 
   async getAll(id: string) {
