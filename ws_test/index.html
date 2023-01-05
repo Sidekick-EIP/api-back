@@ -13,10 +13,12 @@
 
   <div
     style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-items: center; justify-content: center;">
-    <button id="connect">
-      Connect
-    </button>
-    <form>
+
+    <form id="connect_form">
+      <input type="text" id="token" name="token">
+      <input type="submit" value="Connect">
+    </form>
+    <form id="message_form">
       <input type="text" id="message" name="message">
       <input type="submit" value="Send">
     </form>
@@ -31,11 +33,12 @@
 
   <script>
     let socket;
+    let token;
 
     const connect = () => {
       socket = io("13.39.85.8", {
         auth: {
-          token: '80a23425-baa1-42e1-b726-9599be7a392c'
+          token: token
         }
       });
       socket.on('message', (data) => {
@@ -51,16 +54,23 @@
       });
     }
 
-    const form = document.querySelector('form');
-    const input = document.querySelector('input');
+    const form = document.querySelector('#message_form');
+    const connectForm = document.querySelector('#connect_form');
+    const input = document.querySelector('#message');
+    const tokenInput = document.querySelector('#token');
     const writing = document.querySelector('#writing');
     const seen = document.querySelector('#seen');
-    const connectBtn = document.querySelector('#connect');
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       socket.emit('message', input.value);
       input.value = '';
+    });
+
+    connectForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      token = tokenInput.value;
+      connect();
     });
 
     writing.addEventListener('click', (e) => {
@@ -73,10 +83,6 @@
       socket.emit('seen', 'seen');
     });
 
-    connectBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      connect();
-    });
   </script>
 
 </body>
