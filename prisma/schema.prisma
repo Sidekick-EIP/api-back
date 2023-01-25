@@ -63,6 +63,8 @@ model Steps {
 model UserData {
   userId          String         @id @default(uuid())
   user            User           @relation(name: "user", fields: [userId], references: [id])
+  birthDate       DateTime       @default(now())
+  username        String         @default("")
   firstname       String
   lastname        String
   size            Int
@@ -83,9 +85,7 @@ model Meals {
   userId      String
   name        String
   ingredients Json
-  proteins    Int
-  lipids      Int
-  carbohydrates    Int
+  period      String   @default("dinner")
   date        DateTime @default(now())
   createdAt   DateTime @default(now())
   updateAt    DateTime @default(now())

@@ -19,6 +19,14 @@ export class FormDto {
   size: number;
 
   @IsNotEmpty()
+  @IsString()
+  birthDate: string;
+
+  @IsNotEmpty()
+  @IsString()
+  username: string;
+
+  @IsNotEmpty()
   @IsInt()
   weight: number;
 
