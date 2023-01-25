@@ -52,6 +52,26 @@ export class MealsService {
     })
   }
 
+  public async searchMeal(userEmail: string, pattern: string) {
+    const user = await this._prismaService.user.findUnique({
+      where: {
+        email: userEmail
+      }
+    });
+    if (!user) {
+        throw new UserNotFoundException(userEmail);
+    }
+
+    return this._prismaService.meals.findMany({
+      where: {
+        userId: user.id,
+        name: {
+          startsWith: pattern,
+        }
+      }
+    })
+  }
+
   public async getMealsForOneDay(userEmail: string, date: string) {
      //Get User with email
 		const user = await this._prismaService.user.findUnique({

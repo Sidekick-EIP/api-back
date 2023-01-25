@@ -35,62 +35,63 @@ export class UserInfoService {
     return userDatas;
   }
 
-    public async getSidekickInfo(userEmail: string) {
-      const user = await this._prismaService.user.findUnique({
-        where: {
-            email: userEmail
-        }
-      });
-      if (!user) {
-          throw new UserNotFoundException(user.id);
+  public async getSidekickInfo(userEmail: string) {
+    const user = await this._prismaService.user.findUnique({
+      where: {
+          email: userEmail
       }
-      const userDatas = await this._prismaService.userData.findUnique({ 
-        where: {
-            userId: user.id
-        }
-      });
-      if (!userDatas.sidekick_id) {
-          throw new UserWithoutSidekickException(user.id);
-      }
-      const sidekickDatas = await this._prismaService.userData.findUnique({
-        where: {
-          userId: userDatas.sidekick_id
-        }
-      })
-      return {
-        lastname: sidekickDatas.lastname,
-        firstname: sidekickDatas.firstname,
-        bio: sidekickDatas.description,
-        frequence_sportive: sidekickDatas.sport_frequence
-      };
+    });
+    if (!user) {
+        throw new UserNotFoundException(user.id);
     }
+    const userDatas = await this._prismaService.userData.findUnique({ 
+      where: {
+          userId: user.id
+      }
+    });
+    if (!userDatas.sidekick_id) {
+        throw new UserWithoutSidekickException(user.id);
+    }
+    const sidekickDatas = await this._prismaService.userData.findUnique({
+      where: {
+        userId: userDatas.sidekick_id
+      }
+    })
+    return {
+      lastname: sidekickDatas.lastname,
+      firstname: sidekickDatas.firstname,
+      bio: sidekickDatas.description,
+      frequence_sportive: sidekickDatas.sport_frequence
+    };
+  }
 
-    public async setUserInfo(datas: UserInfosDto, userEmail: string) {
-        var newDatas = datas;
-        newDatas['size'] = Number(datas['size']);
-        newDatas['weight'] = Number(datas['weight']);
-        newDatas['gender'] = Gender[datas['gender']];
-        newDatas['sport_frequence'] = SportFrequence[datas['sport_frequence'].toUpperCase()];
-        var user = await this._prismaService.user.findUnique({
-            where: {
-                email: userEmail
-            }
-        });
-        newDatas['userId'] = user.id;
-        return this._prismaService.userData.create({
-          data: newDatas
-        });
-    }
+  public async setUserInfo(datas: UserInfosDto, userEmail: string) {
+      var newDatas = datas;
+      newDatas['size'] = Number(datas['size']);
+      newDatas['weight'] = Number(datas['weight']);
+      newDatas['gender'] = Gender[datas['gender']];
+      newDatas['birthDate'] = new Date(datas.birthDate);
+      newDatas['sport_frequence'] = SportFrequence[datas['sport_frequence'].toUpperCase()];
+      var user = await this._prismaService.user.findUnique({
+          where: {
+              email: userEmail
+          }
+      });
+      newDatas['userId'] = user.id;
+      return this._prismaService.userData.create({
+        data: newDatas
+      });
+  }
 
   async updateInfos(dto: EditInfosDto, email: string) {
     const data = dto;
     // check if fields are not empty
-    console.log(data);
+
     data.size ? data.size = Number(dto.size) : null;
     data.weight ? data.weight = Number(dto.weight) : null;
     data.gender ? data.gender = Gender[data.gender] : null;
     data.sport_frequence ? data.sport_frequence = SportFrequence[dto.sport_frequence?.toUpperCase()] : null;
-    console.log(data);
+
 
     const user = await this._prismaService.user.findUnique({
       where: {
