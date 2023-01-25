@@ -21,8 +21,13 @@ export class MealsController {
       return this.mealsService.removeMeal(mealId);
     }
 
+    @Post("searchMeal")
+    searchMeal(@Request() req: any, @Body() meal: {pattern: string}) {
+      return this.mealsService.searchMeal(req.user.email, meal.pattern);
+    }
+
     @Post("getMealsForOneDay")
     getMealsForOneDay(@Request() req: any, @Body() mealDate: {date: string}) {
-      return this.mealsService.getMealsForOneDay(req.user.email, mealDate.date)
+      return this.mealsService.getMealsForOneDay(req.user.email, mealDate.date);
     }
 }

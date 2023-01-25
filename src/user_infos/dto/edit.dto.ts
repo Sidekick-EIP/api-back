@@ -16,6 +16,10 @@ export class EditInfosDto {
 
   @IsOptional()
   @IsString()
+  username?: string;
+
+  @IsOptional()
+  @IsString()
   size?: number;
 
   @IsOptional()
