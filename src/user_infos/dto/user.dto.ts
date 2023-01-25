@@ -16,6 +16,14 @@ export class UserInfosDto {
 
   @IsNotEmpty()
   @IsString()
+  username: string;
+
+  @IsNotEmpty()
+  @IsString()
+  birthDate: Date;
+
+  @IsNotEmpty()
+  @IsString()
   size: number;
 
   @IsNotEmpty()
