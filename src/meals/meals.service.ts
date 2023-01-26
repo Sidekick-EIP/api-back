@@ -8,11 +8,11 @@ import UserNotFoundException from './exceptions/not-found.exception';
 export class MealsService {
 	constructor(private _prismaService: PrismaService) {}
 
-  public async removeMeal(mealId: {id: number}) {
+  public async removeMeal(id: string) {
     //Delete the meal
 		await this._prismaService.meals.delete({
 		  where: {
-        id: mealId.id 
+        id: Number(id)
 		  },
 		})
   }
