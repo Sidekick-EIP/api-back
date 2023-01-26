@@ -17,8 +17,8 @@ export class MealsController {
     }
 
     @Post("removeMeal")
-    removeMeal(@Body() mealId: {id: number}) {
-      return this.mealsService.removeMeal(mealId);
+    removeMeal(@Body("id") id: string) {
+      return this.mealsService.removeMeal(id);
     }
 
     @Post("searchMeal")
