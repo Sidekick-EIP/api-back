@@ -3,6 +3,7 @@ import UserNotFoundException from "src/user_infos/exceptions/not-found.exception
 import { Public } from "../common/decorators";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto";
+import { IsEmail } from "class-validator";
 
 @Controller("auth")
 export class AuthController {
@@ -44,6 +45,18 @@ export class AuthController {
     } catch (e) {
       throw e;
     }
+  }
+
+  @Public()
+  @Post("forgotPassword")
+  async forgotPassword(@Body("email") email: string) {
+    return this.authService.forgotPassword(email);
+  }
+
+  @Public()
+  @Post("resetPassword")
+  async resetPassword(@Body() dto: AuthDto, @Body("verificationCode") verificationCode: string) {
+    return this.authService.resetPassword(dto, verificationCode);
   }
 
   @Get("me")
