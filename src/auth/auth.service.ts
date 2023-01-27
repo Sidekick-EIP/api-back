@@ -172,6 +172,43 @@ export class AuthService {
     });
   }
 
+  async forgotPassword(email: string) {
+    const user = new CognitoUser({
+      Username: email,
+      Pool: this.userPool,
+    });
+
+    return new Promise((resolve, reject) => {
+      user.forgotPassword({
+        onSuccess: function(data) {
+          // successfully initiated reset password request
+          resolve(data);
+        },
+        onFailure: function(err) {
+          reject(err);
+        },
+      })
+    });
+  }
+
+  async resetPassword(dto: AuthDto, verificationCode: string) {
+    const { email, password } = dto;
+
+    const user = new CognitoUser({
+      Username: email,
+      Pool: this.userPool,
+    });
+
+    return new Promise((resolve, reject) => {
+      user.confirmPassword(verificationCode, password, {
+        onSuccess() {},
+        onFailure(err) {
+          reject(err);
+        },
+      })
+    });
+  }
+
   private async createUser(dto: AuthDto): Promise<void> {
     const hash = await argon.hash(dto.password);
 
