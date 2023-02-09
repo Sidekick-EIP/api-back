@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { GetCurrentUserId } from "../common/decorators/current_user.decorator";
+import { GetCurrentUserEmail } from "../common/decorators/current_user.decorator";
 import { ReportsService } from "./reports.service";
 
 @Controller("reports")
@@ -8,10 +8,9 @@ export class ReportsController {
 
   @Post()
   async create(
-    @GetCurrentUserId() userId: string,
+    @GetCurrentUserEmail() currentUser: string,
     @Body("reason") reason: string
   ) {
-    console.log(userId);
-    return this.reportsService.create(userId, reason);
+    return this.reportsService.create(currentUser, reason);
   }
 }

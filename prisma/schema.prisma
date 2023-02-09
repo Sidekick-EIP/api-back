@@ -117,7 +117,7 @@ model Reports {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  reporterId String
+  reporterEmail String
 
   reason String
 
