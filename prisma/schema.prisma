@@ -65,7 +65,7 @@ model UserData {
   userId          String         @id @default(uuid())
   user            User           @relation(name: "user", fields: [userId], references: [id], onDelete: Cascade)
   birthDate       DateTime       @default(now())
-  username        String         @default("")
+  username        String         @unique
   firstname       String
   lastname        String
   size            Int
