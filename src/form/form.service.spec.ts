@@ -52,6 +52,7 @@ describe('FormService', () => {
     dto.weight = 65;
     dto.sport_frequence = "NEVER";
     dto.userId = user.id;
+    dto.username = user.email;
 
     await service.saveFormDatas(dto, user.id);
     expect(createFormDatas).toHaveBeenCalledWith(dto, user.id);

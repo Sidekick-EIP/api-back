@@ -51,6 +51,7 @@ describe('FormController', () => {
     dto.weight = 65;
     dto.sport_frequence = "NEVER";
     dto.userId = user.id;
+    dto.username = user.email;
 
     jest.spyOn(service, 'saveFormDatas');
     await controller.saveFormDatas(dto, user.id);
