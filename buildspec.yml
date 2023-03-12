@@ -4,13 +4,13 @@ phases:
     runtime-versions:
       nodejs: 16
     commands:
-      - npm install -g @nestjs/cli
+      - npm install -g @nestjs/cli dotenv-cli
   pre_build:
     commands:
       - npm install
   build:
     commands:
-      - npm run build
+      - dotenv -e .env.production -- npm run build
 artifacts:
   files:
     - "**/*"
