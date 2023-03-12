@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "../prisma/prisma.service";
 import { Test, TestingModule } from "@nestjs/testing";
 import { UserInfoService } from "./user_infos.service";
+import { FileService } from "../file/file.service";
 
 describe("AuthService", () => {
 	let service: UserInfoService;
@@ -15,6 +16,7 @@ describe("AuthService", () => {
 		  PrismaService,
 		  ConfigService,
 		  JwtService,
+      FileService
 		],
 	  }).compile();
   
