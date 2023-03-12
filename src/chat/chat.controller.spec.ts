@@ -4,6 +4,7 @@ import { UserInfoService } from '../user_infos/user_infos.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { ChatController } from './chat.controller';
 import { ChatService } from './chat.service';
+import { FileService } from '../file/file.service';
 
 describe('ChatController', () => {
   let controller: ChatController;
@@ -11,7 +12,7 @@ describe('ChatController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ChatController],
-      providers: [PrismaService, ConfigService, ChatService, UserInfoService],
+      providers: [PrismaService, ConfigService, ChatService, UserInfoService, FileService],
     }).compile();
 
     controller = module.get<ChatController>(ChatController);

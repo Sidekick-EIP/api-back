@@ -5,10 +5,11 @@ import UserNotFoundException from './exceptions/not-found.exception';
 import { UserWithoutSidekickException } from './exceptions/not-found.exception';
 import {UserInfosDto} from './dto/user.dto';
 import { EditInfosDto } from './dto/edit.dto';
+import { FileService } from '../file/file.service';
 
 @Injectable()
 export class UserInfoService {
-  constructor(private _prismaService: PrismaService) {}
+  constructor(private _prismaService: PrismaService, private _fileService: FileService) {}
 
   public async getAllUserInfo() {
     return this._prismaService.user.findMany();
@@ -157,5 +158,27 @@ export class UserInfoService {
       throw new UserNotFoundException(id);
     }
     return user;
+  }
+
+  async setAvatar(email: string, file: Express.Multer.File) {
+    const user = await this._prismaService.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new UserNotFoundException(user.id);
+    }
+
+    const avatar = await this._fileService.uploadPublicFile(file);
+
+    return this._prismaService.userData.update({
+      where: {
+        userId: user.id,
+      },
+      data: {
+        avatar: avatar,
+      },
+    });
   }
 }

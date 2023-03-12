@@ -70,6 +70,7 @@ model UserData {
   lastname        String
   size            Int
   weight          Int
+  avatar          String         @default("https://sidekick-files.s3.eu-west-3.amazonaws.com/default.jpg")
   gender          Gender
   description     String
   sport_frequence SportFrequence
