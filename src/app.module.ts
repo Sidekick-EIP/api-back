@@ -21,7 +21,7 @@ import { ReportsModule } from './reports/reports.module';
 import { FileModule } from './file/file.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule],
   controllers: [AppController, CaloriesController, MealsController],
   providers: [AppService, {
     provide: APP_GUARD,
