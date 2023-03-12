@@ -19,9 +19,10 @@ import { MealsModule } from './meals/meals.module';
 import { ChatModule } from './chat/chat.module';
 import { ReportsModule } from './reports/reports.module';
 import { FileModule } from './file/file.module';
+import { SportsExerciseModule } from './sports_exercises/sports_exercises.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule],
   controllers: [AppController, CaloriesController, MealsController],
   providers: [AppService, {
     provide: APP_GUARD,
