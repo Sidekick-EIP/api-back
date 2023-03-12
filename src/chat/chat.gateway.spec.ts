@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { FileService } from '../file/file.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserInfoService } from '../user_infos/user_infos.service';
 import { ChatGateway } from './chat.gateway';
@@ -10,7 +11,7 @@ describe('ChatGateway', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ChatGateway, ChatService, UserInfoService, PrismaService, ConfigService],
+      providers: [ChatGateway, ChatService, UserInfoService, PrismaService, ConfigService, FileService],
     }).compile();
 
     gateway = module.get<ChatGateway>(ChatGateway);
