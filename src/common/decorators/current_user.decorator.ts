@@ -8,17 +8,3 @@ export const GetCurrentUserEmail = createParamDecorator(
     return request?.user?.email;
   }
 )
-
-// export const GetCurrentUserId = createParamDecorator(
-//   async (data: undefined) => {
-//     const config = new ConfigService()
-//     const prisma = new PrismaService(config)
-
-//     const res = await prisma.user.findUnique({
-//       where: {
-//         email: data,
-//       },
-//     });
-//     return res.id;
-//   }
-// )
