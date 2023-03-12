@@ -39,6 +39,7 @@ model User {
   meals     Meals[]
   sidekick  UserData?  @relation("sidekick")
   Reports   Reports[]
+  sports_exercices Sports_exercices[]
 
   @@map("users")
 }
@@ -124,4 +125,15 @@ model Reports {
   createdAt DateTime @default(now())
 
   @@map("reports")
+}
+
+model Sports_exercices {
+   id          Int     @id @unique @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  name        String
+  createdAt   DateTime @default(now())
+  updateAt    DateTime @default(now())
+
+  @@map("sports_exercices")
 }
