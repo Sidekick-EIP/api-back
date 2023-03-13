@@ -50,7 +50,8 @@ export class SportsExerciseService {
 		
 		const exercise = await this._prismaService.sports_exercices.findFirst({
 			where: {
-				name: datas.name
+				name: datas.name,
+				userId: user.id
 			}
 		});
 		if (!exercise) {
