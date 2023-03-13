@@ -1,5 +1,5 @@
 import { Gender, SportFrequence } from "@prisma/client";
-import { ForbiddenException, HttpStatus, Injectable } from "@nestjs/common";
+import { ForbiddenException, HttpStatus, Injectable, ConflictException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import UserNotFoundException from "./exceptions/not-found.exception";
 import { UserWithoutSidekickException } from "./exceptions/not-found.exception";

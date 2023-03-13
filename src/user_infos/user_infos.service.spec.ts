@@ -247,3 +247,4 @@ describe("AuthService", () => {
 		.catch((err) => expect(err.status).toBe(404));
 	})
   });
+})
