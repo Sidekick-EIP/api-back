@@ -11,6 +11,9 @@ phases:
   build:
     commands:
       - dotenv -e .env.production -- npm run build
+  post_build:
+    commands:
+      - dotenv -e .env.production -- npx prisma generate
 artifacts:
   files:
     - "**/*"
