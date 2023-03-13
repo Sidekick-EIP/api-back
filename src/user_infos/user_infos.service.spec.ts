@@ -9,6 +9,8 @@ import { UserInfosDto } from "./dto/user.dto";
 import { Gender, SportFrequence } from "@prisma/client";
 import { clear } from "console";
 import { EditInfosDto } from "./dto/edit.dto";
+import { FileService } from "../file/file.service";
+
 
 describe("AuthService", () => {
 	let service: UserInfoService;
@@ -19,7 +21,7 @@ describe("AuthService", () => {
 
 	beforeAll(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [UserInfoService, PrismaService, AuthService, AuthConfig, ConfigService, JwtService],
+			providers: [UserInfoService, PrismaService, AuthService, AuthConfig, ConfigService, JwtService, FileService],
 		}).compile();
 		
 		service = module.get<UserInfoService>(UserInfoService);
@@ -30,7 +32,6 @@ describe("AuthService", () => {
 		await authService.register({email: "jestUserInfosSidekick@gmail.com", password: "Password123"});
 		id1 = (await (prisma.user.findUnique({ where: { email: "jestUserInfos@gmail.com" } }))).id;
 		id2 = (await (prisma.user.findUnique({ where: { email: "jestUserInfosSidekick@gmail.com" } }))).id;
-	});
 
 	beforeEach(async () => {
 		await prisma.userData.deleteMany({where: {userId: id1}})

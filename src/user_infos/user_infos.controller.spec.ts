@@ -8,6 +8,7 @@ import { AuthConfig } from '../auth/auth.config';
 import { UserInfosDto } from './dto/user.dto';
 import { Gender, SportFrequence } from '@prisma/client';
 import { EditInfosDto } from './dto/edit.dto';
+import { FileService } from '../file/file.service';
 
 describe('UserInfosController', () => {
   let controller: UserInfosController;
@@ -20,9 +21,9 @@ describe('UserInfosController', () => {
 	beforeAll(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 		controllers: [UserInfosController],
-			providers: [UserInfoService, PrismaService, AuthService, AuthConfig, ConfigService],
+			providers: [UserInfoService, PrismaService, AuthService, AuthConfig, ConfigService, FileService],
 		}).compile();
-		
+
     controller = module.get<UserInfosController>(UserInfosController);
 		service = module.get<UserInfoService>(UserInfoService);
 		authService = module.get<AuthService>(AuthService);
