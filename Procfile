@@ -1,1 +1,1 @@
-web: npm i && npx prisma generate && npm run build && node dist/main.js
+web: node dist/main.js
