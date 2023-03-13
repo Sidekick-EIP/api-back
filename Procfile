@@ -1,1 +1,1 @@
-web: dotenv -e .env.production -- npm i && npx prisma generate && npm run build && node dist/main.js
+web: npm i && npx prisma generate && npm run build && node dist/main.js
