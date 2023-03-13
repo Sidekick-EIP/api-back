@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import * as argon from "argon2";
 import {
   AuthenticationDetails,
@@ -24,39 +28,43 @@ export class AuthService {
   async register(dto: AuthDto) {
     const { email, password } = dto;
 
-    return new Promise((resolve, reject) => {
-      this.userPool.signUp(email, password, [], null, (err, _result) => {
-        if (err) {
-          reject(err);
-        }
-        const newUser = new CognitoUser({
-          Username: email,
-          Pool: this.userPool,
-        });
-
-        const authenticationDetails = new AuthenticationDetails({
-          Username: email,
-          Password: password,
-        });
-
-        return newUser.authenticateUser(authenticationDetails, {
-          onSuccess: async (res) => {
-            try {
-              await this.createUser(dto);
-            } catch (e) {
-              reject(e);
-            }
-            resolve({
-              access_token: res.getIdToken().getJwtToken(),
-              refresh_token: res.getRefreshToken().getToken(),
-            });
-          },
-          onFailure: (err) => {
+    try {
+      const result = await new Promise((resolve, reject) => {
+        this.userPool.signUp(email, password, [], null, (err, _result) => {
+          if (err) {
             reject(err);
-          },
+          }
+          const newUser = new CognitoUser({
+            Username: email,
+            Pool: this.userPool,
+          });
+
+          const authenticationDetails = new AuthenticationDetails({
+            Username: email,
+            Password: password,
+          });
+
+          return newUser.authenticateUser(authenticationDetails, {
+            onSuccess: async (res) => {
+              try {
+                await this.createUser(dto);
+              } catch (e) {
+                reject(e);
+              }
+              resolve({
+                access_token: res.getIdToken().getJwtToken(),
+                refresh_token: res.getRefreshToken().getToken(),
+              });
+            },
+            onFailure: (err) => {
+              reject(err);
+            },
+          });
         });
       });
-    });
+    } catch (e) {
+      throw new ForbiddenException("User already exists");
+    }
   }
 
   async login(dto: AuthDto) {
@@ -74,32 +82,42 @@ export class AuthService {
 
     const newUser = new CognitoUser(userData);
 
-    return new Promise((resolve, reject) => {
-      return newUser.authenticateUser(authenticationDetails, {
-        onSuccess: (result) => {
-          resolve({
-            access_token: result.getIdToken().getJwtToken(),
-            refresh_token: result.getRefreshToken().getToken(),
-          });
-        },
-        onFailure: (err) => {
-          reject(err);
-        },
+    try {
+      const result = await new Promise((resolve, reject) => {
+        return newUser.authenticateUser(authenticationDetails, {
+          onSuccess: (result) => {
+            resolve({
+              access_token: result.getIdToken().getJwtToken(),
+              refresh_token: result.getRefreshToken().getToken(),
+            });
+          },
+          onFailure: (err) => {
+            reject(err);
+          },
 
-        newPasswordRequired: function(userAttributes, requiredAttributes) {
-          newUser.completeNewPasswordChallenge(authenticationDetails.getPassword(), {}, {
-            onSuccess: (result) => {
-              resolve({
-                access_token: result.getIdToken().getJwtToken(),
-                refresh_token: result.getRefreshToken().getToken(),
-              });
-            }, onFailure(err: any): void {
-              reject(err);
-            }
-          });
-        }
+          newPasswordRequired: function (userAttributes, requiredAttributes) {
+            newUser.completeNewPasswordChallenge(
+              authenticationDetails.getPassword(),
+              {},
+              {
+                onSuccess: (result) => {
+                  resolve({
+                    access_token: result.getIdToken().getJwtToken(),
+                    refresh_token: result.getRefreshToken().getToken(),
+                  });
+                },
+                onFailure(err: any): void {
+                  reject(err);
+                },
+              }
+            );
+          },
+        });
       });
-    });
+      return result;
+    } catch (e) {
+      throw new UnauthorizedException("Invalid credentials");
+    }
   }
 
   async logout(email: string) {
@@ -180,14 +198,14 @@ export class AuthService {
 
     return new Promise((resolve, reject) => {
       user.forgotPassword({
-        onSuccess: function(data) {
+        onSuccess: function (data) {
           // successfully initiated reset password request
           resolve(data);
         },
-        onFailure: function(err) {
+        onFailure: function (err) {
           reject(err);
         },
-      })
+      });
     });
   }
 
@@ -205,7 +223,7 @@ export class AuthService {
         onFailure(err) {
           reject(err);
         },
-      })
+      });
     });
   }
 
