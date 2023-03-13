@@ -43,7 +43,9 @@ describe('SportsExerciseService', () => {
   })
 
   afterAll(async () => {
-    await prismaService.sports_exercices.deleteMany({})
+    await prismaService.sports_exercices.deleteMany({  where: {
+      userId: id
+    }})
     await authService.delete({
       email: "jestSport@gmail.com",
       password: "Password123",
