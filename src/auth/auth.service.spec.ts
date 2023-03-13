@@ -47,7 +47,7 @@ describe("AuthService", () => {
         password: "wrong",
       });
     } catch (e) {
-      expect(e.message).toBe("Incorrect username or password.");
+      expect(e.message).toBe("Invalid credentials");
     }
   });
 
