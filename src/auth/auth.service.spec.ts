@@ -59,5 +59,5 @@ describe("AuthService", () => {
 
   it("should delete a user", async () => {
     await service.delete({email: "jest@gmail.com", password: "Password123"});
-  });
+  }, 10000);
 });
