@@ -62,6 +62,8 @@ export class AuthService {
           });
         });
       });
+
+      return result;
     } catch (e) {
       throw new ForbiddenException("User already exists");
     }
