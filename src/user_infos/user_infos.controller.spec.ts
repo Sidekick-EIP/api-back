@@ -11,11 +11,11 @@ import { EditInfosDto } from './dto/edit.dto';
 import { FileService } from '../file/file.service';
 
 describe('UserInfosController', () => {
-  let controller: UserInfosController;
-  let prisma: PrismaService;
-  let authService: AuthService;
-  let service: UserInfoService
-  let id1: string;
+	let controller: UserInfosController;
+	let prisma: PrismaService;
+	let authService: AuthService;
+	let service: UserInfoService
+	let id1: string;
 	let id2: string;
 
 	beforeAll(async () => {
@@ -24,7 +24,7 @@ describe('UserInfosController', () => {
 			providers: [UserInfoService, PrismaService, AuthService, AuthConfig, ConfigService, FileService],
 		}).compile();
 
-    controller = module.get<UserInfosController>(UserInfosController);
+		controller = module.get<UserInfosController>(UserInfosController);
 		service = module.get<UserInfoService>(UserInfoService);
 		authService = module.get<AuthService>(AuthService);
 		prisma = module.get<PrismaService>(PrismaService);
@@ -151,11 +151,16 @@ describe('UserInfosController', () => {
 			weight: 65,
 			gender: Gender.MALE,
 			sport_frequence: SportFrequence.ONCE_A_WEEK
-		}
-	await service.setUserInfo(userInfos, "jestUserInfosController@gmail.com")
+	}
+	await authService.register({email: "jestSidekick@gmail.com", password: "Password123"});
+	const id = (await (prisma.user.findUnique({ where: { email: "jestSidekick@gmail.com" } }))).id;
+	await service.setUserInfo(userInfos, "jestSidekick@gmail.com")
 	userInfos.username = "Testy"
 	await service.setUserInfo(userInfos, "jestUserInfosControllerSidekick@gmail.com")
-    await controller.linkUsers({id1, id2})
-    expect(spy).toBeCalledWith({id1, id2});
+    await controller.linkUsers({id1: id, id2: id2})
+    expect(spy).toBeCalledWith({id1: id, id2: id2});
+
+	await prisma.userData.deleteMany({where: {userId: id}})
+	await authService.delete({email: "jestSidekick@gmail.com", password: "Password123"});
   })
 });

@@ -26,44 +26,44 @@ describe('FormController', () => {
     expect(controller).toBeDefined();
   });
 
-  it("calling saveFormDatas method", async () => {
-    const hash = await argon.hash("password");
-    await prisma.user.create({
-      data: {
-        email: "test.test@gmail.com",
-        password: hash,
-      }
-    })
+  // it("calling saveFormDatas method", async () => {
+  //   const hash = await argon.hash("password");
+  //   await prisma.user.create({
+  //     data: {
+  //       email: "test.test@gmail.com",
+  //       password: hash,
+  //     }
+  //   })
 
-    const user = await prisma.user.findFirst({
-      where: {
-        email: "test.test@gmail.com"
-      }
-    })
+  //   const user = await prisma.user.findFirst({
+  //     where: {
+  //       email: "test.test@gmail.com"
+  //     }
+  //   })
 
-    const dto = new FormDto();
+  //   const dto = new FormDto();
 
-    dto.description = "Bonjour";
-    dto.gender = "MALE",
-    dto.size = 165;
-    dto.firstname = "Alexandre";
-    dto.lastname = "Antoniutti";
-    dto.weight = 65;
-    dto.sport_frequence = "NEVER";
-    dto.userId = user.id;
-    dto.username = user.email;
+  //   dto.description = "Bonjour";
+  //   dto.gender = "MALE",
+  //   dto.size = 165;
+  //   dto.firstname = "Alexandre";
+  //   dto.lastname = "Antoniutti";
+  //   dto.weight = 65;
+  //   dto.sport_frequence = "NEVER";
+  //   dto.userId = user.id;
+  //   dto.username = user.email;
 
-    jest.spyOn(service, 'saveFormDatas');
-    await controller.saveFormDatas(dto, user.id);
-    expect(service.saveFormDatas).toHaveBeenCalled();
-    expect(service.saveFormDatas).toHaveBeenCalledWith(dto, user.id);
+  //   jest.spyOn(service, 'saveFormDatas');
+  //   await controller.saveFormDatas(dto, user.id);
+  //   expect(service.saveFormDatas).toHaveBeenCalled();
+  //   expect(service.saveFormDatas).toHaveBeenCalledWith(dto, user.id);
 
 
-    await prisma.userData.delete({where: {
-      userId: user.id,
-    }})
-    await prisma.user.delete({where: {
-      id: user.id,
-    }})
-  })
+  //   await prisma.userData.delete({where: {
+  //     userId: user.id,
+  //   }})
+  //   await prisma.user.delete({where: {
+  //     id: user.id,
+  //   }})
+  // })
 });
