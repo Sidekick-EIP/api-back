@@ -55,33 +55,33 @@ describe('UserInfosController', () => {
 		expect(controller).toBeDefined();
 	});
 
-	it('should call getUserInfo', async () => {
-		const spy = jest.spyOn(service, 'getUserInfoById');
+	it('should call find', async () => {
+		const spy = jest.spyOn(service, 'find');
 		const userInfos: UserInfosDto = {
 				firstname: "Test",
 				lastname: "Testo",
 				description: "Pas de bio",
 				username: "Testu",
-				birthDate: new Date("03/10/2001"),
+				birth_date: new Date("03/10/2001"),
 				size: 165,
 				weight: 65,
 				gender: Gender.MALE,
 				sport_frequence: SportFrequence.ONCE_A_WEEK
 			}
-		await service.setUserInfo(userInfos, "jestUserInfosController@gmail.com")
+		await service.add(userInfos, "jestUserInfosController@gmail.com")
 
-		await controller.getUserInfos({user:{email: 'jestUserInfosController@gmail.com'}})
+		await controller.find({user:{email: 'jestUserInfosController@gmail.com'}})
 		expect(spy).toHaveBeenCalledWith('jestUserInfosController@gmail.com');
 	}, 10000)
 
   it('should call getSidekickInfo', async () => {
-    const spy = jest.spyOn(service, 'getSidekickInfo');
+    const spy = jest.spyOn(service, 'findSidekick');
     const userInfos: UserInfosDto = {
 			firstname: "Test",
 			lastname: "Testo",
 			description: "Pas de bio",
 			username: "Testu",
-			birthDate: new Date("03/10/2001"),
+			birth_date: new Date("03/10/2001"),
 			size: 165,
 			weight: 65,
 			gender: Gender.MALE,
@@ -91,11 +91,11 @@ describe('UserInfosController', () => {
 	await authService.register({email: "jestSidekickWesh@gmail.com", password: "Password123"});
 	const id = (await (prisma.user.findUnique({ where: { email: "jestSidekick@gmail.com" } }))).id;
 	const id7 = (await (prisma.user.findUnique({ where: { email: "jestSidekickWesh@gmail.com" } }))).id;
-	await service.setUserInfo(userInfos, "jestSidekick@gmail.com")
+	await service.add(userInfos, "jestSidekick@gmail.com")
 	userInfos.username = "fdpu"
-	await service.setUserInfo(userInfos, "jestSidekickWesh@gmail.com")
+	await service.add(userInfos, "jestSidekickWesh@gmail.com")
     await service.linkUsers({id1: id, id2: id7})
-    await controller.getSidekickInfo({user:{email: 'jestSidekick@gmail.com'}})
+    await controller.findSidekick({user:{email: 'jestSidekick@gmail.com'}})
     expect(spy).toHaveBeenCalledWith('jestSidekick@gmail.com');
 
 	await prisma.userData.deleteMany({where: {userId: id}})
@@ -105,36 +105,36 @@ describe('UserInfosController', () => {
   }, 15000)
 
   it('should call setUserInfos', async () => {
-    const spy = jest.spyOn(service, 'setUserInfo');
+    const spy = jest.spyOn(service, 'add');
     const userInfos: UserInfosDto = {
 			firstname: "Test",
 			lastname: "Testo",
 			description: "Pas de bio",
 			username: "Testu",
-			birthDate: new Date("03/10/2001"),
+			birth_date: new Date("03/10/2001"),
 			size: 165,
 			weight: 65,
 			gender: Gender.MALE,
 			sport_frequence: SportFrequence.ONCE_A_WEEK
 		}
-    await controller.setUserInfos({user:{email: 'jestUserInfosController@gmail.com'}}, userInfos)
+    await controller.add({user:{email: 'jestUserInfosController@gmail.com'}}, userInfos)
     expect(spy).toHaveBeenCalledWith(userInfos, 'jestUserInfosController@gmail.com');
   }, 10000)
 
   it('should call updateInfos', async () => {
-    const spy = jest.spyOn(service, 'updateInfos');
+    const spy = jest.spyOn(service, 'update');
     const userInfos: UserInfosDto = {
 			firstname: "Test",
 			lastname: "Testo",
 			description: "Pas de bio",
 			username: "Testu",
-			birthDate: new Date("03/10/2001"),
+			birth_date: new Date("03/10/2001"),
 			size: 165,
 			weight: 65,
 			gender: Gender.MALE,
 			sport_frequence: SportFrequence.ONCE_A_WEEK
 		}
-    await service.setUserInfo(userInfos, "jestUserInfosController@gmail.com")
+    await service.add(userInfos, "jestUserInfosController@gmail.com")
     const userInfosEdit: EditInfosDto = {
 			firstname: "Alex",
 			lastname: "Anto",
@@ -145,7 +145,7 @@ describe('UserInfosController', () => {
 			gender: Gender.MALE,
 			sport_frequence: SportFrequence.ONCE_A_WEEK
 	}
-    await controller.updateInfos({user:{email: 'jestUserInfosController@gmail.com'}}, userInfosEdit)
+    await controller.update({user:{email: 'jestUserInfosController@gmail.com'}}, userInfosEdit)
     expect(spy).toHaveBeenCalledWith(userInfosEdit, 'jestUserInfosController@gmail.com');
   }, 10000)
 
@@ -156,7 +156,7 @@ describe('UserInfosController', () => {
 			lastname: "Testo",
 			description: "Pas de bio",
 			username: "Testu",
-			birthDate: new Date("03/10/2001"),
+			birth_date: new Date("03/10/2001"),
 			size: 165,
 			weight: 65,
 			gender: Gender.MALE,
@@ -166,9 +166,9 @@ describe('UserInfosController', () => {
 	await authService.register({email: "jestSidekickWesh@gmail.com", password: "Password123"});
 	const id = (await (prisma.user.findUnique({ where: { email: "jestSidekick@gmail.com" } }))).id;
 	const id7 = (await (prisma.user.findUnique({ where: { email: "jestSidekickWesh@gmail.com" } }))).id;
-	await service.setUserInfo(userInfos, "jestSidekick@gmail.com")
+	await service.add(userInfos, "jestSidekick@gmail.com")
 	userInfos.username = "Crotte"
-	await service.setUserInfo(userInfos, "jestSidekickWesh@gmail.com")
+	await service.add(userInfos, "jestSidekickWesh@gmail.com")
     await controller.linkUsers({id1: id, id2: id7})
     expect(spy).toBeCalledWith({id1: id, id2: id7});
 
