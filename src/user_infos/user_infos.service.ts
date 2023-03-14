@@ -1,5 +1,5 @@
 import { Gender, SportFrequence } from "@prisma/client";
-import { ForbiddenException, HttpStatus, Injectable } from "@nestjs/common";
+import { ForbiddenException, HttpStatus, Injectable, ConflictException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import UserNotFoundException from "./exceptions/not-found.exception";
 import { UserWithoutSidekickException } from "./exceptions/not-found.exception";
@@ -14,10 +14,6 @@ export class UserInfoService {
     private _fileService: FileService
   ) {}
 
-  public async getAllUserInfo() {
-    return this._prismaService.user.findMany();
-  }
-
   public async getUserInfoById(userEmail: string) {
     const user = await this._prismaService.user.findUnique({
       where: {
@@ -25,16 +21,13 @@ export class UserInfoService {
       },
     });
     if (!user) {
-      throw new UserNotFoundException(user.id);
+      throw new UserNotFoundException(userEmail);
     }
     const userDatas = await this._prismaService.userData.findUnique({
       where: {
         userId: user.id,
       },
     });
-    if (!userDatas) {
-      throw new UserNotFoundException(user.id);
-    }
     userDatas["email"] = userEmail;
     return userDatas;
   }
@@ -46,7 +39,7 @@ export class UserInfoService {
       },
     });
     if (!user) {
-      throw new UserNotFoundException(user.id);
+        throw new UserNotFoundException(userEmail);
     }
     const userDatas = await this._prismaService.userData.findUnique({
       where: {
@@ -122,45 +115,28 @@ export class UserInfoService {
     });
   }
 
-  public async linkUsers(req: { id1: string; id2: string }) {
+  public async linkUsers(req: {id1: string; id2: string}) {
     let { id1, id2 } = req;
+    const user1 = await this._prismaService.userData.findUnique({where: {userId: id1}})
+    const user2 = await this._prismaService.userData.findUnique({where: {userId: id2}})
 
-    await Promise.all([
-      this._prismaService.userData.update({
-        where: {
-          userId: id1,
-        },
-        data: {
-          sidekick_id: id2,
-        },
-      }),
-      this._prismaService.userData.update({
-        where: {
-          userId: id2,
-        },
-        data: {
-          sidekick_id: id1,
-        },
-      }),
-    ]);
-
-    return HttpStatus.OK;
-  }
-
-  async getSidekick(id: string) {
-    const user = await this._prismaService.userData.findUnique({
-      where: {
-        userId: id,
-      },
-    });
-    if (!user) {
-      throw new UserNotFoundException(id);
+    if (user1.sidekick_id) {
+      throw new ConflictException("The user with id \'" + id1 + "\'")
+    } else if (user2.sidekick_id) {
+      throw new ConflictException("The user with id \'" + id2 + "\'")
+    } else {
+      await Promise.all([
+        this._prismaService.userData.update({
+          where: {userId: id1},
+          data: {sidekick_id: id2},
+        }),
+        this._prismaService.userData.update({
+          where: {userId: id2},
+          data: {sidekick_id: id1},
+        }),
+      ]);
     }
-    return this._prismaService.userData.findUnique({
-      where: {
-        userId: user.sidekick_id,
-      },
-    });
+    return HttpStatus.OK;
   }
 
   async getUserfromId(id: string) {

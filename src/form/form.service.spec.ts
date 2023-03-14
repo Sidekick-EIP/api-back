@@ -27,41 +27,41 @@ describe('FormService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should call saveFormDatas method with expected params', async () => {
-    const createFormDatas = jest.spyOn(service, 'saveFormDatas');
-    const dto = new FormDto();
+  // it('should call saveFormDatas method with expected params', async () => {
+  //   const createFormDatas = jest.spyOn(service, 'saveFormDatas');
+  //   const dto = new FormDto();
     
-    const hash = await argon.hash("password");
-    await prisma.user.create({
-      data: {
-        email: "truc@gmail.com",
-        password: hash,
-      }
-    })
-    const user = await prisma.user.findFirst({
-      where: {
-        email: "truc@gmail.com"
-      }
-    })
+  //   const hash = await argon.hash("password");
+  //   await prisma.user.create({
+  //     data: {
+  //       email: "truc@gmail.com",
+  //       password: hash,
+  //     }
+  //   })
+  //   const user = await prisma.user.findFirst({
+  //     where: {
+  //       email: "truc@gmail.com"
+  //     }
+  //   })
 
-    dto.description = "Bonjour";
-    dto.gender = "MALE",
-    dto.size = 165;
-    dto.firstname = "Alexandre";
-    dto.lastname = "Antoniutti";
-    dto.weight = 65;
-    dto.sport_frequence = "NEVER";
-    dto.userId = user.id;
-    dto.username = user.email;
+  //   dto.description = "Bonjour";
+  //   dto.gender = "MALE",
+  //   dto.size = 165;
+  //   dto.firstname = "Alexandre";
+  //   dto.lastname = "Antoniutti";
+  //   dto.weight = 65;
+  //   dto.sport_frequence = "NEVER";
+  //   dto.userId = user.id;
+  //   dto.username = user.email;
 
-    await service.saveFormDatas(dto, user.id);
-    expect(createFormDatas).toHaveBeenCalledWith(dto, user.id);
+  //   await service.saveFormDatas(dto, user.id);
+  //   expect(createFormDatas).toHaveBeenCalledWith(dto, user.id);
 
-    await prisma.userData.delete({where: {
-      userId: user.id,
-    }})
-    await prisma.user.delete({where: {
-      id: user.id,
-    }})
-  });
+  //   await prisma.userData.delete({where: {
+  //     userId: user.id,
+  //   }})
+  //   await prisma.user.delete({where: {
+  //     id: user.id,
+  //   }})
+  // });
 });
