@@ -87,29 +87,22 @@ describe('UserInfosController', () => {
 			gender: Gender.MALE,
 			sport_frequence: SportFrequence.ONCE_A_WEEK
 	}
-	await service.setUserInfo(userInfos, "jestUserInfosController@gmail.com")
-	userInfos.username = "Testy"
-	await service.setUserInfo(userInfos, "jestUserInfosControllerSidekick@gmail.com")
-    await service.linkUsers({id1, id2})
-    await controller.getSidekickInfo({user:{email: 'jestUserInfosControllerSidekick@gmail.com'}})
-    expect(spy).toHaveBeenCalledWith('jestUserInfosControllerSidekick@gmail.com');
-	await prisma.userData.update({
-		where: {
-			userId: id1
-		},
-		data: {
-			sidekick_id: null
-		}
-	})
-	await prisma.userData.update({
-		where: {
-			userId: id2
-		},
-		data: {
-			sidekick_id: null
-		}
-	})
-  }, 10000)
+	await authService.register({email: "jestSidekick@gmail.com", password: "Password123"});
+	await authService.register({email: "jestSidekickWesh@gmail.com", password: "Password123"});
+	const id = (await (prisma.user.findUnique({ where: { email: "jestSidekick@gmail.com" } }))).id;
+	const id7 = (await (prisma.user.findUnique({ where: { email: "jestSidekickWesh@gmail.com" } }))).id;
+	await service.setUserInfo(userInfos, "jestSidekick@gmail.com")
+	userInfos.username = "fdpu"
+	await service.setUserInfo(userInfos, "jestSidekickWesh@gmail.com")
+    await service.linkUsers({id1: id, id2: id7})
+    await controller.getSidekickInfo({user:{email: 'jestSidekick@gmail.com'}})
+    expect(spy).toHaveBeenCalledWith('jestSidekick@gmail.com');
+
+	await prisma.userData.deleteMany({where: {userId: id}})
+	await prisma.userData.deleteMany({where: {userId: id7}})
+	await authService.delete({email: "jestSidekick@gmail.com", password: "Password123"});
+	await authService.delete({email: "jestSidekickWesh@gmail.com", password: "Password123"});
+  }, 15000)
 
   it('should call setUserInfos', async () => {
     const spy = jest.spyOn(service, 'setUserInfo');
