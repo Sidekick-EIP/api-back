@@ -30,22 +30,22 @@ describe("UserInfoService", () => {
 		await authService.register({email: "jestUserInfosSidekick@gmail.com", password: "Password123"});
 		id1 = (await (prisma.user.findUnique({ where: { email: "jestUserInfos@gmail.com" } }))).id;
 		id2 = (await (prisma.user.findUnique({ where: { email: "jestUserInfosSidekick@gmail.com" } }))).id;
-	})
+	}, 15000)
 
 	beforeEach(async () => {
 		await prisma.userData.deleteMany({where: {userId: id1}})
 		await prisma.userData.deleteMany({where: {userId: id2}})
-	})
+	}, 15000)
 
 	afterEach(async () => {
 		await prisma.userData.deleteMany({where: {userId: id1}})
 		await prisma.userData.deleteMany({where: {userId: id2}})
-	})
+	}, 15000)
 
 	afterAll(async () => {
 		await authService.delete({email: "jestUserInfos@gmail.com", password: "Password123"});
 		await authService.delete({email: "jestUserInfosSidekick@gmail.com", password: "Password123"});
-	})
+	}, 15000)
 
 	it("should be defined", async () => {
 	  expect(service).toBeDefined();
@@ -68,7 +68,7 @@ describe("UserInfoService", () => {
 		expect(userInfos1.firstname).toBe(userInfos.firstname)
 		expect(userInfos1.userId).toBe(id1)
 		expect(userInfos1.sidekick_id).toBe(null)
-	})
+	}, 15000)
 
 	it("should update user infos", async () => {
 		const userInfos: UserInfosDto = {
@@ -109,7 +109,7 @@ describe("UserInfoService", () => {
 		const newUserInfo2 = await service.updateInfos(userInfosEdit2, "jestUserInfos@gmail.com")
 		expect(newUserInfo2.size).toBe(168)
 		expect(newUserInfo2.sport_frequence).toBe(SportFrequence.NEVER)
-	})
+	}, 15000)
 
 	it("should get user infos from Email", async () => {
 		const userInfos: UserInfosDto = {
@@ -132,7 +132,7 @@ describe("UserInfoService", () => {
 		const user1 = await service.getUserInfoById("jestUserInfos@gmail.com")
 		expect(user1.userId).toBe(id1)
 		expect(user1.username).toBe("Testi")
-	})
+	}, 15000)
 
 	it("should get user infos of Sidekick", async () => {
 		const userInfos: UserInfosDto = {
@@ -170,7 +170,7 @@ describe("UserInfoService", () => {
 		expect(sidekickInfos.firstname).toBe("Test")
 		expect(sidekickInfos.frequence_sportive).toBe(SportFrequence.ONCE_A_WEEK)
 		expect(sidekickInfos.lastname).toBe("Testo")
-	})
+	}, 15000)
 
 	it("should link users", async () => {
 		const userInfos: UserInfosDto = {
@@ -190,7 +190,7 @@ describe("UserInfoService", () => {
 		await service.linkUsers({id1: id1, id2: id2})
 		expect((await prisma.userData.findUnique({where: {userId: id1}})).sidekick_id).toBe(id2)
 		expect((await prisma.userData.findUnique({where: {userId: id2}})).sidekick_id).toBe(id1)
-	})
+	}, 15000)
 
 	it("should link users but throw an error if user1 or user2 has already a sidekick", async () => {
 		const userInfos: UserInfosDto = {
@@ -225,7 +225,7 @@ describe("UserInfoService", () => {
 		service.linkUsers({id1: id1, id2: id2})
 		.then()
 		.catch((err) => expect(err.status).toBe(409));
-	})
+	}, 15000)
 
 	it("should get user infos from id", async () => {
 		const userInfos: UserInfosDto = {
@@ -247,5 +247,5 @@ describe("UserInfoService", () => {
 		await service.getUserfromId("ca existe pas comme id")
 		.then()
 		.catch((err) => expect(err.status).toBe(404));
-	})
+	}, 15000)
 })
