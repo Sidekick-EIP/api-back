@@ -20,7 +20,7 @@ export class UserInfosDto {
 
   @IsNotEmpty()
   @IsString()
-  birthDate: Date;
+  birth_date: Date;
 
   @IsNotEmpty()
   @IsString()

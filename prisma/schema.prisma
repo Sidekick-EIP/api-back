@@ -66,7 +66,7 @@ model Steps {
 model UserData {
   userId          String         @id @default(uuid())
   user            User           @relation(name: "user", fields: [userId], references: [id], onDelete: Cascade)
-  birthDate       DateTime       @default(now())
+  birth_date      DateTime       @default(now())
   username        String         @unique
   firstname       String
   lastname        String
@@ -76,6 +76,8 @@ model UserData {
   gender          Gender
   description     String
   sport_frequence SportFrequence
+  sports          Json           @default("{}")
+  goal            String         @default("") 
   sidekick_id     String?        @unique
   sidekick        User?          @relation(name: "sidekick", fields: [sidekick_id], references: [id], onDelete: SetNull)
   isDarkMode      Boolean        @default(false)
