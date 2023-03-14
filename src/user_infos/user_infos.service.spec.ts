@@ -7,12 +7,10 @@ import { AuthService } from "../auth/auth.service";
 import { AuthConfig } from "../auth/auth.config";
 import { UserInfosDto } from "./dto/user.dto";
 import { Gender, SportFrequence } from "@prisma/client";
-import { clear } from "console";
 import { EditInfosDto } from "./dto/edit.dto";
 import { FileService } from "../file/file.service";
 
-
-describe("AuthService", () => {
+describe("UserInfoService", () => {
 	let service: UserInfoService;
 	let prisma: PrismaService;
 	let authService: AuthService;
@@ -32,6 +30,7 @@ describe("AuthService", () => {
 		await authService.register({email: "jestUserInfosSidekick@gmail.com", password: "Password123"});
 		id1 = (await (prisma.user.findUnique({ where: { email: "jestUserInfos@gmail.com" } }))).id;
 		id2 = (await (prisma.user.findUnique({ where: { email: "jestUserInfosSidekick@gmail.com" } }))).id;
+	})
 
 	beforeEach(async () => {
 		await prisma.userData.deleteMany({where: {userId: id1}})
@@ -246,5 +245,4 @@ describe("AuthService", () => {
 		.then()
 		.catch((err) => expect(err.status).toBe(404));
 	})
-  });
 })

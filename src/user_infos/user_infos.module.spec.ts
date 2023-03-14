@@ -5,13 +5,15 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { UserInfosModule } from './user_infos.module';
 import { UserInfoService } from './user_infos.service';
 import { UserInfosController } from './user_infos.controller';
+import { FileService } from '../file/file.service';
+import { FileModule } from '../file/file.module';
 
-describe('SportsExerciseModule', () => {
+describe('UserInfoModule', () => {
   let module: TestingModule;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      imports: [UserInfosModule, PrismaModule, ConfigModule],
+      imports: [UserInfosModule, PrismaModule, FileModule, ConfigModule],
       providers: [UserInfoService, PrismaService, ConfigService],
       controllers: [UserInfosController],
     }).compile();
