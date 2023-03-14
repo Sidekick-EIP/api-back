@@ -154,9 +154,12 @@ describe("UserInfoService", () => {
 		.then((infos) => expect(infos).toBeUndefined())
 		.catch((err) => expect(err.status).toBe(404));
 
-		service.getSidekickInfo("jestUserInfos@gmail.com")
-		.then((infos) => expect(infos).toBeUndefined())
-		.catch((err) => {expect(err.status).toBe(404); expect(err.response.message).toBe('User with id ' + id1 + ' doesn\'t have sidekick')});
+		try {
+			await service.getSidekickInfo("jestUserInfos@gmail.com")
+		} catch (err) {
+			expect(err.status).toBe(404); 
+			expect(err.response.message).toBe('User with id ' + id1 + ' doesn\'t have sidekick');
+		}
 
 		await service.linkUsers({id1: id1, id2: id2})
 		expect((await prisma.userData.findUnique({where: {userId: id1}})).sidekick_id).toBe(id2)

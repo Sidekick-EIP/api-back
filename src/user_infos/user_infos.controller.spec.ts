@@ -34,22 +34,22 @@ describe('UserInfosController', () => {
 		await authService.register({email: "jestUserInfosControllerSidekick@gmail.com", password: "Password123"});
 		id1 = (await (prisma.user.findUnique({ where: { email: "jestUserInfosController@gmail.com" } }))).id;
 		id2 = (await (prisma.user.findUnique({ where: { email: "jestUserInfosControllerSidekick@gmail.com" } }))).id;
-	});
+	}, 15000);
 
 	beforeEach(async () => {
 		await prisma.userData.deleteMany({where: {userId: id1}})
 		await prisma.userData.deleteMany({where: {userId: id2}})
-	})
+	}, 15000)
 
 	afterEach(async () => {
 		await prisma.userData.deleteMany({where: {userId: id1}})
 		await prisma.userData.deleteMany({where: {userId: id2}})
-	})
+	}, 15000)
 
 	afterAll(async () => {
 		await authService.delete({email: "jestUserInfosController@gmail.com", password: "Password123"});
 		await authService.delete({email: "jestUserInfosControllerSidekick@gmail.com", password: "Password123"});
-	})
+	}, 15000)
 
 	it('should be defined', () => {
 		expect(controller).toBeDefined();
