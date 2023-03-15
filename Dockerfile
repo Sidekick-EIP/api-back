@@ -12,4 +12,7 @@ ENV PORT=80
 
 EXPOSE 80
 
-CMD npm run migrate:deploy:prod && npx prisma generate && npm run start:prod
+RUN npm run migrate:deploy:prod
+RUN npx prisma generate
+
+CMD ["npm", "run", "start:prod"]
