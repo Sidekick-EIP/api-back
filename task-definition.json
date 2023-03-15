@@ -1,0 +1,55 @@
+{
+  "taskDefinitionArn": "arn:aws:ecs:eu-west-3:556107730108:task-definition/DeploymentContainer:1",
+  "containerDefinitions": [
+    {
+      "name": "AppContainer",
+      "image": "556107730108.dkr.ecr.eu-west-3.amazonaws.com/api-back",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
+        },
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        },
+        {
+          "containerPort": 443,
+          "hostPort": 443,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "entryPoint": [],
+      "command": [],
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": []
+    }
+  ],
+  "family": "DeploymentContainer",
+  "revision": 1,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EXTERNAL",
+    "EC2"
+  ],
+  "requiresCompatibilities": [
+    "EC2"
+  ],
+  "cpu": "1024",
+  "memory": "1024",
+  "registeredAt": "2023-03-15T03:15:53.367Z",
+  "registeredBy": "arn:aws:iam::556107730108:root",
+  "tags": []
+}
