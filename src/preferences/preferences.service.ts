@@ -7,16 +7,13 @@ export class PreferencesService {
   constructor(private prismaService: PrismaService) {}
 
   async update(updatePreferenceDto: UpdatePreferenceDto, email: string) {
-    return await this.prismaService.user.update({
+    const user = await this.prismaService.user.findUnique({
       where: { email },
-      data: {
-        Preferences: {
-          updateMany: {
-            where: {},
-            data: updatePreferenceDto,
-          },
-        },
-      },
+    });
+
+    return await this.prismaService.preferences.updateMany({
+      where: { userId: user.id },
+      data: updatePreferenceDto,
     });
   }
 
