@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from "@nestjs/common";
 import * as argon from "argon2";
@@ -232,7 +233,7 @@ export class AuthService {
   private async createUser(dto: AuthDto): Promise<void> {
     const hash = await argon.hash(dto.password);
 
-    await this.prisma.user
+    const user = await this.prisma.user
       .create({
         data: {
           email: dto.email,
@@ -242,6 +243,15 @@ export class AuthService {
       .catch((error) => {
         throw error;
       });
+
+    if (!user)
+      throw new InternalServerErrorException();
+
+    await this.prisma.preferences.create({
+      data: {
+        userId: user.id,
+      }
+    })
   }
 
   private async deleteUser(email: string): Promise<void> {
