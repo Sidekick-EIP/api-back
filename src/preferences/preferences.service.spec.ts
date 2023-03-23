@@ -1,4 +1,6 @@
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { PrismaService } from '../prisma/prisma.service';
 import { PreferencesService } from './preferences.service';
 
 describe('PreferencesService', () => {
@@ -6,7 +8,7 @@ describe('PreferencesService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PreferencesService],
+      providers: [PreferencesService, PrismaService, ConfigService],
     }).compile();
 
     service = module.get<PreferencesService>(PreferencesService);
