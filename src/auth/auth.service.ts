@@ -66,6 +66,7 @@ export class AuthService {
 
       return result;
     } catch (e) {
+      console.log(e);
       throw new ForbiddenException("User already exists");
     }
   }
@@ -160,7 +161,9 @@ export class AuthService {
             }
             try {
               this.deleteUser(dto.email);
-            } catch (e) {}
+            } catch (e) {
+              console.log(e);
+            }
             resolve(result);
           });
         },
