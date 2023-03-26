@@ -93,6 +93,8 @@ export class ChatService {
 
     const user = this.rooms.findUserBySocketId(socket.id);
 
+    if (!user) return;
+
     await this.prismaService.message.updateMany({
       where: {
         from_id: user.sidekickId,
