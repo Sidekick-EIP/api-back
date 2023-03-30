@@ -1,19 +1,18 @@
-# Base image
 FROM node:18
 
-# Create app directory
 WORKDIR /usr/src/app
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
-# Install app dependencies
-RUN npm install
+RUN npm ci
 
-# Bundle app source
 COPY . .
 
-EXPOSE 8080
+ENV PORT=80
 
-# Start the server using the development build
-CMD npx prisma generate && npx prisma migrate dev && npx prisma db seed && npm run start:dev
+EXPOSE 80
+
+RUN npm run migrate:deploy:prod
+RUN npx prisma generate
+
+CMD ["npm", "run", "start:prod"]
