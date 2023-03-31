@@ -99,7 +99,7 @@ describe("ChatGateway", () => {
   afterAll(async () => {
     await authService.delete({ email, password }).catch(() => {});
     await authService.delete({ email: email2, password }).catch(() => {});
-  });
+  }, 10000);
 
   it("should be defined", () => {
     expect(gateway).toBeDefined();
