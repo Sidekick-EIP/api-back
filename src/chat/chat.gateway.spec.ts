@@ -150,7 +150,7 @@ describe("ChatGateway", () => {
     });
 
     client.on("connect", () => {
-      client.emit("message", { message: "Hello" });
+      client.emit("message", "Hello" );
       client.disconnect();
       app.close();
     });
