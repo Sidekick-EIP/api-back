@@ -58,7 +58,7 @@ describe("ChatGateway", () => {
       lastname: "Testo",
       description: "Pas de bio",
       username: "testws",
-      birthDate: new Date("03/10/2001"),
+      birth_date: new Date("03/10/2001"),
       size: 165,
       weight: 65,
       gender: Gender.MALE,
@@ -69,7 +69,7 @@ describe("ChatGateway", () => {
       lastname: "Testo",
       description: "Pas de bio",
       username: "testws2",
-      birthDate: new Date("03/10/2001"),
+      birth_date: new Date("03/10/2001"),
       size: 165,
       weight: 65,
       gender: Gender.MALE,
@@ -80,8 +80,8 @@ describe("ChatGateway", () => {
       authService.register({ email: email2, password }),
     ]);
     await Promise.all([
-      userInfoService.setUserInfo(userInfos, email),
-      userInfoService.setUserInfo(userInfos2, email2),
+      userInfoService.add(userInfos, email),
+      userInfoService.add(userInfos2, email2),
     ]);
     user1 = await prismaService.user.findUnique({
       where: {

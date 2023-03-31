@@ -19,7 +19,7 @@ export class UserInfoService {
     private _fileService: FileService
   ) {}
 
-  public async getUserInfoById(userEmail: string) {
+  public async find(userEmail: string) {
     const user = await this._prismaService.user.findUnique({
       where: {
         email: userEmail,
@@ -37,7 +37,7 @@ export class UserInfoService {
     return userDatas;
   }
 
-  public async getSidekickInfo(userEmail: string) {
+  public async findSidekick(userEmail: string) {
     const user = await this._prismaService.user.findUnique({
       where: {
         email: userEmail,
@@ -67,14 +67,14 @@ export class UserInfoService {
     };
   }
 
-  public async setUserInfo(datas: UserInfosDto, userEmail: string) {
+  public async add(datas: UserInfosDto, userEmail: string) {
     var newDatas = datas;
     newDatas["size"] = Number(datas["size"]);
     newDatas["weight"] = Number(datas["weight"]);
     newDatas["gender"] = Gender[datas["gender"]];
-    newDatas["birthDate"] = new Date(datas.birthDate);
+    newDatas["birth_date"] = new Date(datas.birth_date);
     newDatas["sport_frequence"] =
-      SportFrequence[datas["sport_frequence"].toUpperCase()];
+    SportFrequence[datas["sport_frequence"].toUpperCase()];
     var user = await this._prismaService.user.findUnique({
       where: {
         email: userEmail,
@@ -82,21 +82,25 @@ export class UserInfoService {
     });
 
     if (!user) {
-      throw new UserNotFoundException(user.id);
+      throw new UserNotFoundException(userEmail);
     }
-
     newDatas["userId"] = user.id;
 
-    try {
-      return this._prismaService.userData.create({
+    const userInfos = await this._prismaService.userData.findFirst({
+			where: {
+				username: newDatas.username,
+			}
+		});
+		if (!userInfos) {
+			return await this._prismaService.userData.create({
         data: newDatas,
       });
-    } catch (error) {
-      throw new ForbiddenException(error);
-    }
+		} else {
+			throw new ConflictException('An user with the username \'' + newDatas.username + '\' already exist for this user.');
+		}
   }
 
-  async updateInfos(dto: EditInfosDto, email: string) {
+  async update(dto: EditInfosDto, email: string) {
     const data = dto;
 
     data.size ? (data.size = Number(dto.size)) : null;
@@ -167,7 +171,7 @@ export class UserInfoService {
       },
     });
     if (!user) {
-      throw new UserNotFoundException(user.id);
+      throw new UserNotFoundException(email);
     }
 
     const avatar = await this._fileService.uploadPublicFile(file);
@@ -178,6 +182,46 @@ export class UserInfoService {
       },
       data: {
         avatar: avatar,
+      },
+    });
+  }
+
+  async setSports(email :string, sports: string) {
+    const user = await this._prismaService.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new UserNotFoundException(email);
+    }
+
+    return this._prismaService.userData.update({
+      where: {
+        userId: user.id,
+      },
+      data: {
+        sports: sports,
+      },
+    });
+  }
+
+  async setGoal(email :string, goal: string) {
+    const user = await this._prismaService.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new UserNotFoundException(email);
+    }
+
+    return this._prismaService.userData.update({
+      where: {
+        userId: user.id,
+      },
+      data: {
+        goal: goal
       },
     });
   }

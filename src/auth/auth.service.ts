@@ -225,7 +225,9 @@ export class AuthService {
 
     return new Promise((resolve, reject) => {
       user.confirmPassword(verificationCode, password, {
-        onSuccess() {},
+        onSuccess(res) {
+          resolve(res);
+        },
         onFailure(err) {
           reject(err);
         },
