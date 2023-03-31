@@ -6,6 +6,7 @@ import {
   MaxFileSizeValidator,
   ParseFilePipe,
   Post,
+  Put,
   Query,
   Request,
   UploadedFile,
@@ -21,24 +22,34 @@ import { FileInterceptor } from "@nestjs/platform-express";
 export class UserInfosController {
   constructor(private userInfoService: UserInfoService) { }
 
-  @Get("getUserInfos")
-  getUserInfos(@Request() req: any) {
-    return this.userInfoService.getUserInfoById(req.user.email);
+  @Get("/")
+  find(@Request() req: any) {
+    return this.userInfoService.find(req.user.email);
   }
 
-  @Get("getSidekickInfos")
-  getSidekickInfo(@Request() req: any) {
-    return this.userInfoService.getSidekickInfo(req.user.email);
+  @Get("sidekick")
+  findSidekick(@Request() req: any) {
+    return this.userInfoService.findSidekick(req.user.email);
   }
 
-  @Post("setUserInfos")
-  setUserInfos(@Request() req: any, @Body() dto: UserInfosDto) {
-    return this.userInfoService.setUserInfo(dto, req.user.email);
+  @Post("/")
+  add(@Request() req: any, @Body() dto: UserInfosDto) {
+    return this.userInfoService.add(dto, req.user.email);
   }
 
-  @Post("update/infos")
-  updateInfos(@Request() req: any, @Body() dto: EditInfosDto) {
-    return this.userInfoService.updateInfos(dto, req.user.email);
+  @Put("/update")
+  update(@Request() req: any, @Body() dto: EditInfosDto) {
+    return this.userInfoService.update(dto, req.user.email);
+  }
+
+  @Post("/sports")
+  setSports(@GetCurrentUserEmail() email: string, @Body("sports") sports: string) {
+    return this.userInfoService.setSports(email, sports);
+  }
+
+  @Post("/goal")
+  setGoal(@GetCurrentUserEmail() email: string, @Body("goal") goal: string) {
+    return this.userInfoService.setGoal(email, goal);
   }
 
   @Post("/avatar")

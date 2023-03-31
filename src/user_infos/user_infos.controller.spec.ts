@@ -55,6 +55,7 @@ describe('UserInfosController', () => {
 		expect(controller).toBeDefined();
 	});
 
+
 	/* it('should call getUserInfo', async () => { */
 	/* 	const spy = jest.spyOn(service, 'getUserInfoById'); */
 	/* 	const userInfos: UserInfosDto = { */
