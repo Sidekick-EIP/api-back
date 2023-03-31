@@ -77,8 +77,8 @@ model UserData {
   gender          Gender
   description     String
   sport_frequence SportFrequence
-  sports          Json           @default("{}")
-  goal            String         @default("") 
+  sports          Json?           @default("{}")
+  goal            String?         @default("") 
   sidekick_id     String?        @unique
   sidekick        User?          @relation(name: "sidekick", fields: [sidekick_id], references: [id], onDelete: SetNull)
   isDarkMode      Boolean        @default(false)

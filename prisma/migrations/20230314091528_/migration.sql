@@ -6,5 +6,5 @@
 
 */
 -- AlterTable
-ALTER TABLE "users_data" ADD COLUMN     "goal" TEXT NOT NULL,
-ADD COLUMN     "sports" JSONB NOT NULL;
+ALTER TABLE "users_data" ADD COLUMN     "goal" TEXT,
+ADD COLUMN     "sports" JSONB;
