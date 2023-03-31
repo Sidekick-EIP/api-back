@@ -41,6 +41,7 @@ model User {
   sidekick  UserData?  @relation("sidekick")
   Reports   Reports[]
   sports_exercices Sports_exercices[]
+  planning Planning[]
 
   @@map("users")
 }
@@ -132,7 +133,7 @@ model Reports {
 }
 
 model Sports_exercices {
-   id          Int     @id @unique @default(autoincrement())
+  id          Int     @id @unique @default(autoincrement())
   user        User     @relation(fields: [userId], references: [id])
   userId      String
   name        String
@@ -140,4 +141,16 @@ model Sports_exercices {
   updateAt    DateTime @default(now())
 
   @@map("sports_exercices")
+}
+
+model Planning {
+  id               Int     @id @unique @default(autoincrement())
+  user             User     @relation(fields: [userId], references: [id])
+  userId           String
+  day              DateTime
+  content          Json
+  createdAt        DateTime @default(now())
+  updateAt         DateTime @default(now())
+
+  @@map("planning")
 }
