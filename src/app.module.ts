@@ -21,9 +21,10 @@ import { ReportsModule } from './reports/reports.module';
 import { FileModule } from './file/file.module';
 import { SportsExerciseModule } from './sports_exercises/sports_exercises.module';
 import { PlanningModule } from './planning/planning.module';
+import { PreferencesModule } from './preferences/preferences.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PlanningModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule],
   controllers: [AppController, CaloriesController, MealsController],
   providers: [AppService, {
     provide: APP_GUARD,
