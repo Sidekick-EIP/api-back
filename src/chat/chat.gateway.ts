@@ -13,12 +13,10 @@ export class ChatGateway {
   constructor(private chatService: ChatService) {}
 
   async handleConnection(socket: Socket) {
-    console.log("connection");
     return this.chatService.handleConnection(socket);
   }
 
   handleDisconnect(socket: Socket) {
-    console.log("disconnect");
     return this.chatService.handleDisconnect(socket);
   }
 

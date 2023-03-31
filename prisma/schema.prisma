@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 datasource db {
@@ -42,6 +41,7 @@ model User {
   Reports   Reports[]
   sports_exercices Sports_exercices[]
   planning Planning[]
+  Preferences Preferences[]
 
   @@map("users")
 }
@@ -153,4 +153,16 @@ model Planning {
   updateAt         DateTime @default(now())
 
   @@map("planning")
+}
+
+model Preferences {
+  id         Int     @id @unique @default(autoincrement())
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+
+  darkMode    Boolean @default(false)
+  notifications Boolean @default(true)
+  sounds Boolean @default(true)
+
+  @@map("preferences")
 }

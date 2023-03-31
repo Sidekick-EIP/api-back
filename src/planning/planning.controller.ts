@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Query, Body, Delete, Put } from '@nestjs/common';
-import { GetCurrentUserEmail } from 'src/common/decorators';
+import { GetCurrentUserEmail } from '../common/decorators';
 import { PlanningService } from './planning.service';
 
 @Controller('planning')
