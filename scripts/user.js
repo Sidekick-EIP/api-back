@@ -60,7 +60,7 @@ async function getInfos() {
     },
     {
       type: "input",
-      name: "birthDate",
+      name: "birth_date",
       message: "Enter your birthDate",
       default: "1999-01-01",
     },
@@ -108,7 +108,7 @@ async function main() {
 
   const data = await response.json();
 
-  const response2 = await fetch(`${url}/user_infos/setUserInfos`, {
+  const response2 = await fetch(`${url}/user_infos/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
