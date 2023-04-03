@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, Body, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Query, Body, Delete, Put, Param } from '@nestjs/common';
 import { GetCurrentUserEmail } from "../common/decorators/current_user.decorator";
 import { PlanningService } from './planning.service';
 
@@ -6,28 +6,38 @@ import { PlanningService } from './planning.service';
 export class PlanningController {
 	constructor(private planningService: PlanningService) { }
 
-	@Get('planning')
+	@Get('/')
 	async getPlanningByDay(@GetCurrentUserEmail() email: string, @Query('day') day: string) {
 		return this.planningService.getPlanningByDay(email, day)
 	}
 
-	@Delete('planning')
+	@Delete('/')
 	async deletePlanningByDay(@GetCurrentUserEmail() email: string, @Query('day') day: string) {
 		return this.planningService.deletePlanningByDay(email, day)
 	}
 
-	@Post('/exercise/create')
-	async setSportsExercises(@GetCurrentUserEmail() email: string, @Body() req: {day: string, repetitions: number, exercise_id: number, moment: string}) {
-		return this.planningService.setSportsExercises(email, req)
+	@Post('/exercise/')
+	async setSportsExercises(@GetCurrentUserEmail() email: string, @Body() req: {day: number, repetitions: number, exercise_id: number, moment: string}) {
+		return this.planningService.setExercise(email, req)
 	}
 
-	@Put('/exercise/delete')
-	async deleteSportsExercises(@GetCurrentUserEmail() email: string, @Body() req: {day: string, exercise_id: number, moment: string}) {
-		return this.planningService.deleteSportsExercise(email, req)
+	@Put('/exercise/:id')
+	async updateSportExercise(@Param('id') id: string, @GetCurrentUserEmail() email: string, @Body() req: {day: string, repetitions: number, exercise_id: number, moment: string}) {
+		return this.planningService.updateExercise(req, id)
 	}
 
-	@Put('/exercise/update')
-	async updateSportExercise(@GetCurrentUserEmail() email: string, @Body() req: {day: string, repetitions: number, exercise_id: number, moment: string}) {
-		return this.planningService.updateSportExercise(email, req)
+	@Post('/meal/')
+	async SetMeal(@GetCurrentUserEmail() email: string, @Body() req: {day: number, meal_id: number, moment: string}) {
+		return this.planningService.setMeal(email, req)
+	}
+
+	@Put('/meal/:id')
+	async updateMeal(@Param('id') id: string, @GetCurrentUserEmail() email: string, @Body() req: {day: string, meal_id: number, moment: string}) {
+		return this.planningService.updateMeal(req, id)
+	}
+
+	@Delete('/:id')
+	async deleteEvent(@Param('id') id: string) {
+		return this.planningService.deleteEvent(id)
 	}
 }
