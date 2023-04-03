@@ -13,6 +13,11 @@ enum Gender {
   PREFER_NOT_TO_SAY
 }
 
+enum EventCalendar {
+  MEAL
+  SPORTS_EXERCISE
+}
+
 enum SportFrequence {
   NEVER
   LESS_THAN_ONCE_A_MONTH
@@ -149,6 +154,7 @@ model Planning {
   userId           String
   day              DateTime
   content          Json
+  type             EventCalendar
   createdAt        DateTime @default(now())
   updateAt         DateTime @default(now())
 

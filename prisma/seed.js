@@ -67,6 +67,7 @@ async function main() {
       firstname: 'Test',
       lastname: 'Touste',
       size: 185,
+      username: "Test",
       weight: 85,
       gender: 'MALE',
       description: 'je suis présent',
