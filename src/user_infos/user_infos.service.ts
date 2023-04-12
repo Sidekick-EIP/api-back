@@ -60,6 +60,10 @@ export class UserInfoService {
       },
     });
     return {
+      birth_date: sidekickDatas.birth_date,
+      gender: sidekickDatas.gender,
+      username: sidekickDatas.username,
+      avatar: sidekickDatas.avatar,
       lastname: sidekickDatas.lastname,
       firstname: sidekickDatas.firstname,
       bio: sidekickDatas.description,
