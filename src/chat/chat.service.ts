@@ -107,15 +107,24 @@ export class ChatService {
     /* socket.emit("seen", "Received seen event"); */
   }
 
-  async getAll(id: string) {
+  async getAll(email: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    const fullUser = await this.userInfosService.find(email);
+    
     return await this.prismaService.message.findMany({
       where: {
         OR: [
           {
-            from_id: id,
+            from_id: user.id,
+            to: fullUser.sidekick_id,
           },
           {
-            to: id,
+            from_id: fullUser.sidekick_id,
+            to: user.id,
           },
         ],
       },
