@@ -74,4 +74,10 @@ export class UserInfosController {
   linkUsers(@Body() req: { id1: string; id2: string }) {
     return this.userInfoService.linkUsers(req);
   }
+
+  @Public()
+  @Get("find_users_without_sidekick")
+  findUsersWithoutSidekick() {
+    return this.userInfoService.findUsersWithoutSidekick();
+  }
 }
