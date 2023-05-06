@@ -1,4 +1,4 @@
-import { Gender, SportFrequence } from "@prisma/client";
+import { Gender, SportFrequence, Goal } from "@prisma/client";
 import {
   ForbiddenException,
   HttpStatus,
@@ -18,6 +18,15 @@ export class UserInfoService {
     private _prismaService: PrismaService,
     private _fileService: FileService
   ) {}
+
+  public async findUsersWithoutSidekick() {
+    const usersDatas = await this._prismaService.userData.findMany({
+      where: {
+        sidekick_id: null,
+      },
+    });
+    return usersDatas;
+  }
 
   public async find(userEmail: string) {
     const user = await this._prismaService.user.findUnique({
@@ -225,7 +234,7 @@ export class UserInfoService {
         userId: user.id,
       },
       data: {
-        goal: goal
+        goal:  Goal[goal.toUpperCase()]
       },
     });
   }
