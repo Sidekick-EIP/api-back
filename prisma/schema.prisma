@@ -18,6 +18,12 @@ enum EventCalendar {
   SPORTS_EXERCISE
 }
 
+enum Goal {
+  WEIGHT_GAIN
+  WEIGHT_LOSS
+  GETTING_BACK_IN_SHAPE
+}
+
 enum SportFrequence {
   NEVER
   LESS_THAN_ONCE_A_MONTH
@@ -83,7 +89,7 @@ model UserData {
   description     String
   sport_frequence SportFrequence
   sports          Json?           @default("{}")
-  goal            String?         @default("") 
+  goal            Goal?
   sidekick_id     String?        @unique
   sidekick        User?          @relation(name: "sidekick", fields: [sidekick_id], references: [id], onDelete: SetNull)
   isDarkMode      Boolean        @default(false)
