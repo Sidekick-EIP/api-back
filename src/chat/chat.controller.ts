@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from "@nestjs/common";
-import { GetCurrentUserEmail } from "src/common/decorators";
+import { GetCurrentUserEmail } from "../common/decorators";
 import { ChatService } from "./chat.service";
 
 @Controller("chat")
