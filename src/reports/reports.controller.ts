@@ -13,4 +13,11 @@ export class ReportsController {
   ) {
     return this.reportsService.create(currentUser, reason);
   }
+
+  @Post("change")
+  async change(
+    @GetCurrentUserEmail() currentUser: string
+  ) {
+    return this.reportsService.change(currentUser);
+  }
 }
