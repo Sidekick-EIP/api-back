@@ -178,3 +178,16 @@ model Preferences {
 
   @@map("preferences")
 }
+
+model OpenFoodFacts {
+  id          Int     @id @unique @default(autoincrement())
+  product_name        String
+  brands              String
+  energy_kcal_100g         Float
+  proteins_100g       Float
+  carbohydrates_100g  Float
+  fat_100g            Float
+  image_front_url     String
+  nutriscore          String
+  @@map("open_food_facts")
+}

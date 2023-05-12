@@ -22,9 +22,10 @@ import { FileModule } from './file/file.module';
 import { SportsExerciseModule } from './sports_exercises/sports_exercises.module';
 import { PlanningModule } from './planning/planning.module';
 import { PreferencesModule } from './preferences/preferences.module';
+import { OpenffModule } from './openff/openff.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule, OpenffModule],
   controllers: [AppController, CaloriesController, MealsController],
   providers: [AppService, {
     provide: APP_GUARD,
