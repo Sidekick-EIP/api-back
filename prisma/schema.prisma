@@ -99,7 +99,7 @@ model UserData {
 
 model Meals {
   id          Int      @id @unique @default(autoincrement())
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   name        String
   ingredients Json
