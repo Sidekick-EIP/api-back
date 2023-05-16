@@ -89,7 +89,7 @@ export class ChatService {
   }
 
   async handleWriting(socket: Socket, payload: any) {
-    socket.broadcast.emit("writing", {});
+    socket.broadcast.emit("writing", payload);
 
     /* socket.emit("writing", "Received writing event"); */
   }
