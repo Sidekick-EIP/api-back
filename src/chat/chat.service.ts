@@ -10,7 +10,7 @@ export class ChatService {
 
   constructor(
     private userInfosService: UserInfoService,
-    private prismaService: PrismaService
+    private prismaService: PrismaService,
   ) {}
 
   async handleConnection(socket: Socket) {
@@ -20,7 +20,13 @@ export class ChatService {
       return;
     }
 
-    const user = await this.userInfosService.getUserfromId(userId);
+    let user = null;
+    try {
+      user = await this.userInfosService.getUserfromId(userId);
+    } catch (e) {
+      socket.disconnect();
+      return;
+    }
     const sidekick = user.sidekick_id;
 
     if (!sidekick) {
@@ -114,7 +120,7 @@ export class ChatService {
       },
     });
     const fullUser = await this.userInfosService.find(email);
-    
+
     return await this.prismaService.message.findMany({
       where: {
         OR: [
