@@ -145,7 +145,7 @@ model Reports {
 
 model Sports_exercices {
   id          Int     @id @unique @default(autoincrement())
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   name        String
   createdAt   DateTime @default(now())
@@ -156,7 +156,7 @@ model Sports_exercices {
 
 model Planning {
   id               Int     @id @unique @default(autoincrement())
-  user             User     @relation(fields: [userId], references: [id])
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String
   day              DateTime
   content          Json
