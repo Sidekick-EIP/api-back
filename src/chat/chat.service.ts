@@ -70,7 +70,7 @@ export class ChatService {
   }
 
   async handleMessage(socket: Socket, payload: any) {
-    socket.broadcast.emit("message", payload === "true" ? true : false);
+    socket.broadcast.emit("message", payload);
 
     // save message to db
     const user = this.rooms.findUserBySocketId(socket.id);
