@@ -17,6 +17,7 @@ import { UserInfosDto } from "./dto/user.dto";
 import { Public, GetCurrentUserEmail } from "../common/decorators";
 import { EditInfosDto } from "./dto/edit.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
+import * as path from "path";
 
 @Controller("user_infos")
 export class UserInfosController {
