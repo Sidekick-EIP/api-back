@@ -129,6 +129,23 @@ export class UserInfoService {
         email: email,
       },
     });
+
+    if (!user) {
+      throw new UserNotFoundException(email);
+    }
+
+    if (data.username) {
+      const existingUser = await this._prismaService.userData.findFirst({
+        where: {
+          username: data.username,
+        },
+      });
+
+      if (existingUser && existingUser.userId !== user.id) {
+        throw new ConflictException(`An user with the username '${data.username}' already exists.`);
+      }
+    }
+
     return await this._prismaService.userData.update({
       where: {
         userId: user.id,
