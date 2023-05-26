@@ -52,20 +52,24 @@ export class UserInfosController {
     return this.userInfoService.setGoal(email, goal);
   }
 
-  @Post("/avatar")
-  @UseInterceptors(FileInterceptor("file"))
-  setAvatar(
-    @GetCurrentUserEmail() email: string,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({maxSize: 100000000}),
-          new FileTypeValidator({fileType: "(jpeg|jpg|png)"}),
-        ],
-      })
-    )
-    file: Express.Multer.File
-  ) {
+  @Post('/avatar')
+  @UseInterceptors(FileInterceptor('file', {
+    limits: {
+      fileSize: 100000000, // file size limit
+    },
+    fileFilter: (req, file, cb) => {
+      const fileTypes = /jpeg|jpg|png/; // acceptable file types
+      const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+      const mimetype = fileTypes.test(file.mimetype);
+
+      if (extname && mimetype) {
+        return cb(null, true);
+      } else {
+        return cb(new Error('Only images are allowed'), false);
+      }
+    },
+  }))
+  setAvatar(@GetCurrentUserEmail() email: string, @UploadedFile() file) {
     return this.userInfoService.setAvatar(email, file);
   }
 
