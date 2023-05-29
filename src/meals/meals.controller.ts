@@ -1,6 +1,7 @@
 import { MealsDto } from './dto/meals.dto';
 import { Body, Controller, Get, Delete, Put,  Post, Request, Query, Param } from '@nestjs/common';
 import { MealsService } from './meals.service';
+import { UpdateMealsDto } from './dto/update.dto';
 
 @Controller('meals')
 export class MealsController {
@@ -12,7 +13,7 @@ export class MealsController {
     }
 
     @Put("/:id")
-    modifyMeal(@Param('id') id: string, @Body() dto: MealsDto) {
+    modifyMeal(@Param('id') id: string, @Body() dto: UpdateMealsDto) {
       return this.mealsService.update(dto, id);
     }
 
