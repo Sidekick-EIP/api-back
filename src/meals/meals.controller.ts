@@ -1,33 +1,33 @@
 import { MealsDto } from './dto/meals.dto';
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Delete, Put,  Post, Request, Query, Param } from '@nestjs/common';
 import { MealsService } from './meals.service';
 
 @Controller('meals')
 export class MealsController {
 	constructor(private mealsService: MealsService) { }
 
-    @Post("addMeal")
+    @Post("/")
     addMeal(@Request() req: any, @Body() dto: MealsDto) {
-      return this.mealsService.addMeal(dto, req.user.email);
+      return this.mealsService.add(dto, req.user.email);
     }
 
-    @Post("modifyMeal")
-    modifyMeal(@Body() dto: MealsDto) {
-      return this.mealsService.modifyMeal(dto);
+    @Put("/:id")
+    modifyMeal(@Param('id') id: string, @Body() dto: MealsDto) {
+      return this.mealsService.update(dto, id);
     }
 
-    @Post("removeMeal")
-    removeMeal(@Body("id") id: string) {
-      return this.mealsService.removeMeal(id);
+    @Delete("/:id")
+    removeMeal(@Param('id') id: string) {
+      return this.mealsService.delete(id);
     }
 
-    @Post("searchMeal")
-    searchMeal(@Request() req: any, @Body() meal: {pattern: string}) {
-      return this.mealsService.searchMeal(req.user.email, meal.pattern);
+    @Post("find")
+    searchMeal(@Request() req: any, @Body("pattern") pattern: string) {
+      return this.mealsService.find(req.user.email, pattern);
     }
 
-    @Post("getMealsForOneDay")
-    getMealsForOneDay(@Request() req: any, @Body() mealDate: {date: string}) {
-      return this.mealsService.getMealsForOneDay(req.user.email, mealDate.date);
+    @Get("findByDay")
+    getMealsForOneDay(@Request() req: any, @Query('day') day: string, @Body() mealDate: {date: string}) {
+      return this.mealsService.findByDay(req.user.email, mealDate.date);
     }
 }

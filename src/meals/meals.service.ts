@@ -8,8 +8,7 @@ import UserNotFoundException from './exceptions/not-found.exception';
 export class MealsService {
 	constructor(private _prismaService: PrismaService) {}
 
-  public async removeMeal(id: string) {
-    //Delete the meal
+  public async delete(id: string) {
 		await this._prismaService.meals.delete({
 		  where: {
         id: Number(id)
@@ -17,7 +16,7 @@ export class MealsService {
 		})
   }
 
-	public async addMeal(datas: MealsDto, userEmail: string) {
+	public async add(datas: MealsDto, userEmail: string) {
     var newDatas = datas;
 
     //Get User with email
@@ -39,7 +38,7 @@ export class MealsService {
 		});
   }
 
-  public async modifyMeal(datas: MealsDto) {
+  public async update(datas: MealsDto, id: string) {
     var newDatas = datas
     newDatas['date'] = new Date(datas.date)
 
@@ -47,12 +46,12 @@ export class MealsService {
     return this._prismaService.meals.update({
       data: datas,
       where: {
-        id: datas.id
+        id: Number(id)
       }
     })
   }
 
-  public async searchMeal(userEmail: string, pattern: string) {
+  public async find(userEmail: string, pattern: string) {
     const user = await this._prismaService.user.findUnique({
       where: {
         email: userEmail
@@ -72,7 +71,7 @@ export class MealsService {
     })
   }
 
-  public async getMealsForOneDay(userEmail: string, date: string) {
+  public async findByDay(userEmail: string, date: string) {
      //Get User with email
 		const user = await this._prismaService.user.findUnique({
       where: {
