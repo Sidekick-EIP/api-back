@@ -40,9 +40,6 @@ export class MealsService {
   }
 
   public async update(datas: UpdateMealsDto, id: string) {
-    var newDatas = datas
-    newDatas['date'] = new Date(datas.date)
-
     //Update the meal that we need to modify
     return this._prismaService.meals.update({
       data: datas,
