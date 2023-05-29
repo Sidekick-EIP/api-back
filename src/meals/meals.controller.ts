@@ -27,7 +27,7 @@ export class MealsController {
     }
 
     @Get("findByDay")
-    getMealsForOneDay(@Request() req: any, @Query('day') day: string, @Body() mealDate: {date: string}) {
-      return this.mealsService.findByDay(req.user.email, mealDate.date);
+    getMealsForOneDay(@Request() req: any, @Query('day') day: string) {
+      return this.mealsService.findByDay(req.user.email, day);
     }
 }
