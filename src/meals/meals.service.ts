@@ -2,6 +2,7 @@ import { MealsDto } from './dto/meals.dto';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import UserNotFoundException from './exceptions/not-found.exception';
+import { UpdateMealsDto } from './dto/update.dto';
 
 
 @Injectable()
@@ -38,7 +39,7 @@ export class MealsService {
 		});
   }
 
-  public async update(datas: MealsDto, id: string) {
+  public async update(datas: UpdateMealsDto, id: string) {
     var newDatas = datas
     newDatas['date'] = new Date(datas.date)
 
