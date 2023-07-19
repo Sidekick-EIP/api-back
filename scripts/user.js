@@ -10,7 +10,7 @@ async function getUrl() {
       type: "list",
       name: "url",
       message: "Choose a URL",
-      choices: ["http://localhost:8080", "http://13.39.85.8"],
+      choices: ["http://localhost:8080", "https://api.sidekickapp.live"],
     },
   ]);
   return url;
