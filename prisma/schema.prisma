@@ -104,7 +104,7 @@ model UserData {
   description     String
   sport_frequence SportFrequence
   sports          Json?           @default("{}")
-  goal            Goal?
+  goal            Goal?           @default(GETTING_BACK_IN_SHAPE)
   sidekick_id     String?        @unique
   sidekick        User?          @relation(name: "sidekick", fields: [sidekick_id], references: [id], onDelete: SetNull)
   isDarkMode      Boolean        @default(false)
