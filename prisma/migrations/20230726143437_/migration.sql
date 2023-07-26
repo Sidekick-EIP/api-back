@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "users_data" ALTER COLUMN "goal" SET DEFAULT 'GETTING_BACK_IN_SHAPE';
