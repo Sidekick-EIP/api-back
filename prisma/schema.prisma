@@ -24,6 +24,16 @@ enum Goal {
   GETTING_BACK_IN_SHAPE
 }
 
+enum Page {
+  NUTRITION
+  MESSAGE
+  HOME
+  SETTINGS
+  PROFILE
+  SIGNUP
+  LOGIN
+}
+
 enum SportFrequence {
   NEVER
   LESS_THAN_ONCE_A_MONTH
@@ -53,6 +63,7 @@ model User {
   sports_exercices Sports_exercices[]
   planning Planning[]
   Preferences Preferences[]
+  BugsBeta BugsBeta[]
 
   @@map("users")
 }
@@ -177,6 +188,26 @@ model Preferences {
   sounds Boolean @default(true)
 
   @@map("preferences")
+}
+
+model BugsBeta {
+  id          Int     @id @unique @default(autoincrement())
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  title       String
+  description String
+  page        Page
+
+  @@map("bugs_beta")
+}
+
+model BetaUser {
+  id          Int     @id @unique @default(autoincrement())
+  email       String  @unique
+  lastname    String
+  firstname   String
+
+  @@map("beta_users")
 }
 
 model OpenFoodFacts {
