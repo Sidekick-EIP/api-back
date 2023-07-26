@@ -34,6 +34,21 @@ enum Page {
   LOGIN
 }
 
+enum MuscleGroup {
+  SHOULDERS
+  CHEST
+  BACK
+  BICEPS
+  TRICEPS
+  ABS
+  LEGS
+  GLUTES
+  CALF
+  CARDIO
+  FULL_BODY
+  OTHER
+}
+
 enum SportFrequence {
   NEVER
   LESS_THAN_ONCE_A_MONTH
@@ -100,7 +115,7 @@ model UserData {
   description     String
   sport_frequence SportFrequence
   sports          Json?           @default("{}")
-  goal            Goal?
+  goal            Goal?           @default(GETTING_BACK_IN_SHAPE)
   sidekick_id     String?        @unique
   sidekick        User?          @relation(name: "sidekick", fields: [sidekick_id], references: [id], onDelete: SetNull)
   isDarkMode      Boolean        @default(false)
@@ -221,4 +236,15 @@ model OpenFoodFacts {
   image_front_url     String
   nutriscore          String
   @@map("open_food_facts")
+}
+
+model Exercises_Library {
+  id          Int     @id @unique @default(autoincrement())
+  name        String
+  description String
+  thumbnail       String?
+  video       String
+  muscle_group MuscleGroup?
+
+  @@map("exercises_library")
 }
