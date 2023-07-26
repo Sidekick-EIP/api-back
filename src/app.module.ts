@@ -27,9 +27,10 @@ import { BugsBetaService } from './bugs_beta/bugs_beta.service';
 import { BugsBetaController } from './bugs_beta/bugs_beta.controller';
 import { BugsBetaModule } from './bugs_beta/bugs_beta.module';
 import { ExercisesLibraryModule } from './exercises_library/exercises_library.module';
+import { BetaUsersModule } from './beta_users/beta_users.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule],
   controllers: [AppController, CaloriesController, MealsController, BugsBetaController],
   providers: [AppService, {
     provide: APP_GUARD,

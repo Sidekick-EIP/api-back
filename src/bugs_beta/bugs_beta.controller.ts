@@ -36,5 +36,4 @@ export class BugsBetaController {
     getById(@Param('id') id: string) {
       return this.bugsBetaService.getById(id);
     }
-
 }
