@@ -10,7 +10,7 @@ export class MealsService {
 	constructor(private _prismaService: PrismaService) {}
 
   public async findOne(id: string) {
-		await this._prismaService.meals.findUnique({
+		return await this._prismaService.meals.findUnique({
 		  where: {
         id: Number(id)
 		  },
