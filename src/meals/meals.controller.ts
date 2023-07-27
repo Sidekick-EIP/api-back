@@ -12,6 +12,11 @@ export class MealsController {
       return this.mealsService.add(dto, req.user.email);
     }
 
+    @Get("/:id")
+    getMeal(@Param('id') id: string) {
+      return this.mealsService.findOne(id);
+    }
+
     @Put("/:id")
     modifyMeal(@Param('id') id: string, @Body() dto: UpdateMealsDto) {
       return this.mealsService.update(dto, id);
