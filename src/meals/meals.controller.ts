@@ -12,6 +12,11 @@ export class MealsController {
       return this.mealsService.add(dto, req.user.email);
     }
 
+    @Get("findByDay")
+    getMealsForOneDay(@Request() req: any, @Query('day') day: string) {
+      return this.mealsService.findByDay(req.user.email, day);
+    }
+
     @Get("/:id")
     getMeal(@Param('id') id: string) {
       return this.mealsService.findOne(id);
@@ -30,10 +35,5 @@ export class MealsController {
     @Post("find")
     searchMeal(@Request() req: any, @Body("pattern") pattern: string) {
       return this.mealsService.find(req.user.email, pattern);
-    }
-
-    @Get("findByDay")
-    getMealsForOneDay(@Request() req: any, @Query('day') day: string) {
-      return this.mealsService.findByDay(req.user.email, day);
     }
 }
