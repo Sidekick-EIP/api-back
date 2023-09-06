@@ -28,13 +28,21 @@ import { BugsBetaController } from './bugs_beta/bugs_beta.controller';
 import { BugsBetaModule } from './bugs_beta/bugs_beta.module';
 import { ExercisesLibraryModule } from './exercises_library/exercises_library.module';
 import { BetaUsersModule } from './beta_users/beta_users.module';
+import { MealRecoModule } from './meal_reco/meal_reco.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), ThrottlerModule.forRoot({
+    ttl: 60,
+    limit: 60,
+  }), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule],
   controllers: [AppController, CaloriesController, MealsController, BugsBetaController],
   providers: [AppService, {
     provide: APP_GUARD,
     useClass: AtGuard
+  }, {
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard
   }, CaloriesService, MealsService, BugsBetaService],
 })
-export class AppModule {}
+export class AppModule { }
