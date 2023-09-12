@@ -5,12 +5,14 @@ import {
 } from "@nestjs/websockets";
 import { ChatService } from "../chat/chat.service";
 import { Server, Socket } from "socket.io";
+import { OnEvent } from '@nestjs/event-emitter';
+import { MatchEvent } from "../common/events/match.event";
 
 @WebSocketGateway({ cors: { origin: "*" } })
 export class ChatGateway {
   @WebSocketServer() server: Server;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService) { }
 
   async handleConnection(socket: Socket) {
     return this.chatService.handleConnection(socket);
@@ -18,6 +20,13 @@ export class ChatGateway {
 
   handleDisconnect(socket: Socket) {
     return this.chatService.handleDisconnect(socket);
+  }
+
+  // disconnect after match and connect to the new room with sidekick
+  @OnEvent('match')
+  handleMatch(event: MatchEvent): any {
+    console.log("match event");
+    return this.chatService.handleMatch(event, this.server);
   }
 
   @SubscribeMessage("message")
