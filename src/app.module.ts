@@ -28,9 +28,10 @@ import { BugsBetaController } from './bugs_beta/bugs_beta.controller';
 import { BugsBetaModule } from './bugs_beta/bugs_beta.module';
 import { ExercisesLibraryModule } from './exercises_library/exercises_library.module';
 import { BetaUsersModule } from './beta_users/beta_users.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, EventEmitterModule.forRoot()],
   controllers: [AppController, CaloriesController, MealsController, BugsBetaController],
   providers: [AppService, {
     provide: APP_GUARD,
