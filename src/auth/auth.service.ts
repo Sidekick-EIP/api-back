@@ -15,11 +15,12 @@ import {
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthConfig } from "./auth.config";
 import { AuthDto } from "./dto";
+import { ChatGateway } from '../chat/chat.gateway';
 
 @Injectable()
 export class AuthService {
   private userPool: CognitoUserPool;
-  constructor(private prisma: PrismaService, private authConfig: AuthConfig) {
+  constructor(private prisma: PrismaService, private authConfig: AuthConfig, private ChatGateway: ChatGateway) {
     this.userPool = new CognitoUserPool({
       UserPoolId: this.authConfig.userPoolId,
       ClientId: this.authConfig.clientId,

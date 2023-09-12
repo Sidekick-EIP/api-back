@@ -11,13 +11,15 @@ import { UserWithoutSidekickException } from "./exceptions/not-found.exception";
 import { UserInfosDto } from "./dto/user.dto";
 import { EditInfosDto } from "./dto/edit.dto";
 import { FileService } from "../file/file.service";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 
 @Injectable()
 export class UserInfoService {
   constructor(
     private _prismaService: PrismaService,
-    private _fileService: FileService
-  ) {}
+    private _fileService: FileService,
+    private eventEmitter: EventEmitter2,
+  ) { }
 
   public async findUsersWithoutSidekick() {
     const usersDatas = await this._prismaService.userData.findMany({
@@ -87,7 +89,7 @@ export class UserInfoService {
     newDatas["gender"] = Gender[datas["gender"]];
     newDatas["birth_date"] = new Date(datas.birth_date);
     newDatas["sport_frequence"] =
-    SportFrequence[datas["sport_frequence"].toUpperCase()];
+      SportFrequence[datas["sport_frequence"].toUpperCase()];
     var user = await this._prismaService.user.findUnique({
       where: {
         email: userEmail,
@@ -100,17 +102,17 @@ export class UserInfoService {
     newDatas["userId"] = user.id;
 
     const userInfos = await this._prismaService.userData.findFirst({
-			where: {
-				username: newDatas.username,
-			}
-		});
-		if (!userInfos) {
-			return await this._prismaService.userData.create({
+      where: {
+        username: newDatas.username,
+      }
+    });
+    if (!userInfos) {
+      return await this._prismaService.userData.create({
         data: newDatas,
       });
-		} else {
-			throw new ConflictException('An user with the username \'' + newDatas.username + '\' already exist for this user.');
-		}
+    } else {
+      throw new ConflictException('An user with the username \'' + newDatas.username + '\' already exist for this user.');
+    }
   }
 
   async update(dto: EditInfosDto, email: string) {
@@ -121,7 +123,7 @@ export class UserInfoService {
     data.gender ? (data.gender = Gender[data.gender]) : null;
     data.sport_frequence
       ? (data.sport_frequence =
-          SportFrequence[dto.sport_frequence?.toUpperCase()])
+        SportFrequence[dto.sport_frequence?.toUpperCase()])
       : null;
 
     const user = await this._prismaService.user.findUnique({
@@ -156,6 +158,7 @@ export class UserInfoService {
 
   public async linkUsers(req: { id1: string; id2: string }) {
     let { id1, id2 } = req;
+    console.log(id1, id2)
     const user1 = await this._prismaService.userData.findUnique({
       where: { userId: id1 },
     });
@@ -179,6 +182,7 @@ export class UserInfoService {
         }),
       ]);
     }
+    this.eventEmitter.emit('match', { id1, id2 })
     return HttpStatus.OK;
   }
 
@@ -216,7 +220,7 @@ export class UserInfoService {
     });
   }
 
-  async setSports(email :string, sports: string) {
+  async setSports(email: string, sports: string) {
     const user = await this._prismaService.user.findUnique({
       where: {
         email: email,
@@ -236,7 +240,7 @@ export class UserInfoService {
     });
   }
 
-  async setGoal(email :string, goal: string) {
+  async setGoal(email: string, goal: string) {
     const user = await this._prismaService.user.findUnique({
       where: {
         email: email,
@@ -251,7 +255,7 @@ export class UserInfoService {
         userId: user.id,
       },
       data: {
-        goal:  Goal[goal.toUpperCase()]
+        goal: Goal[goal.toUpperCase()]
       },
     });
   }
