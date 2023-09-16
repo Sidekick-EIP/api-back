@@ -79,6 +79,7 @@ model User {
   planning Planning[]
   Preferences Preferences[]
   BugsBeta BugsBeta[]
+  FeedBackUser FeedBackUser[]
 
   @@map("users")
 }
@@ -214,6 +215,16 @@ model BugsBeta {
   page        Page
 
   @@map("bugs_beta")
+}
+
+model FeedBackUser {
+  id          Int     @id @unique @default(autoincrement())
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  rating      Float
+  comment String
+
+  @@map("feedback_user")
 }
 
 model BetaUser {
