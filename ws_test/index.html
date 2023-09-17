@@ -37,6 +37,7 @@
 
     const connect = () => {
       socket = io("https://api.sidekickapp.live", {
+      // socket = io("http://localhost:8080", {
         auth: {
           token: token
         }
@@ -51,6 +52,12 @@
 
       socket.on('seen', (data) => {
         console.log('Seen received: ' + data);
+      });
+      socket.on('match', (data) => {
+        console.log('Match received: ' + data);
+      });
+      socket.on('reconnect', (data) => {
+        console.log('Match received: ' + data);
       });
     }
 
