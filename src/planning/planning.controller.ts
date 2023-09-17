@@ -6,6 +6,11 @@ import { PlanningService } from './planning.service';
 export class PlanningController {
 	constructor(private planningService: PlanningService) { }
 
+	@Get('/all')
+	async getAll(@GetCurrentUserEmail() email: string) {
+		return this.planningService.getAll(email)
+	}
+
 	@Get('/')
 	async getPlanningByDay(@GetCurrentUserEmail() email: string, @Query('day') day: string) {
 		return this.planningService.getPlanningByDay(email, day)
