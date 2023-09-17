@@ -1,4 +1,4 @@
-import { Gender, SportFrequence } from "@prisma/client";
+import { Gender, Goal, SportFrequence } from "@prisma/client";
 import { IsOptional, IsString } from "class-validator";
 
 export class EditInfosDto {
@@ -31,4 +31,7 @@ export class EditInfosDto {
 
   @IsOptional()
   sport_frequence?: SportFrequence;
+
+  @IsOptional()
+  goal?: Goal;
 }
