@@ -88,8 +88,10 @@ export class UserInfoService {
     newDatas["weight"] = Number(datas["weight"]);
     newDatas["gender"] = Gender[datas["gender"]];
     newDatas["birth_date"] = new Date(datas.birth_date);
-    newDatas["sport_frequence"] =
-      SportFrequence[datas["sport_frequence"].toUpperCase()];
+    newDatas["sport_frequence"] = 
+        SportFrequence[datas["sport_frequence"].toUpperCase()];
+    newDatas["goal"] = Goal[datas["goal"].toUpperCase()];
+
     var user = await this._prismaService.user.findUnique({
       where: {
         email: userEmail,
@@ -125,6 +127,11 @@ export class UserInfoService {
       ? (data.sport_frequence =
         SportFrequence[dto.sport_frequence?.toUpperCase()])
       : null;
+    data.goal
+      ? (data.goal =
+          Goal[dto.goal?.toUpperCase()])
+      : null;
+
 
     const user = await this._prismaService.user.findUnique({
       where: {

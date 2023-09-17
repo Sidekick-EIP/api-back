@@ -9,6 +9,8 @@ export class PlanningService {
 		private _prismaService: PrismaService,
 	) {}
 
+
+
 	async setExercise(email: string, req: { day: number, repetitions: number, exercise_id: number, moment: string}) {
 		const user = await this._prismaService.user.findUnique({
 			where: {
@@ -122,6 +124,22 @@ export class PlanningService {
 		return await this._prismaService.planning.findMany({
 			where: {
 				day: new Date(Number(day))
+			}
+		})
+	}
+
+	async getAll(email: string) {
+		const user = await this._prismaService.user.findUnique({
+			where: {
+				email: email,
+			},
+		});
+		if (!user) {
+			throw new UserNotFoundException(email);
+		}
+		return await this._prismaService.planning.findMany({
+			where: {
+				userId: user.id
 			}
 		})
 	}
