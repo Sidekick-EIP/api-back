@@ -1,4 +1,4 @@
-import { Gender, SportFrequence } from "@prisma/client";
+import { Gender, Goal, SportFrequence } from "@prisma/client";
 import { IsNotEmpty, IsString } from "class-validator";
 
 export class UserInfosDto {
@@ -35,4 +35,7 @@ export class UserInfosDto {
 
   @IsNotEmpty()
   sport_frequence: SportFrequence;
+
+  @IsNotEmpty()
+  goal: Goal;
 }
