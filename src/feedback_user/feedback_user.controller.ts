@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Request, Put, Query 
 import { FeedbackUserService } from './feedback_user.service';
 import { CreateFeedbackUserDto } from './dto/create-feedback_user.dto';
 import { UpdateFeedbackUserDto } from './dto/update-feedback_user.dto';
+import { Public } from "../common/decorators";
 
 @Controller('feedback-user')
 export class FeedbackUserController {
@@ -22,6 +23,7 @@ export class FeedbackUserController {
     return this.feedbackUserService.delete(id);
   }
 
+  @Public()
   @Get("/")
   getAll() {
     return this.feedbackUserService.getAll();
