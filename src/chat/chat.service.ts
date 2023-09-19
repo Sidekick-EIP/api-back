@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserInfoService } from "../user_infos/user_infos.service";
 import { Rooms } from "./chat.helper";
+import { MatchEvent } from "../common/events/match.event";
 
 @Injectable()
 export class ChatService {
@@ -11,7 +12,7 @@ export class ChatService {
   constructor(
     private userInfosService: UserInfoService,
     private prismaService: PrismaService,
-  ) {}
+  ) { }
 
   async handleConnection(socket: Socket) {
     const userId = socket.handshake.auth.token;
@@ -27,14 +28,9 @@ export class ChatService {
       socket.disconnect();
       return;
     }
-    const sidekick = user.sidekick_id;
+    const sidekick = user.sidekick_id || "";
 
-    if (!sidekick) {
-      socket.disconnect();
-      return;
-    }
-
-    const roomName = [userId, sidekick].sort().join("_");
+    let roomName = sidekick === "" ? userId : [userId, sidekick].sort().join("_");
     let room = this.rooms.getRoom(roomName);
     if (!room) {
       room = {
@@ -54,10 +50,11 @@ export class ChatService {
     /* socket.emit("message", "You are connected to the room " + roomName); */
   }
 
-  handleDisconnect(socket: any) {
+  handleDisconnect(socket: Socket) {
     const user = this.rooms.findUserBySocketId(socket.id);
     // socket.handshake.auth.token also works to get the user id
 
+    console.log("disconnect ", socket.id);
     if (!user) {
       return;
     }
@@ -74,6 +71,7 @@ export class ChatService {
 
     // save message to db
     const user = this.rooms.findUserBySocketId(socket.id);
+    console.log(this.rooms, this.rooms.getRoomUsers(user.userId))
 
     if (!user) return;
 
@@ -135,5 +133,18 @@ export class ChatService {
         ],
       },
     });
+  }
+
+  async handleMatch(event: MatchEvent, server: Server) {
+    const room1 = this.rooms.getRoom(event.id1);
+    const room2 = this.rooms.getRoom(event.id2);
+
+    if (!room1 || !room2) {
+      return;
+    }
+    const user1 = room1.users[0];
+    server.to(user1.socketId).emit("match", true);
+    const user2 = room2.users[0];
+    server.to(user2.socketId).emit("match", true);
   }
 }
