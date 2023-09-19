@@ -12,6 +12,11 @@ export class MealsController {
       return this.mealsService.add(dto, req.user.email);
     }
 
+    @Get("findAll")
+    getAllMeals(@Request() req: any) {
+      return this.mealsService.findAll(req.user.email);
+    }
+
     @Get("findByDay")
     getMealsForOneDay(@Request() req: any, @Query('day') day: string) {
       return this.mealsService.findByDay(req.user.email, day);
