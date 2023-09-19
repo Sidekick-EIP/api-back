@@ -9,6 +9,24 @@ import { UpdateMealsDto } from './dto/update.dto';
 export class MealsService {
 	constructor(private _prismaService: PrismaService) {}
 
+  public async findAll(userEmail: string) {
+    //Get User with email
+		const user = await this._prismaService.user.findUnique({
+      where: {
+        email: userEmail
+      }
+    });
+    if (!user) {
+        throw new UserNotFoundException(userEmail);
+    }
+
+		return await this._prismaService.meals.findMany({
+		  where: {
+        userId: user.id
+		  },
+		})
+  }
+
   public async findOne(id: string) {
 		return await this._prismaService.meals.findUnique({
 		  where: {
