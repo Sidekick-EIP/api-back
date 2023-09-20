@@ -89,6 +89,13 @@ export class PlanningService {
 		})
 	}
 
+	async getEvent(id: string) {
+		return await this._prismaService.planning.findUnique({
+			where: {
+				id: Number(id)
+			}
+		})
+	}
 
 	async deleteEvent(id: string) {
 		return await this._prismaService.planning.delete({
@@ -97,6 +104,7 @@ export class PlanningService {
 			}
 		})
 	}
+
 	async deletePlanningByDay(email: string, day: string) {
 		const user = await this._prismaService.user.findUnique({
 			where: {

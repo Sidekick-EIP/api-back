@@ -41,6 +41,11 @@ export class PlanningController {
 		return this.planningService.updateMeal(req, id)
 	}
 
+	@Get('/:id')
+	async getEvent(@Param('id') id: string) {
+		return this.planningService.getEvent(id)
+	}
+
 	@Delete('/:id')
 	async deleteEvent(@Param('id') id: string) {
 		return this.planningService.deleteEvent(id)
