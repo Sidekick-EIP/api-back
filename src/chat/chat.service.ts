@@ -45,6 +45,7 @@ export class ChatService {
       sidekickId: sidekick,
     });
 
+    console.log("connect ", socket.id, userId, sidekick, roomName);
     socket.join(roomName);
 
     /* socket.emit("message", "You are connected to the room " + roomName); */
@@ -54,7 +55,7 @@ export class ChatService {
     const user = this.rooms.findUserBySocketId(socket.id);
     // socket.handshake.auth.token also works to get the user id
 
-    console.log("disconnect ", socket.id);
+    console.log("disconnect ", socket.id, user?.userId);
     if (!user) {
       return;
     }
@@ -139,12 +140,38 @@ export class ChatService {
     const room1 = this.rooms.getRoom(event.id1);
     const room2 = this.rooms.getRoom(event.id2);
 
-    if (!room1 || !room2) {
+    console.log(room1, room2, event.id1, event.id2)
+    if (!room1 && !room2) {
+      console.log("room not found")
       return;
     }
-    const user1 = room1.users[0];
-    server.to(user1.socketId).emit("match", true);
-    const user2 = room2.users[0];
-    server.to(user2.socketId).emit("match", true);
+    console.log("match event", room1, room2)
+    const socket1 = server.sockets.sockets.get(room1?.users[0]?.socketId);
+    console.log(socket1)
+    const socket2 = server.sockets.sockets.get(room2?.users[0]?.socketId);
+    console.log(socket2)
+    socket1?.emit("match", true);
+    socket2?.emit("match", true);
+
+    // remove both rooms
+    this.rooms.removeRoom(event.id1);
+    this.rooms.removeRoom(event.id2);
+
+    // create new room
+    const roomName = [event.id1, event.id2].sort().join("_");
+    socket1?.join(roomName);
+    socket2?.join(roomName);
+
+    this.rooms.addUserToRoom(roomName, {
+      socketId: socket1?.id || "",
+      userId: event.id1,
+      sidekickId: event.id2,
+    });
+
+    this.rooms.addUserToRoom(roomName, {
+      socketId: socket2?.id || "",
+      userId: event.id2,
+      sidekickId: event.id1,
+    });
   }
 }
