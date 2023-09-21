@@ -34,7 +34,7 @@ export class PlanningService {
 		})
 	}
 
-	async updateExercise(req: { day: string, repetitions: number, exercise_id: number, moment: string}, id: string) {
+	async updateExercise(req: { day: number, repetitions: number, exercise_id: number}, id: string) {
 		return await this._prismaService.planning.update({
 			where: {
 				id: Number(id)
@@ -44,7 +44,6 @@ export class PlanningService {
 				type: EventCalendar.SPORTS_EXERCISE,
 				content: {
 					id: req.exercise_id,
-					moment: req.moment,
 					repetitions: req.repetitions
 				}
 			}
