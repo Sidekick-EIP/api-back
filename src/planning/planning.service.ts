@@ -131,6 +131,7 @@ export class PlanningService {
 		}
 		return await this._prismaService.planning.findMany({
 			where: {
+				userId: user.id,
 				day: new Date(Number(day))
 			}
 		})
