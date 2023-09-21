@@ -130,15 +130,18 @@ export class PlanningService {
 		if (!user) {
 			throw new UserNotFoundException(email);
 		}
-		 // Convertir la date en millisecondes en objet Date
-		 const targetDate = new Date(Number(day));
-		 const year = targetDate.getFullYear();
-		 const month = targetDate.getMonth();
-		 const dayOfMonth = targetDate.getDate();
-		 
-		 // Créer une plage de temps pour la journée spécifiée (de minuit à 23:59:59)
-		 const startOfDay = new Date(year, month, dayOfMonth, 0, 0, 0);
-		 const endOfDay = new Date(year, month, dayOfMonth, 23, 59, 59);
+
+		const targetDate = new Date(Number(day));
+
+		const year = targetDate.getUTCFullYear();
+		const month = targetDate.getUTCMonth();
+		const dayOfMonth = targetDate.getUTCDate();
+
+		// Créer une plage de temps pour la journée spécifiée (en temps UTC, de minuit à 23:59:59)
+		const startOfDay = new Date(Date.UTC(year, month, dayOfMonth, 0, 0, 0));
+		const endOfDay = new Date(Date.UTC(year, month, dayOfMonth, 23, 59, 59));
+		console.log(startOfDay);
+		console.log(endOfDay);
 	 
 		return await this._prismaService.planning.findMany({
 			where: {
