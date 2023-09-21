@@ -22,12 +22,12 @@ export class PlanningController {
 	}
 
 	@Post('/exercise/')
-	async setSportsExercises(@GetCurrentUserEmail() email: string, @Body() req: {day: number, repetitions: number, exercise_id: number, moment: string}) {
+	async setSportsExercises(@GetCurrentUserEmail() email: string, @Body() req: {day: number, repetitions: number, exercise_id: number}) {
 		return this.planningService.setExercise(email, req)
 	}
 
 	@Put('/exercise/:id')
-	async updateSportExercise(@Param('id') id: string, @GetCurrentUserEmail() email: string, @Body() req: {day: string, repetitions: number, exercise_id: number, moment: string}) {
+	async updateSportExercise(@Param('id') id: string, @GetCurrentUserEmail() email: string, @Body() req: {day: number, repetitions: number, exercise_id: number}) {
 		return this.planningService.updateExercise(req, id)
 	}
 
