@@ -51,7 +51,8 @@ export class PlanningService {
 		})
 	}
 
-	async setMeal(email: string, req: { day: number, moment: string, meal_id: number;}) {
+	async setMeal(email: string, req: { day: number, moment: string, meal_id: number}) {
+		
 		const user = await this._prismaService.user.findUnique({
 			where: {
 				email: email,
@@ -129,10 +130,23 @@ export class PlanningService {
 		if (!user) {
 			throw new UserNotFoundException(email);
 		}
+		 // Convertir la date en millisecondes en objet Date
+		 const targetDate = new Date(Number(day));
+		 const year = targetDate.getFullYear();
+		 const month = targetDate.getMonth();
+		 const dayOfMonth = targetDate.getDate();
+		 
+		 // Créer une plage de temps pour la journée spécifiée (de minuit à 23:59:59)
+		 const startOfDay = new Date(year, month, dayOfMonth, 0, 0, 0);
+		 const endOfDay = new Date(year, month, dayOfMonth, 23, 59, 59);
+	 
 		return await this._prismaService.planning.findMany({
 			where: {
 				userId: user.id,
-				day: new Date(Number(day))
+				day: {
+					gte: startOfDay,
+					lte: endOfDay,
+				}
 			}
 		})
 	}
