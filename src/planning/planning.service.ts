@@ -7,11 +7,11 @@ import UserNotFoundException from '../user_infos/exceptions/not-found.exception'
 export class PlanningService {
 	constructor(
 		private _prismaService: PrismaService,
-	) {}
+	) { }
 
 
 
-	async setExercise(email: string, req: { day: number, repetitions: number, exercise_id: number, moment: string}) {
+	async setExercise(email: string, req: { day: number, repetitions: number, exercise_id: number }) {
 		const user = await this._prismaService.user.findUnique({
 			where: {
 				email: email,
@@ -27,14 +27,13 @@ export class PlanningService {
 				type: EventCalendar.SPORTS_EXERCISE,
 				content: {
 					id: req.exercise_id,
-					moment: req.moment,
 					repetitions: req.repetitions
 				}
 			}
 		})
 	}
 
-	async updateExercise(req: { day: number, repetitions: number, exercise_id: number}, id: string) {
+	async updateExercise(req: { day: number, repetitions: number, exercise_id: number }, id: string) {
 		return await this._prismaService.planning.update({
 			where: {
 				id: Number(id)
@@ -50,8 +49,8 @@ export class PlanningService {
 		})
 	}
 
-	async setMeal(email: string, req: { day: number, moment: string, meal_id: number}) {
-		
+	async setMeal(email: string, req: { day: number, moment: string, meal_id: number }) {
+
 		const user = await this._prismaService.user.findUnique({
 			where: {
 				email: email,
@@ -73,7 +72,7 @@ export class PlanningService {
 		})
 	}
 
-	async updateMeal(req: { day: string, meal_id: number, moment: string}, id: string) {
+	async updateMeal(req: { day: string, meal_id: number, moment: string }, id: string) {
 		return await this._prismaService.planning.update({
 			where: {
 				id: Number(id)
@@ -141,7 +140,7 @@ export class PlanningService {
 		const endOfDay = new Date(Date.UTC(year, month, dayOfMonth, 23, 59, 59));
 		console.log(startOfDay);
 		console.log(endOfDay);
-	 
+
 		return await this._prismaService.planning.findMany({
 			where: {
 				userId: user.id,
