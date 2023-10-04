@@ -5,6 +5,12 @@ import { AuthService } from "../auth.service";
 import { passportJwtSecret } from "jwks-rsa";
 import { AuthConfig } from "../auth.config";
 
+interface ValidatedUser {
+  userId: any;
+  email: any;
+  isAdmin?: boolean;
+}
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, "jwt") {
   constructor(
@@ -26,7 +32,15 @@ export class JwtStrategy extends PassportStrategy(Strategy, "jwt") {
     });
   }
 
-  public async validate(payload: any) {
-    return { userId: payload.sub, email: payload.email };
+  public async validate(payload: any): Promise<ValidatedUser> {
+    const user: ValidatedUser = { userId: payload.sub, email: payload.email };
+    if (payload['cognito:groups'] && payload['cognito:groups'].includes('admin')) {
+      console.log('user is admin')
+      user.isAdmin = true;
+    } else {
+      console.log('not admin')
+      user.isAdmin = false;
+    }
+    return user;
   }
 }
