@@ -10,6 +10,7 @@ import {
   Query,
   Request,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
 import { UserInfoService } from "./user_infos.service";
@@ -18,6 +19,7 @@ import { Public, GetCurrentUserEmail } from "../common/decorators";
 import { EditInfosDto } from "./dto/edit.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import * as path from "path";
+import { AdminGuard } from "../common/guards";
 
 @Controller("user_infos")
 export class UserInfosController {
@@ -74,7 +76,7 @@ export class UserInfosController {
     return this.userInfoService.setAvatar(email, file);
   }
 
-  @Public()
+  @UseGuards(AdminGuard)
   @Post("link_users")
   linkUsers(@Body() req: { id1: string; id2: string }) {
     return this.userInfoService.linkUsers(req);
