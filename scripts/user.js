@@ -87,6 +87,12 @@ async function getInfos() {
       name: "gender",
       message: "Enter your gender",
       default: "MALE",
+    },
+    {
+      type: "input",
+      name: "goal",
+      message: "Enter your goal",
+      default: "LOSE_WEIGHT",
     }
   ]);
 
