@@ -1,5 +1,5 @@
-import { Gender, Goal, SportFrequence } from "@prisma/client";
-import { IsOptional, IsString } from "class-validator";
+import { Gender, Goal, Level, Activities } from "@prisma/client";
+import { IsInt, IsOptional, IsString } from "class-validator";
 
 export class EditInfosDto {
   @IsOptional()
@@ -15,22 +15,25 @@ export class EditInfosDto {
   description?: string;
 
   @IsOptional()
-  @IsString()
-  username?: string;
-
-  @IsOptional()
-  @IsString()
+  @IsInt()
   size?: number;
 
   @IsOptional()
-  @IsString()
+  @IsInt()
   weight?: number;
+
+  @IsOptional()
+  @IsInt()
+  goal_weight?: number;
 
   @IsOptional()
   gender?: Gender;
 
   @IsOptional()
-  sport_frequence?: SportFrequence;
+  level?: Level;
+
+  @IsOptional()
+  activities?: Activities[];
 
   @IsOptional()
   goal?: Goal;

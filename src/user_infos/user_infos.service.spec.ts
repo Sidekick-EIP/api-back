@@ -5,9 +5,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { UserInfoService } from "./user_infos.service";
 import { AuthService } from "../auth/auth.service";
 import { AuthConfig } from "../auth/auth.config";
-import { UserInfosDto } from "./dto/user.dto";
-import { Gender, SportFrequence } from "@prisma/client";
-import { EditInfosDto } from "./dto/edit.dto";
 import { FileService } from "../file/file.service";
 
 describe("UserInfoService", () => {

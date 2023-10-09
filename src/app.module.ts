@@ -6,7 +6,6 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './common/guards';
-import { FormModule } from './form/form.module';
 import { UserInfosModule } from './user_infos/user_infos.module';
 import { MessagesModule } from './messages/messages.module';
 import { CaloriesController } from './calories/calories.controller';
@@ -37,7 +36,7 @@ import { FeedbackUserModule } from './feedback_user/feedback_user.module';
   imports: [ConfigModule.forRoot({ isGlobal: true }), ThrottlerModule.forRoot({
     ttl: 60,
     limit: 60,
-  }), PrismaModule, AuthModule, FormModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule],
+  }), PrismaModule, AuthModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule],
   controllers: [AppController, CaloriesController, MealsController, BugsBetaController],
   providers: [AppService, {
     provide: APP_GUARD,

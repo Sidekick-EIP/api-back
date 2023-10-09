@@ -1,4 +1,4 @@
-import { Gender, SportFrequence, Goal } from "@prisma/client";
+import { Gender, Activities, Goal, Level } from "@prisma/client";
 import {
   ForbiddenException,
   HttpStatus,
@@ -73,66 +73,33 @@ export class UserInfoService {
     return {
       birth_date: sidekickDatas.birth_date,
       gender: sidekickDatas.gender,
-      username: sidekickDatas.username,
       avatar: sidekickDatas.avatar,
       lastname: sidekickDatas.lastname,
       firstname: sidekickDatas.firstname,
+      size: sidekickDatas.size,
       bio: sidekickDatas.description,
-      frequence_sportive: sidekickDatas.sport_frequence,
+      goal: sidekickDatas.goal,
+      level: sidekickDatas.level,
+      activities: sidekickDatas.activities
     };
   }
 
   public async add(datas: UserInfosDto, userEmail: string) {
-    var newDatas = datas;
-    newDatas["size"] = Number(datas["size"]);
-    newDatas["weight"] = Number(datas["weight"]);
-    newDatas["gender"] = Gender[datas["gender"]];
-    newDatas["birth_date"] = new Date(datas.birth_date);
-    newDatas["sport_frequence"] = 
-        SportFrequence[datas["sport_frequence"].toUpperCase()];
-    newDatas["goal"] = Goal[datas["goal"].toUpperCase()];
-
     var user = await this._prismaService.user.findUnique({
-      where: {
-        email: userEmail,
-      },
+      where: {email: userEmail}
     });
 
     if (!user) {
       throw new UserNotFoundException(userEmail);
     }
-    newDatas["userId"] = user.id;
+    datas["userId"] = user.id;
 
-    const userInfos = await this._prismaService.userData.findFirst({
-      where: {
-        username: newDatas.username,
-      }
+    return await this._prismaService.userData.create({
+      data: datas,
     });
-    if (!userInfos) {
-      return await this._prismaService.userData.create({
-        data: newDatas,
-      });
-    } else {
-      throw new ConflictException('An user with the username \'' + newDatas.username + '\' already exist for this user.');
-    }
   }
 
-  async update(dto: EditInfosDto, email: string) {
-    const data = dto;
-
-    data.size ? (data.size = Number(dto.size)) : null;
-    data.weight ? (data.weight = Number(dto.weight)) : null;
-    data.gender ? (data.gender = Gender[data.gender]) : null;
-    data.sport_frequence
-      ? (data.sport_frequence =
-        SportFrequence[dto.sport_frequence?.toUpperCase()])
-      : null;
-    data.goal
-      ? (data.goal =
-          Goal[dto.goal?.toUpperCase()])
-      : null;
-
-
+  async update(datas: EditInfosDto, email: string) {
     const user = await this._prismaService.user.findUnique({
       where: {
         email: email,
@@ -142,24 +109,11 @@ export class UserInfoService {
     if (!user) {
       throw new UserNotFoundException(email);
     }
-
-    if (data.username) {
-      const existingUser = await this._prismaService.userData.findFirst({
-        where: {
-          username: data.username,
-        },
-      });
-
-      if (existingUser && existingUser.userId !== user.id) {
-        throw new ConflictException(`An user with the username '${data.username}' already exists.`);
-      }
-    }
-
     return await this._prismaService.userData.update({
       where: {
         userId: user.id,
       },
-      data: data,
+      data: datas,
     });
   }
 
@@ -223,46 +177,6 @@ export class UserInfoService {
       },
       data: {
         avatar: avatar,
-      },
-    });
-  }
-
-  async setSports(email: string, sports: string) {
-    const user = await this._prismaService.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
-    if (!user) {
-      throw new UserNotFoundException(email);
-    }
-
-    return this._prismaService.userData.update({
-      where: {
-        userId: user.id,
-      },
-      data: {
-        sports: sports,
-      },
-    });
-  }
-
-  async setGoal(email: string, goal: string) {
-    const user = await this._prismaService.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
-    if (!user) {
-      throw new UserNotFoundException(email);
-    }
-
-    return this._prismaService.userData.update({
-      where: {
-        userId: user.id,
-      },
-      data: {
-        goal: Goal[goal.toUpperCase()]
       },
     });
   }
