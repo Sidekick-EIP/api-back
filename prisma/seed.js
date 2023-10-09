@@ -71,7 +71,8 @@ async function main() {
       weight: 85,
       gender: 'MALE',
       description: 'je suis présent',
-      sport_frequence: 'ONCE_A_MONTH'
+      sport_frequence: 'ONCE_A_MONTH',
+      level: 'ADVANCED'
     }
   })
 
