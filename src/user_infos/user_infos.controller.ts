@@ -45,16 +45,6 @@ export class UserInfosController {
     return this.userInfoService.update(dto, req.user.email);
   }
 
-  @Post("/sports")
-  setSports(@GetCurrentUserEmail() email: string, @Body("sports") sports: string) {
-    return this.userInfoService.setSports(email, sports);
-  }
-
-  @Post("/goal")
-  setGoal(@GetCurrentUserEmail() email: string, @Body("goal") goal: string) {
-    return this.userInfoService.setGoal(email, goal);
-  }
-
   @Post('/avatar')
   @UseInterceptors(FileInterceptor('file', {
     limits: {
@@ -72,6 +62,7 @@ export class UserInfosController {
       }
     },
   }))
+
   setAvatar(@GetCurrentUserEmail() email: string, @UploadedFile() file) {
     return this.userInfoService.setAvatar(email, file);
   }
