@@ -49,11 +49,6 @@ async function getInfos() {
     },
     {
       type: "input",
-      name: "username",
-      message: "Enter your username",
-    },
-    {
-      type: "input",
       name: "description",
       message: "Enter your description",
       default: "I'm a cool guy",
@@ -62,25 +57,31 @@ async function getInfos() {
       type: "input",
       name: "birth_date",
       message: "Enter your birthDate",
-      default: "1999-01-01",
+      default: "2001-03-10T00:00:00.000Z",
     },
     {
       type: "input",
       name: "size",
       message: "Enter your size",
-      default: "180",
+      default: 180,
     },
     {
       type: "input",
       name: "weight",
       message: "Enter your weight",
-      default: "80",
+      default: 80,
     },
     {
       type: "input",
-      name: "sport_frequence",
-      message: "Enter your sport_frequence",
-      default: "FIVE_A_WEEK",
+      name: "goal_weight",
+      message: "Enter your goal weight",
+      default: 90,
+    },
+    {
+      type: "input",
+      name: "level",
+      message: "Enter your levek",
+      default: "ADVANCED",
     },
     {
       type: "input",
@@ -92,7 +93,13 @@ async function getInfos() {
       type: "input",
       name: "goal",
       message: "Enter your goal",
-      default: "LOSE_WEIGHT",
+      default: "STAY_IN_SHAPE",
+    },
+    {
+      type: "input",
+      name: "activities",
+      message: "Enter your activities",
+      default: ["TENNIS", "SOCCER"],
     }
   ]);
 
