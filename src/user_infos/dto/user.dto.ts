@@ -1,5 +1,5 @@
-import { Gender, Goal, SportFrequence } from "@prisma/client";
-import { IsNotEmpty, IsString } from "class-validator";
+import { Gender, Goal, Level, Activities } from "@prisma/client";
+import { IsInt, IsNotEmpty, IsString } from "class-validator";
 
 export class UserInfosDto {
   @IsNotEmpty()
@@ -16,26 +16,29 @@ export class UserInfosDto {
 
   @IsNotEmpty()
   @IsString()
-  username: string;
-
-  @IsNotEmpty()
-  @IsString()
   birth_date: Date;
 
   @IsNotEmpty()
-  @IsString()
+  @IsInt()
   size: number;
 
   @IsNotEmpty()
-  @IsString()
+  @IsInt()
   weight: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  goal_weight: number;
 
   @IsNotEmpty()
   gender: Gender;
 
   @IsNotEmpty()
-  sport_frequence: SportFrequence;
+  goal: Goal;
 
   @IsNotEmpty()
-  goal: Goal;
+  level: Level;
+
+  @IsNotEmpty()
+  activities: Activities[];
 }

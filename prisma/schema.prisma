@@ -19,9 +19,10 @@ enum EventCalendar {
 }
 
 enum Goal {
-  WEIGHT_GAIN
-  WEIGHT_LOSS
-  GETTING_BACK_IN_SHAPE
+  LOSE_WEIGHT
+  STAY_IN_SHAPE
+  GAIN_MUSCLE_MASS
+  BUILD_MUSCLE
 }
 
 enum Page {
@@ -49,17 +50,44 @@ enum MuscleGroup {
   OTHER
 }
 
-enum SportFrequence {
-  NEVER
-  LESS_THAN_ONCE_A_MONTH
-  ONCE_A_MONTH
-  ONCE_IN_TWO_WEEKS
-  ONCE_A_WEEK
-  TWICE_A_WEEK
-  THREE_A_WEEK
-  FOUR_A_WEEK
-  FIVE_A_WEEK
-  MORE_THEN_FIVE_A_WEEK
+enum Level {
+  BEGINNER
+  IRREGULAR_TRAINING
+  MEDIUM
+  ADVANCED
+}
+
+enum Activities {
+  RUNNING
+  CYCLING
+  SWIMMING
+  WEIGHTLIFTING
+  YOGA
+  PILATES
+  MARTIAL_ARTS
+  DANCING
+  HIKING
+  ROCK_CLIMBING
+  TENNIS
+  BASKETBALL
+  SOCCER
+  VOLLEYBALL
+  BASEBALL
+  SKIING
+  SNOWBOARDING
+  SURFING
+  GOLF
+  ROWING
+  CROSSFIT
+  GYMNASTICS
+  TRIATHLON
+  RUGBY
+  BOXING
+  SKATING
+  SQUASH
+  BADMINTON
+  HORSE_RIDING
+  TABLE_TENNIS
 }
 
 model User {
@@ -106,17 +134,17 @@ model UserData {
   userId          String         @id @default(uuid())
   user            User           @relation(name: "user", fields: [userId], references: [id], onDelete: Cascade)
   birth_date      DateTime       @default(now())
-  username        String         @unique
   firstname       String
   lastname        String
   size            Int
   weight          Int
+  goal_weight     Int
   avatar          String         @default("https://sidekick-files.s3.eu-west-3.amazonaws.com/default.jpg")
   gender          Gender
   description     String
-  sport_frequence SportFrequence
-  sports          Json?           @default("{}")
-  goal            Goal?           @default(GETTING_BACK_IN_SHAPE)
+  level           Level
+  activities      Activities[]
+  goal            Goal?          @default(STAY_IN_SHAPE)
   sidekick_id     String?        @unique
   sidekick        User?          @relation(name: "sidekick", fields: [sidekick_id], references: [id], onDelete: SetNull)
   isDarkMode      Boolean        @default(false)
