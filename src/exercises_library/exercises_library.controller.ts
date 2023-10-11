@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ExercisesLibraryService } from './exercises_library.service';
 import { CreateExercisesLibraryDto } from './dto/create-exercises_library.dto';
 import { UpdateExercisesLibraryDto } from './dto/update-exercises_library.dto';
 import { Public } from 'src/common/decorators';
+import { MuscleGroup } from '@prisma/client';
 
 @Controller('exercises-library')
 export class ExercisesLibraryController {
@@ -17,6 +18,11 @@ export class ExercisesLibraryController {
   @Get()
   findAll() {
     return this.exercisesLibraryService.findAll();
+  }
+
+  @Get('muscle')
+  findByMuscle(@Query('muscle') muscle: MuscleGroup) {
+    return this.exercisesLibraryService.findByMuscle(muscle)
   }
 
   @Get(':id')
