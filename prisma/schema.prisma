@@ -103,7 +103,7 @@ model User {
   meals     Meals[]
   sidekick  UserData?  @relation("sidekick")
   Reports   Reports[]
-  sports_exercices Sports_exercices[]
+  workouts Workouts[]
   planning Planning[]
   Preferences Preferences[]
   BugsBeta BugsBeta[]
@@ -198,15 +198,19 @@ model Reports {
   @@map("reports")
 }
 
-model Sports_exercices {
+model Workouts {
   id          Int     @id @unique @default(autoincrement())
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
-  name        String
+  exercise    Exercises_Library     @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  exerciseId  Int
+  burnedCalories Int
+  duration    Int
+  date        DateTime @default(now())
   createdAt   DateTime @default(now())
   updateAt    DateTime @default(now())
 
-  @@map("sports_exercices")
+  @@map("workouts")
 }
 
 model Planning {
@@ -279,10 +283,12 @@ model OpenFoodFacts {
 
 model Exercises_Library {
   id          Int     @id @unique @default(autoincrement())
+  workouts    Workouts[]
   name        String
   description String
-  thumbnail       String?
+  thumbnail   String?
   video       String
+  met         Int
   muscle_group MuscleGroup?
 
   @@map("exercises_library")

@@ -112,7 +112,7 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier">Async</span>
-                                <a href="#setSportsExercises" >setSportsExercises</a>
+                                <a href="#setWorkoutss" >setWorkoutss</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -497,19 +497,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="setSportsExercises"></a>
+                    <a name="setWorkoutss"></a>
                     <span class="name">
                         <span class="modifier"></span>
                         <span class="modifier">Async</span>
-                        <span ><b>setSportsExercises</b></span>
-                        <a href="#setSportsExercises"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>setWorkoutss</b></span>
+                        <a href="#setWorkoutss"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>setSportsExercises(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, req: literal type)</code>
+                    <code>setWorkoutss(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, req: literal type)</code>
                 </td>
             </tr>
 
@@ -813,7 +813,7 @@ export class PlanningController {
 	}
 
 	@Post(&#x27;/exercise/&#x27;)
-	async setSportsExercises(@GetCurrentUserEmail() email: string, @Body() req: {day: number, repetitions: number, exercise_id: number, moment: string}) {
+	async setWorkoutss(@GetCurrentUserEmail() email: string, @Body() req: {day: number, repetitions: number, exercise_id: number, moment: string}) {
 		return this.planningService.setExercise(email, req)
 	}
 

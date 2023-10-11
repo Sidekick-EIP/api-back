@@ -37,7 +37,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >SportsExerciseController</li>
+  <li class="breadcrumb-item" >WorkoutsController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -145,7 +145,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>add(req: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, dto: <a href="../classes/SportsExerciseDto.html" target="_self">SportsExerciseDto</a>)</code>
+                    <code>add(req: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, dto: <a href="../classes/WorkoutsDto.html" target="_self">WorkoutsDto</a>)</code>
                 </td>
             </tr>
 
@@ -195,7 +195,7 @@
                                 <tr>
                                     <td>dto</td>
                                     <td>
-                                                <code><a href="../classes/SportsExerciseDto.html" target="_self" >SportsExerciseDto</a></code>
+                                                <code><a href="../classes/WorkoutsDto.html" target="_self" >WorkoutsDto</a></code>
                                     </td>
 
                                     <td>
@@ -559,7 +559,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, dto: <a href="../classes/SportsExerciseDto.html" target="_self">SportsExerciseDto</a>)</code>
+                    <code>update(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, dto: <a href="../classes/WorkoutsDto.html" target="_self">WorkoutsDto</a>)</code>
                 </td>
             </tr>
 
@@ -609,7 +609,7 @@
                                 <tr>
                                     <td>dto</td>
                                     <td>
-                                                <code><a href="../classes/SportsExerciseDto.html" target="_self" >SportsExerciseDto</a></code>
+                                                <code><a href="../classes/WorkoutsDto.html" target="_self" >WorkoutsDto</a></code>
                                     </td>
 
                                     <td>
@@ -639,12 +639,12 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Post, Request, Body, Param, Delete, Put, Get } from &#x27;@nestjs/common&#x27;;
-import { SportsExerciseDto } from &#x27;./dto/sports_exercices.dto&#x27;;
-import { SportsExerciseService } from &#x27;./sports_exercises.service&#x27;;
+import { WorkoutsDto } from &#x27;./dto/sports_exercices.dto&#x27;;
+import { WorkoutsService } from &#x27;./sports_exercises.service&#x27;;
 
 @Controller(&#x27;sports-exercise&#x27;)
-export class SportsExerciseController {
-	constructor(private sportsExercicseService: SportsExerciseService) { }
+export class WorkoutsController {
+	constructor(private sportsExercicseService: WorkoutsService) { }
 
 	@Get(&quot;/:id&quot;)
 	find(@Param(&#x27;id&#x27;) id: string) {
@@ -657,12 +657,12 @@ export class SportsExerciseController {
 	}
 
 	@Post(&quot;add&quot;)
-	add(@Request() req: any, @Body() dto: SportsExerciseDto) {
+	add(@Request() req: any, @Body() dto: WorkoutsDto) {
 	  return this.sportsExercicseService.add(dto, req.user.email);
 	}
 
 	@Put(&quot;update/:id&quot;)
-	update(@Param(&#x27;id&#x27;) id: string, @Body() dto: SportsExerciseDto) {
+	update(@Param(&#x27;id&#x27;) id: string, @Body() dto: WorkoutsDto) {
 		return this.sportsExercicseService.update(id, dto);
 	}
 
@@ -721,7 +721,7 @@ export class SportsExerciseController {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
-            var COMPODOC_CURRENT_PAGE_URL = 'SportsExerciseController.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'WorkoutsController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 
