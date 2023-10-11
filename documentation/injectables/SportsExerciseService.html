@@ -40,7 +40,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >SportsExerciseService</li>
+  <li class="breadcrumb-item" >WorkoutsService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -196,7 +196,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>add(datas: <a href="../classes/SportsExerciseDto.html" target="_self">SportsExerciseDto</a>, userEmail: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>add(datas: <a href="../classes/WorkoutsDto.html" target="_self">WorkoutsDto</a>, userEmail: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -227,7 +227,7 @@
                                 <tr>
                                     <td>datas</td>
                                     <td>
-                                                <code><a href="../classes/SportsExerciseDto.html" target="_self" >SportsExerciseDto</a></code>
+                                                <code><a href="../classes/WorkoutsDto.html" target="_self" >WorkoutsDto</a></code>
                                     </td>
 
                                     <td>
@@ -580,7 +580,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, datas: <a href="../classes/SportsExerciseDto.html" target="_self">SportsExerciseDto</a>)</code>
+                    <code>update(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, datas: <a href="../classes/WorkoutsDto.html" target="_self">WorkoutsDto</a>)</code>
                 </td>
             </tr>
 
@@ -623,7 +623,7 @@
                                 <tr>
                                     <td>datas</td>
                                     <td>
-                                                <code><a href="../classes/SportsExerciseDto.html" target="_self" >SportsExerciseDto</a></code>
+                                                <code><a href="../classes/WorkoutsDto.html" target="_self" >WorkoutsDto</a></code>
                                     </td>
 
                                     <td>
@@ -656,11 +656,11 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, ConflictException, NotFoundException } from &#x27;@nestjs/common&#x27;;
 import { PrismaService } from &#x27;../prisma/prisma.service&#x27;;
-import { SportsExerciseDto } from &#x27;./dto/sports_exercices.dto&#x27;;
+import { WorkoutsDto } from &#x27;./dto/sports_exercices.dto&#x27;;
 import UserNotFoundException from &#x27;./exceptions/not-found.exception&#x27;;
 
 @Injectable()
-export class SportsExerciseService {
+export class WorkoutsService {
 	constructor(private _prismaService: PrismaService) {}
 
 	public async find(id: string) {
@@ -694,7 +694,7 @@ export class SportsExerciseService {
 		})
 	}
 
-	public async add(datas: SportsExerciseDto, userEmail: string) {
+	public async add(datas: WorkoutsDto, userEmail: string) {
 		const user &#x3D; await this._prismaService.user.findUnique({
 			where: {
 				email: userEmail
@@ -728,7 +728,7 @@ export class SportsExerciseService {
 		})
 	}
 
-	public async update(id: string, datas: SportsExerciseDto) {
+	public async update(id: string, datas: WorkoutsDto) {
 		return this._prismaService.sports_exercices.update({
 			data: datas,
 			where: {
@@ -800,7 +800,7 @@ export class SportsExerciseService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'SportsExerciseService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'WorkoutsService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

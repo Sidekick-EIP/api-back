@@ -18,7 +18,7 @@ import { MealsModule } from './meals/meals.module';
 import { ChatModule } from './chat/chat.module';
 import { ReportsModule } from './reports/reports.module';
 import { FileModule } from './file/file.module';
-import { SportsExerciseModule } from './sports_exercises/sports_exercises.module';
+import { WorkoutsModule } from './workouts/workouts.module';
 import { PlanningModule } from './planning/planning.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { OpenffModule } from './openff/openff.module';
@@ -36,7 +36,7 @@ import { FeedbackUserModule } from './feedback_user/feedback_user.module';
   imports: [ConfigModule.forRoot({ isGlobal: true }), ThrottlerModule.forRoot({
     ttl: 60,
     limit: 60,
-  }), PrismaModule, AuthModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, SportsExerciseModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule],
+  }), PrismaModule, AuthModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule],
   controllers: [AppController, CaloriesController, MealsController, BugsBetaController],
   providers: [AppService, {
     provide: APP_GUARD,

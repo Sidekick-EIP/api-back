@@ -55,7 +55,13 @@ async function getInfos() {
         "FULL_BODY",
         "OTHER",
       ],
-    }
+    },
+    {
+      type: "input",
+      name: "met",
+      message: "Enter the met",
+      default: 3
+    },
   ]);
 
   return infos;
