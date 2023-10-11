@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateExercisesLibraryDto } from './dto/create-exercises_library.dto';
 import { UpdateExercisesLibraryDto } from './dto/update-exercises_library.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { MuscleGroup } from '@prisma/client';
 
 @Injectable()
 export class ExercisesLibraryService {
   constructor(private prisma: PrismaService) { }
 
   async create(createExercisesLibraryDto: CreateExercisesLibraryDto) {
-    const { name, description, video, thumbnail, muscleGroup } = createExercisesLibraryDto;
+    const { name, description, video, thumbnail, muscleGroup, met } = createExercisesLibraryDto;
 
     const exercisesLibrary = await this.prisma.exercises_Library.create({
       data: {
@@ -17,6 +18,7 @@ export class ExercisesLibraryService {
         video,
         thumbnail,
         muscle_group: muscleGroup,
+        met: met,
       },
     });
 
@@ -29,7 +31,17 @@ export class ExercisesLibraryService {
     return exercisesLibrary;
   }
 
-  async findOne(id: number) {
+  async findByMuscle(muscle: MuscleGroup) {
+    const exercisesLibrary = await this.prisma.exercises_Library.findMany({
+      where: {
+        muscle_group: muscle,
+      }
+    });
+
+    return exercisesLibrary;
+  }
+
+  public async findOne(id: number) {
     const exercisesLibrary = await this.prisma.exercises_Library.findUnique({
       where: {
         id,
@@ -40,7 +52,7 @@ export class ExercisesLibraryService {
   }
 
   async update(id: number, updateExercisesLibraryDto: UpdateExercisesLibraryDto) {
-    const { name, description, video, thumbnail, muscleGroup } = updateExercisesLibraryDto;
+    const { name, description, video, thumbnail, muscleGroup, met } = updateExercisesLibraryDto;
 
     const exercisesLibrary = await this.prisma.exercises_Library.update({
       where: {
@@ -52,6 +64,7 @@ export class ExercisesLibraryService {
         video,
         thumbnail,
         muscle_group: muscleGroup,
+        met: met
       },
     });
 

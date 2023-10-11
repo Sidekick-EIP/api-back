@@ -22,22 +22,22 @@ export class PlanningController {
 	}
 
 	@Post('/exercise/')
-	async setSportsExercises(@GetCurrentUserEmail() email: string, @Body() req: {day: number, repetitions: number, exercise_id: number}) {
+	async setWorkoutss(@GetCurrentUserEmail() email: string, @Body() req: { day: number, repetitions: number, exercise_id: number }) {
 		return this.planningService.setExercise(email, req)
 	}
 
 	@Put('/exercise/:id')
-	async updateSportExercise(@Param('id') id: string, @GetCurrentUserEmail() email: string, @Body() req: {day: number, repetitions: number, exercise_id: number}) {
+	async updateSportExercise(@Param('id') id: string, @GetCurrentUserEmail() email: string, @Body() req: { day: number, repetitions: number, exercise_id: number }) {
 		return this.planningService.updateExercise(req, id)
 	}
 
 	@Post('/meal/')
-	async SetMeal(@GetCurrentUserEmail() email: string, @Body() req: {day: number, meal_id: number, moment: string}) {
+	async SetMeal(@GetCurrentUserEmail() email: string, @Body() req: { day: number, meal_id: number, moment: string }) {
 		return this.planningService.setMeal(email, req)
 	}
 
 	@Put('/meal/:id')
-	async updateMeal(@Param('id') id: string, @GetCurrentUserEmail() email: string, @Body() req: {day: string, meal_id: number, moment: string}) {
+	async updateMeal(@Param('id') id: string, @GetCurrentUserEmail() email: string, @Body() req: { day: string, meal_id: number, moment: string }) {
 		return this.planningService.updateMeal(req, id)
 	}
 
