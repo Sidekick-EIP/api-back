@@ -57,15 +57,27 @@ export class NutritionService {
     const snacks = await this._prismaService.nutrition.findMany({where: { userId: user.id, date: date, period: "SNACKS" }})
 
     return {
-			calories: nutrition.reduce((total, workout) => total + workout.calories, 0),
-      carbs: nutrition.reduce((total, workout) => total + workout.carbs, 0),
-      protein: nutrition.reduce((total, workout) => total + workout.protein, 0),
-      fat: nutrition.reduce((total, workout) => total + workout.fat, 0),
+			calories: nutrition.reduce((total, meal) => total + meal.calories, 0),
+      carbs: nutrition.reduce((total, meal) => total + meal.carbs, 0),
+      protein: nutrition.reduce((total, meal) => total + meal.protein, 0),
+      fat: nutrition.reduce((total, meal) => total + meal.fat, 0),
       meals: {
-        breakfast: breakfasts,
-        lunch: lunch,
-        dinners: dinners,
-        snacks: snacks
+        breakfast: {
+          calories: breakfasts.reduce((total, meal) => total + meal.calories, 0),
+          meals: breakfasts,
+        },
+        lunch: {
+          calories: lunch.reduce((total, meal) => total + meal.calories, 0),
+          meals: lunch,
+        },
+        dinners: {
+          calories: dinners.reduce((total, meal) => total + meal.calories, 0),
+          meals: dinners,
+        },
+        snacks: {
+          calories: snacks.reduce((total, meal) => total + meal.calories, 0),
+          meals: snacks,
+        }
       }
     }
   }
