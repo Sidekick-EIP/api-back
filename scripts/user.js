@@ -60,19 +60,19 @@ async function getInfos() {
       default: "2001-03-10T00:00:00.000Z",
     },
     {
-      type: "input",
+      type: "number",
       name: "size",
       message: "Enter your size",
       default: 180,
     },
     {
-      type: "input",
+      type: "number",
       name: "weight",
       message: "Enter your weight",
       default: 80,
     },
     {
-      type: "input",
+      type: "number",
       name: "goal_weight",
       message: "Enter your goal weight",
       default: 90,
@@ -80,7 +80,7 @@ async function getInfos() {
     {
       type: "input",
       name: "level",
-      message: "Enter your levek",
+      message: "Enter your level",
       default: "ADVANCED",
     },
     {
