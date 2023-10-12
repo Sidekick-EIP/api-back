@@ -90,35 +90,31 @@ enum Activities {
   TABLE_TENNIS
 }
 
+enum Period {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACKS
+}
+
 model User {
-  id        String     @id @default(uuid())
-  email     String     @unique
-  password  String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @default(now())
-  user      UserData?  @relation("user")
-  calories  Calories[]
-  steps     Steps[]
-  messages  Message[]
-  meals     Meals[]
-  sidekick  UserData?  @relation("sidekick")
-  Reports   Reports[]
-  workouts Workouts[]
-  planning Planning[]
-  Preferences Preferences[]
-  BugsBeta BugsBeta[]
+  id           String         @id @default(uuid())
+  email        String         @unique
+  password     String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now())
+  user         UserData?      @relation("user")
+  steps        Steps[]
+  messages     Message[]
+  nutrition    Nutrition[]
+  sidekick     UserData?      @relation("sidekick")
+  Reports      Reports[]
+  workouts     Workouts[]
+  Preferences  Preferences[]
+  BugsBeta     BugsBeta[]
   FeedBackUser FeedBackUser[]
 
   @@map("users")
-}
-
-model Calories {
-  id         String @id @default(uuid())
-  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
-  nbCalories Int
-
-  @@map("calories")
 }
 
 model Steps {
@@ -131,39 +127,44 @@ model Steps {
 }
 
 model UserData {
-  userId          String         @id @default(uuid())
-  user            User           @relation(name: "user", fields: [userId], references: [id], onDelete: Cascade)
-  birth_date      DateTime       @default(now())
-  firstname       String
-  lastname        String
-  size            Int
-  weight          Int
-  goal_weight     Int
-  avatar          String         @default("https://sidekick-files.s3.eu-west-3.amazonaws.com/default.jpg")
-  gender          Gender
-  description     String
-  level           Level
-  activities      Activities[]
-  goal            Goal?          @default(STAY_IN_SHAPE)
-  sidekick_id     String?        @unique
-  sidekick        User?          @relation(name: "sidekick", fields: [sidekick_id], references: [id], onDelete: SetNull)
-  isDarkMode      Boolean        @default(false)
+  userId      String       @id @default(uuid())
+  user        User         @relation(name: "user", fields: [userId], references: [id], onDelete: Cascade)
+  birth_date  DateTime     @default(now())
+  firstname   String
+  lastname    String
+  size        Int
+  weight      Int
+  goal_weight Int
+  avatar      String       @default("https://sidekick-files.s3.eu-west-3.amazonaws.com/default.jpg")
+  gender      Gender
+  description String
+  level       Level
+  activities  Activities[]
+  goal        Goal?        @default(STAY_IN_SHAPE)
+  sidekick_id String?      @unique
+  sidekick    User?        @relation(name: "sidekick", fields: [sidekick_id], references: [id], onDelete: SetNull)
+  isDarkMode  Boolean      @default(false)
 
   @@map("users_data")
 }
 
-model Meals {
+model Nutrition {
   id          Int      @id @unique @default(autoincrement())
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   name        String
-  ingredients Json
-  period      String   @default("dinner")
+  picture     String?
+  protein     Int
+  carbs      Int
+  fat         Int
+  weight      Int
+  calories    Int
+  period      Period
   date        DateTime @default(now())
   createdAt   DateTime @default(now())
   updateAt    DateTime @default(now())
 
-  @@map("meals")
+  @@map("nutrition")
 }
 
 model Message {
@@ -199,48 +200,35 @@ model Reports {
 }
 
 model Workouts {
-  id          Int     @id @unique @default(autoincrement())
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
-  exercise    Exercises_Library     @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  exerciseId  Int
+  id             Int               @id @unique @default(autoincrement())
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  exercise       Exercises_Library @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  exerciseId     Int
   burnedCalories Int
-  duration    Int
-  date        DateTime @default(now())
-  createdAt   DateTime @default(now())
-  updateAt    DateTime @default(now())
+  duration       Int
+  date           DateTime          @default(now())
+  createdAt      DateTime          @default(now())
+  updateAt       DateTime          @default(now())
 
   @@map("workouts")
 }
 
-model Planning {
-  id               Int     @id @unique @default(autoincrement())
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String
-  day              DateTime
-  content          Json
-  type             EventCalendar
-  createdAt        DateTime @default(now())
-  updateAt         DateTime @default(now())
-
-  @@map("planning")
-}
-
 model Preferences {
-  id         Int     @id @unique @default(autoincrement())
-  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
+  id     Int    @id @unique @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
-  darkMode    Boolean @default(false)
+  darkMode      Boolean @default(false)
   notifications Boolean @default(true)
-  sounds Boolean @default(true)
+  sounds        Boolean @default(true)
 
   @@map("preferences")
 }
 
 model BugsBeta {
-  id          Int     @id @unique @default(autoincrement())
-  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          Int    @id @unique @default(autoincrement())
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   title       String
   description String
@@ -250,45 +238,46 @@ model BugsBeta {
 }
 
 model FeedBackUser {
-  id          Int     @id @unique @default(autoincrement())
-  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
-  rating      Float
+  id      Int    @id @unique @default(autoincrement())
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  rating  Float
   comment String
 
   @@map("feedback_user")
 }
 
 model BetaUser {
-  id          Int     @id @unique @default(autoincrement())
-  email       String  @unique
-  lastname    String
-  firstname   String
+  id        Int    @id @unique @default(autoincrement())
+  email     String @unique
+  lastname  String
+  firstname String
 
   @@map("beta_users")
 }
 
 model OpenFoodFacts {
-  id          Int     @id @unique @default(autoincrement())
-  product_name        String
-  brands              String
-  energy_kcal_100g         Float
-  proteins_100g       Float
-  carbohydrates_100g  Float
-  fat_100g            Float
-  image_front_url     String
-  nutriscore          String
+  id                 Int    @id @unique @default(autoincrement())
+  product_name       String
+  brands             String
+  energy_kcal_100g   Float
+  proteins_100g      Float
+  carbohydrates_100g Float
+  fat_100g           Float
+  image_front_url    String
+  nutriscore         String
+
   @@map("open_food_facts")
 }
 
 model Exercises_Library {
-  id          Int     @id @unique @default(autoincrement())
-  workouts    Workouts[]
-  name        String
-  description String
-  thumbnail   String?
-  video       String
-  met         Int
+  id           Int          @id @unique @default(autoincrement())
+  workouts     Workouts[]
+  name         String
+  description  String
+  thumbnail    String?
+  video        String
+  met          Int
   muscle_group MuscleGroup?
 
   @@map("exercises_library")
