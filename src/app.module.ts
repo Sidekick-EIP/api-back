@@ -8,18 +8,14 @@ import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './common/guards';
 import { UserInfosModule } from './user_infos/user_infos.module';
 import { MessagesModule } from './messages/messages.module';
-import { CaloriesController } from './calories/calories.controller';
-import { CaloriesService } from './calories/calories.service';
-import { CaloriesModule } from './calories/calories.module';
 import { StepsModule } from "./steps/steps.module";
-import { MealsService } from './meals/meals.service';
-import { MealsController } from './meals/meals.controller';
-import { MealsModule } from './meals/meals.module';
+import { NutritionService } from './nutrition/nutrition.service';
+import { NutritionController } from './nutrition/nutrition.controller';
+import { NutritionModule } from './nutrition/nutrition.module';
 import { ChatModule } from './chat/chat.module';
 import { ReportsModule } from './reports/reports.module';
 import { FileModule } from './file/file.module';
 import { WorkoutsModule } from './workouts/workouts.module';
-import { PlanningModule } from './planning/planning.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { OpenffModule } from './openff/openff.module';
 import { BugsBetaService } from './bugs_beta/bugs_beta.service';
@@ -36,14 +32,14 @@ import { FeedbackUserModule } from './feedback_user/feedback_user.module';
   imports: [ConfigModule.forRoot({ isGlobal: true }), ThrottlerModule.forRoot({
     ttl: 60,
     limit: 60,
-  }), PrismaModule, AuthModule, UserInfosModule, MessagesModule, CaloriesModule, StepsModule, MealsModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, PlanningModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule],
-  controllers: [AppController, CaloriesController, MealsController, BugsBetaController],
+  }), PrismaModule, AuthModule, UserInfosModule, MessagesModule, StepsModule, NutritionModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule],
+  controllers: [AppController, NutritionController, BugsBetaController],
   providers: [AppService, {
     provide: APP_GUARD,
     useClass: AtGuard
   }, {
       provide: APP_GUARD,
       useClass: ThrottlerGuard
-    }, CaloriesService, MealsService, BugsBetaService],
+    }, NutritionService, BugsBetaService],
 })
 export class AppModule { }
