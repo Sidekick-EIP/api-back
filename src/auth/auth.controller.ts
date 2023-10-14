@@ -1,13 +1,14 @@
-import { Body, Controller, Get, Headers, Post, Request, UnauthorizedException } from "@nestjs/common";
+import { Body, Controller, Get, Headers, Post, Request, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import UserNotFoundException from "src/user_infos/exceptions/not-found.exception";
 import { Public } from "../common/decorators";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto";
 import { IsEmail } from "class-validator";
+import { AdminGuard } from "src/common/guards";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Public()
   @Post("login")
@@ -69,5 +70,11 @@ export class AuthController {
   @Get("public")
   public() {
     return "public";
+  }
+
+  @UseGuards(AdminGuard)
+  @Get("admin")
+  admin(@Res() res: any) {
+    res.status(200).send();
   }
 }
