@@ -23,6 +23,6 @@ export class PreferencesService {
       include: { Preferences: true },
     });
 
-    return user.Preferences;
+    return user.Preferences[0];
   }
 }
