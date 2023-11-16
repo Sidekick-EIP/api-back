@@ -19,6 +19,10 @@ export class EditInfosDto {
   size?: number;
 
   @IsOptional()
+  @IsString()
+  location: string;
+
+  @IsOptional()
   @IsInt()
   weight?: number;
 
