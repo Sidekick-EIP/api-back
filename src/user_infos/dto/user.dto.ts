@@ -23,6 +23,10 @@ export class UserInfosDto {
   size: number;
 
   @IsNotEmpty()
+  @IsString()
+  location: string;
+
+  @IsNotEmpty()
   @IsInt()
   weight: number;
 
