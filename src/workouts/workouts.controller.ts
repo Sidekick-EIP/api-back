@@ -16,6 +16,11 @@ export class WorkoutsController {
 		return this.workoutsService.burnedCalories(req.user.email, day);
 	}
 
+	@Get("/sidekick")
+	findSidekick(@Request() req: any) {
+		return this.workoutsService.findSidekick(req.user.email);
+	}
+
 	@Get("/:id")
 	find(@Param('id') id: string) {
 		return this.workoutsService.find(Number(id));
@@ -26,10 +31,6 @@ export class WorkoutsController {
 		return this.workoutsService.findAll(req.user.email);
 	}
 
-	@Get("/sidekick")
-	findSidekick(@Request() req: any) {
-		return this.workoutsService.findSidekick(req.user.email);
-	}
 
 	@Post("add")
 	add(@Request() req: any, @Body() dto: WorkoutsDto) {
