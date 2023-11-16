@@ -4,6 +4,7 @@ import { WorkoutsDto } from './dto/workouts.dto';
 import { ExercisesLibraryService } from '../exercises_library/exercises_library.service';
 import UserNotFoundException from './exceptions/not-found.exception';
 import { UserInfoService } from '../user_infos/user_infos.service';
+import { UserWithoutSidekickException } from 'src/user_infos/exceptions/not-found.exception';
 
 @Injectable()
 export class WorkoutsService {
@@ -69,6 +70,35 @@ export class WorkoutsService {
 			},
 			where: {
 				userId: user.id,
+			}
+		})
+	}
+
+	public async findSidekick(email: string) {
+		const user = await this._prismaService.user.findUnique({
+			where: {
+				email: email
+			}
+		});
+		if (!user) {
+			throw new UserNotFoundException(email);
+		}
+
+		const userDatas = await this._prismaService.userData.findUnique({
+			where: {
+			  userId: user.id,
+			},
+		  });
+		  if (!userDatas.sidekick_id) {
+			throw new UserWithoutSidekickException(user.id);
+		  }
+
+		return this._prismaService.workouts.findMany({
+			include: {
+				exercise: true,
+			},
+			where: {
+				userId: userDatas.sidekick_id,
 			}
 		})
 	}
