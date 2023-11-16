@@ -138,6 +138,7 @@ model UserData {
   avatar      String       @default("https://sidekick-files.s3.eu-west-3.amazonaws.com/default.jpg")
   gender      Gender
   description String
+  location    String       @default("Lille")
   level       Level
   activities  Activities[]
   goal        Goal?        @default(STAY_IN_SHAPE)
