@@ -26,6 +26,11 @@ export class WorkoutsController {
 		return this.workoutsService.findAll(req.user.email);
 	}
 
+	@Get("/sidekick")
+	findSidekick(@Request() req: any) {
+		return this.workoutsService.findSidekick(req.user.email);
+	}
+
 	@Post("add")
 	add(@Request() req: any, @Body() dto: WorkoutsDto) {
 		return this.workoutsService.add(dto, req.user.email);
