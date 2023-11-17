@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ModeratorAnswerDto } from './dto/moderator-answer.dto';
 import { SESClient, SES } from '@aws-sdk/client-ses';
 import { ConfigService } from '@nestjs/config';
+import { UserAnswerDto } from './dto/user-answer.dto';
 
 @Injectable()
 export class TicketsService {
@@ -20,11 +21,12 @@ export class TicketsService {
   }
 
   async create(dto: CreateTicketDto, email: string) {
-    return await this.prismaService.tickets.create({
+    const ticket = await this.prismaService.ticket.create({
       data: {
         description: dto.content,
         title: dto.title,
         status: "OPEN",
+        last_action: "OPENED_BY_USER",
         user: {
           connect: {
             email: email
@@ -32,51 +34,136 @@ export class TicketsService {
         }
       }
     })
+
+    const response = await this.prismaService.response.create({
+      data: {
+        content: dto.content,
+        user: {
+          connect: {
+            email: email
+          }
+        },
+        ticket: {
+          connect: {
+            id: ticket.id
+          }
+        }
+      }
+    });
+
+    return { ticket, response };
   }
 
   async find(cursor: number) {
-    return await this.prismaService.tickets.findMany({
+    return await this.prismaService.ticket.findMany({
       take: 10,
       skip: cursor,
       include: {
-        user: true
+        user: true,
+        responses: {
+          orderBy: {
+            createdAt: 'asc'
+          },
+          include: {
+            user: true,
+          },
+        },
       }
     });
   }
 
   async findOne(id: number) {
-    return await this.prismaService.tickets.findUnique({
+    return await this.prismaService.ticket.findUnique({
       where: {
         id: id
       },
       include: {
-        user: true
+        user: true,
+        responses: {
+          orderBy: {
+            createdAt: 'asc'
+          },
+          include: {
+            user: true,
+          },
+        },
       }
     })
   }
 
-  async answer({ answer }: ModeratorAnswerDto, id: number) {
-    const res = await this.prismaService.tickets.update({
+  async user_answer({ answer }: UserAnswerDto, id: number) {
+    const ticket = await this.prismaService.ticket.update({
       where: {
         id: id
       },
       data: {
-        answer: answer
+        last_action: "ANSWERED_BY_USER",
       },
       include: {
         user: true
       }
     });
 
-    const params = this.getParams(res.user.email, answer, "Your ticket has been answered by a moderator: " + answer);
+    const response = await this.prismaService.response.create({
+      data: {
+        content: answer,
+        user: {
+          connect: {
+            email: ticket.user.email
+          }
+        },
+        ticket: {
+          connect: {
+            id: id
+          }
+        }
+      }
+    });
 
-    const response = await this.SES.sendEmail(params);
+    return { response, message: "Your response has been sent" };
+  }
+
+  async answer({ answer }: ModeratorAnswerDto, id: number) {
+    const ticket = await this.prismaService.ticket.update({
+      where: {
+        id: id
+      },
+      data: {
+        last_action: "ANSWERED_BY_MODERATOR",
+      },
+      include: {
+        user: true
+      }
+    });
+
+    const response = await this.prismaService.response.create({
+      data: {
+        content: answer,
+        user: {
+          connect: {
+            email: ticket.user.email
+          }
+        },
+        ticket: {
+          connect: {
+            id: id
+          }
+        }
+      }
+    });
+
+    const params = this.getParams(ticket.user.email, answer, "Your ticket has been answered by a moderator: " + answer);
+
+    const res = await this.SES.sendTemplatedEmail({
+      ...params, Template: "ticket-response",
+      TemplateData: JSON.stringify({ admin_response: answer, ticket_name: ticket.title })
+    });
 
     return { res, message: "Email has been sent" };
   }
 
   async close(id: number) {
-    const res = await this.prismaService.tickets.update({
+    const res = await this.prismaService.ticket.update({
       where: {
         id: id
       },
@@ -94,7 +181,6 @@ export class TicketsService {
   }
 
   private getParams(to: string, message: string, subject: string) {
-    console.log(to);
     return {
       Source: "sidekick.eip@gmail.com",
       Destination: {

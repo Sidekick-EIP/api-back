@@ -26,8 +26,13 @@ export class TicketsController {
     return this.ticketsService.findOne(+id);
   }
 
-  @UseGuards(AdminGuard)
   @Post(":id/answer")
+  user_answer(@Body() dto: ModeratorAnswerDto, @Param("id", ParseIntPipe) id: number) {
+    return this.ticketsService.user_answer(dto, id);
+  }
+
+  @UseGuards(AdminGuard)
+  @Post(":id/admin/answer")
   answer(@Body() dto: ModeratorAnswerDto, @Param("id", ParseIntPipe) id: number) {
     return this.ticketsService.answer(dto, id);
   }
