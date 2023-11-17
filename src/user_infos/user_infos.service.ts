@@ -80,7 +80,8 @@ export class UserInfoService {
       bio: sidekickDatas.description,
       goal: sidekickDatas.goal,
       level: sidekickDatas.level,
-      activities: sidekickDatas.activities
+      activities: sidekickDatas.activities,
+      location: sidekickDatas.location
     };
   }
 
