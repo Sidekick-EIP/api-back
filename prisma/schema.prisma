@@ -113,8 +113,22 @@ model User {
   Preferences  Preferences[]
   BugsBeta     BugsBeta[]
   FeedBackUser FeedBackUser[]
+  Tickets      Ticket[]
+  Responses    Response[]
 
   @@map("users")
+}
+
+enum TicketStatus {
+  OPEN
+  ANSWERED
+  CLOSED
+}
+
+enum TicketAction {
+  OPENED_BY_USER
+  ANSWERED_BY_MODERATOR
+  ANSWERED_BY_USER
 }
 
 model Steps {
@@ -282,4 +296,34 @@ model Exercises_Library {
   muscle_group MuscleGroup?
 
   @@map("exercises_library")
+}
+
+model Response {
+  id Int @id @unique @default(autoincrement())
+  ticketId Int
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  content String
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("responses")
+}
+
+model Ticket {
+  id Int @id @unique @default(autoincrement())
+  status TicketStatus
+  title String
+  description String
+  last_action TicketAction
+  responses Response[]
+  
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+
+  createdAt      DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  @@map("tickets")
 }

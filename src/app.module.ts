@@ -27,12 +27,13 @@ import { MealRecoModule } from './meal_reco/meal_reco.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { FeedbackUserModule } from './feedback_user/feedback_user.module';
+import { TicketsModule } from './tickets/tickets.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }), ThrottlerModule.forRoot({
     ttl: 60,
     limit: 60,
-  }), PrismaModule, AuthModule, UserInfosModule, MessagesModule, StepsModule, NutritionModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule],
+  }), PrismaModule, AuthModule, UserInfosModule, MessagesModule, StepsModule, NutritionModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule, TicketsModule],
   controllers: [AppController, NutritionController, BugsBetaController],
   providers: [AppService, {
     provide: APP_GUARD,
