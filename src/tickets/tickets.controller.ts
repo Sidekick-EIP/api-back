@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, ParseIntPipe, Query } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { AdminGuard } from '../common/guards';
@@ -16,7 +16,7 @@ export class TicketsController {
 
   @UseGuards(AdminGuard)
   @Get()
-  find(cursor: number) {
+  find(@Query('cursor', ParseIntPipe) cursor: number = 0) {
     return this.ticketsService.find(cursor);
   }
 
