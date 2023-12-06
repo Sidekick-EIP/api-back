@@ -129,6 +129,7 @@ export class TicketsService {
         id: id
       },
       data: {
+        status: "ANSWERED",
         last_action: "ANSWERED_BY_MODERATOR",
       },
       include: {
