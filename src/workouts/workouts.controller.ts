@@ -6,6 +6,11 @@ import { WorkoutsService } from './workouts.service';
 export class WorkoutsController {
 	constructor(private workoutsService: WorkoutsService) { }
 
+	@Get("/all")
+	findAllAdmin() {
+		return this.workoutsService.findAllAdmin();
+	}
+
 	@Get("/day")
 	findByDay(@Request() req: any, @Query('day') day: string) {
 		return this.workoutsService.findByDay(req.user.email, day);
