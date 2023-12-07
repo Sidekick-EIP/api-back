@@ -54,6 +54,14 @@ export class WorkoutsService {
 		})
 	}
 
+	public async findAllAdmin() {
+		return this._prismaService.workouts.findMany({
+			include: {
+				exercise: true,
+			},
+		})
+	}
+
 	public async findAll(email: string) {
 		const user = await this._prismaService.user.findUnique({
 			where: {
