@@ -28,12 +28,13 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { FeedbackUserModule } from './feedback_user/feedback_user.module';
 import { TicketsModule } from './tickets/tickets.module';
+import { UserAdminModule } from './user_admin/user_admin.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }), ThrottlerModule.forRoot({
     ttl: 60,
     limit: 60,
-  }), PrismaModule, AuthModule, UserInfosModule, MessagesModule, StepsModule, NutritionModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule, TicketsModule],
+  }), PrismaModule, AuthModule, UserInfosModule, MessagesModule, StepsModule, NutritionModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule, TicketsModule, UserAdminModule],
   controllers: [AppController, NutritionController, BugsBetaController],
   providers: [AppService, {
     provide: APP_GUARD,
