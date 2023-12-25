@@ -7,7 +7,6 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './common/guards';
 import { UserInfosModule } from './user_infos/user_infos.module';
-import { MessagesModule } from './messages/messages.module';
 import { StepsModule } from "./steps/steps.module";
 import { NutritionService } from './nutrition/nutrition.service';
 import { NutritionController } from './nutrition/nutrition.controller';
@@ -34,7 +33,7 @@ import { UserAdminModule } from './user_admin/user_admin.module';
   imports: [ConfigModule.forRoot({ isGlobal: true }), ThrottlerModule.forRoot({
     ttl: 60,
     limit: 60,
-  }), PrismaModule, AuthModule, UserInfosModule, MessagesModule, StepsModule, NutritionModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule, TicketsModule, UserAdminModule],
+  }), PrismaModule, AuthModule, UserInfosModule, StepsModule, NutritionModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule, TicketsModule, UserAdminModule],
   controllers: [AppController, NutritionController, BugsBetaController],
   providers: [AppService, {
     provide: APP_GUARD,
