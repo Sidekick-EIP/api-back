@@ -5,9 +5,12 @@ import { UserInfoService } from "../user_infos/user_infos.service";
 import { Rooms } from "./chat.helper";
 import { MatchEvent } from "../common/events/match.event";
 
+const pageSize = 25;
+
 @Injectable()
 export class ChatService {
   private rooms = new Rooms();
+
 
   constructor(
     private userInfosService: UserInfoService,
@@ -133,6 +136,36 @@ export class ChatService {
           },
         ],
       },
+    });
+  }
+
+  async getAllv2(email: string, cursor: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    const fullUser = await this.userInfosService.find(email);
+
+    return await this.prismaService.message.findMany({
+      take: pageSize,
+      skip: cursor ? 1 : 0,
+      cursor: cursor ? { id: cursor } : undefined,
+      where: {
+        OR: [
+          {
+            from_id: user.id,
+            to: fullUser.sidekick_id,
+          },
+          {
+            from_id: fullUser.sidekick_id,
+            to: user.id,
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: "desc",
+      }
     });
   }
 
