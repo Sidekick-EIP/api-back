@@ -17,11 +17,7 @@ import { FileModule } from './file/file.module';
 import { WorkoutsModule } from './workouts/workouts.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { OpenffModule } from './openff/openff.module';
-import { BugsBetaService } from './bugs_beta/bugs_beta.service';
-import { BugsBetaController } from './bugs_beta/bugs_beta.controller';
-import { BugsBetaModule } from './bugs_beta/bugs_beta.module';
 import { ExercisesLibraryModule } from './exercises_library/exercises_library.module';
-import { BetaUsersModule } from './beta_users/beta_users.module';
 import { MealRecoModule } from './meal_reco/meal_reco.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -33,14 +29,14 @@ import { UserAdminModule } from './user_admin/user_admin.module';
   imports: [ConfigModule.forRoot({ isGlobal: true }), ThrottlerModule.forRoot({
     ttl: 60,
     limit: 60,
-  }), PrismaModule, AuthModule, UserInfosModule, StepsModule, NutritionModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, OpenffModule, BugsBetaModule, ExercisesLibraryModule, BetaUsersModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule, TicketsModule, UserAdminModule],
-  controllers: [AppController, NutritionController, BugsBetaController],
+  }), PrismaModule, AuthModule, UserInfosModule, StepsModule, NutritionModule, ChatModule, ReportsModule, FileModule, ReportsModule, WorkoutsModule, PreferencesModule, OpenffModule, ExercisesLibraryModule, MealRecoModule, EventEmitterModule.forRoot(), FeedbackUserModule, TicketsModule, UserAdminModule],
+  controllers: [AppController, NutritionController],
   providers: [AppService, {
     provide: APP_GUARD,
     useClass: AtGuard
   }, {
       provide: APP_GUARD,
       useClass: ThrottlerGuard
-    }, NutritionService, BugsBetaService],
+    }, NutritionService],
 })
 export class AppModule { }
