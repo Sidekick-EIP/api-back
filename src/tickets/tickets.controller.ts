@@ -7,7 +7,7 @@ import { ModeratorAnswerDto } from './dto/moderator-answer.dto';
 
 @Controller('tickets')
 export class TicketsController {
-  constructor(private readonly ticketsService: TicketsService) {}
+  constructor(private readonly ticketsService: TicketsService) { }
 
   @Post()
   create(@Body() createTicketDto: CreateTicketDto, @GetCurrentUserEmail() email: string) {
@@ -41,5 +41,22 @@ export class TicketsController {
   @Post(":id/close")
   close(@Param("id", ParseIntPipe) id: number) {
     return this.ticketsService.close(id);
+  }
+
+  @Get("/me")
+  getTickets(@GetCurrentUserEmail() email: string) {
+    return this.ticketsService.getTickets(email);
+  }
+
+  @UseGuards(AdminGuard)
+  @Get("admin")
+  getTicketsFromEmail(@Query("email") email: string) {
+    return this.ticketsService.getTickets(email);
+  }
+
+  @UseGuards(AdminGuard)
+  @Get("admin")
+  getTicketsFromId(@Query("id") id: string) {
+    return this.ticketsService.getTicketsFromId(id);
   }
 }

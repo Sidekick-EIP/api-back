@@ -181,6 +181,32 @@ export class TicketsService {
     return { res, message: "Email has been sent" };
   }
 
+  async getTickets(email: string) {
+    return await this.prismaService.ticket.findMany({
+      where: {
+        user: {
+          email: email
+        }
+      },
+      include: {
+        user: true,
+      }
+    });
+  }
+
+  async getTicketsFromId(id: string) {
+    return await this.prismaService.ticket.findMany({
+      where: {
+        user: {
+          id: id
+        }
+      },
+      include: {
+        user: true,
+      }
+    });
+  }
+
   private getParams(to: string, message: string, subject: string) {
     return {
       Source: "sidekick.eip@gmail.com",
