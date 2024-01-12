@@ -5,7 +5,7 @@ import { UserInfoService } from "../user_infos/user_infos.service";
 import { Rooms } from "./chat.helper";
 import { MatchEvent } from "../common/events/match.event";
 
-const pageSize = 25;
+const pageSize = 15;
 
 @Injectable()
 export class ChatService {
