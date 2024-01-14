@@ -8,6 +8,10 @@ import { UpdateNutritionDto } from './dto/update.dto';
 export class NutritionService {
   constructor(private _prismaService: PrismaService) { }
 
+  public async findAllAdmin() {
+    return this._prismaService.workouts.findMany()
+  }
+
   public async findAll(userEmail: string) {
     const user = await this._prismaService.user.findUnique({ where: { email: userEmail } });
     if (!user) {
