@@ -12,6 +12,11 @@ export class NutritionController {
     return this.nutritionService.add(dto, req.user.email);
   }
 
+  @Get("/all/admin")
+  findAllAdmin() {
+    return this.nutritionService.findAllAdmin();
+  }
+
   @Get("findAll")
   getAllNutrition(@Request() req: any) {
     return this.nutritionService.findAll(req.user.email);
