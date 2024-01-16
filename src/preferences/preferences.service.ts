@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { UpdatePreferenceDto } from "./dto/update-preference.dto";
 
@@ -23,6 +23,9 @@ export class PreferencesService {
       include: { Preferences: true },
     });
 
-    return user.Preferences[0];
+    if (!user)
+      throw new NotFoundException("User not found");
+
+    return user?.Preferences[0];
   }
 }
