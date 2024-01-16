@@ -38,7 +38,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, "jwt") {
       console.log('user is admin')
       user.isAdmin = true;
     } else {
-      console.log('not admin')
       user.isAdmin = false;
     }
     return user;
