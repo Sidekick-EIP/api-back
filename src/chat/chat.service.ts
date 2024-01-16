@@ -48,7 +48,7 @@ export class ChatService {
       sidekickId: sidekick,
     });
 
-    console.log("connect ", socket.id, userId, sidekick, roomName);
+    console.log("Socket connection : ", user.id," sidekick : ", sidekick);
     socket.join(roomName);
 
     /* socket.emit("message", "You are connected to the room " + roomName); */
@@ -58,7 +58,7 @@ export class ChatService {
     const user = this.rooms.findUserBySocketId(socket.id);
     // socket.handshake.auth.token also works to get the user id
 
-    console.log("disconnect ", socket.id, user?.userId);
+    console.log("Socket disconnect : ", user.userId," sidekick : ", user.sidekickId);
     if (!user) {
       return;
     }
