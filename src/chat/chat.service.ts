@@ -48,7 +48,7 @@ export class ChatService {
       sidekickId: sidekick,
     });
 
-    console.log("Socket connection : ", user.id," sidekick : ", sidekick);
+    console.log("Socket connection : ", userId," sidekick : ", sidekick);
     socket.join(roomName);
 
     /* socket.emit("message", "You are connected to the room " + roomName); */
