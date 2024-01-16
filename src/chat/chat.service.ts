@@ -58,7 +58,7 @@ export class ChatService {
     const user = this.rooms.findUserBySocketId(socket.id);
     // socket.handshake.auth.token also works to get the user id
 
-    console.log("Socket disconnect : ", user," sidekick : ", user.sidekickId);
+    console.log("Socket disconnect : ", user," sidekick : ", user);
     if (!user) {
       return;
     }
