@@ -20,6 +20,7 @@ export class ChatService {
   async handleConnection(socket: Socket) {
     const userId = socket.handshake.auth.token;
     if (!userId) {
+      console.log("disconnecting from token")
       socket.disconnect();
       return;
     }
@@ -28,6 +29,7 @@ export class ChatService {
     try {
       user = await this.userInfosService.getUserfromId(userId);
     } catch (e) {
+      console.log("disconnecting from id")
       socket.disconnect();
       return;
     }
