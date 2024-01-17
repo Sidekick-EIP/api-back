@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class UserAdminService {
   constructor(private prismaService: PrismaService) { }
 
-  findAll({ email, hasSidekick }: { email: string, hasSidekick: boolean }) {
+  findAll({ email, hasSidekick, cursor }: { email: string, hasSidekick: boolean, cursor: number }) {
     let whereClause = {
       ...(email && { user: { email: { contains: email } } }),
       ...(hasSidekick !== undefined && {
@@ -14,11 +14,17 @@ export class UserAdminService {
       })
     };
 
+    let paginationClause = {
+      skip: cursor * 10,
+      take: 10,
+    };
+
     return this.prismaService.userData.findMany({
       where: whereClause,
       include: {
         user: true,
       },
+      ...paginationClause
     });
   }
 
