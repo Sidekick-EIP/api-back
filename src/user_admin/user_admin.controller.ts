@@ -10,8 +10,8 @@ export class UserAdminController {
   constructor(private readonly userAdminService: UserAdminService) { }
   @UseGuards(AdminGuard)
   @Get()
-  users(@Query('email') email: string, @Query('sidekick', ParseBoolPipe) hasSidekick: boolean, @Query('cursor', ParseIntPipe) cursor: number = 0) {
-    return this.userAdminService.findAll({email, hasSidekick, cursor});
+  users(@Query('email') email: string, @Query('sidekick', ParseBoolPipe) hasSidekick: boolean) {
+    return this.userAdminService.findAll({email, hasSidekick});
   }
 
   @UseGuards(AdminGuard)
