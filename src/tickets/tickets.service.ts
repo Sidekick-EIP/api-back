@@ -190,6 +190,7 @@ export class TicketsService {
       },
       include: {
         user: true,
+        responses: true,
       }
     });
   }
