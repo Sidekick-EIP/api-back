@@ -35,7 +35,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, "jwt") {
   public async validate(payload: any): Promise<ValidatedUser> {
     const user: ValidatedUser = { userId: payload.sub, email: payload.email };
     if (payload['cognito:groups'] && payload['cognito:groups'].includes('admin')) {
-      console.log('user is admin')
       user.isAdmin = true;
     } else {
       user.isAdmin = false;
