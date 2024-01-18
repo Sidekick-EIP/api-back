@@ -182,6 +182,7 @@ export class TicketsService {
   }
 
   async getTickets(email: string) {
+    console.log("getTickets", email)
     return await this.prismaService.ticket.findMany({
       where: {
         user: {
