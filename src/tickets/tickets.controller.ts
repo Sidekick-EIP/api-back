@@ -20,6 +20,11 @@ export class TicketsController {
     return this.ticketsService.find(cursor);
   }
 
+  @Get("/me")
+  getTickets(@GetCurrentUserEmail() email: string) {
+    return this.ticketsService.getTickets(email);
+  }
+
   @UseGuards(AdminGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -41,11 +46,6 @@ export class TicketsController {
   @Post(":id/close")
   close(@Param("id", ParseIntPipe) id: number) {
     return this.ticketsService.close(id);
-  }
-
-  @Get("/me")
-  getTickets(@GetCurrentUserEmail() email: string) {
-    return this.ticketsService.getTickets(email);
   }
 
   @UseGuards(AdminGuard)
