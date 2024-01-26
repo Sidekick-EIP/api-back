@@ -53,7 +53,7 @@ enum MuscleGroup {
 enum Level {
   BEGINNER
   IRREGULAR_TRAINING
-  MEDIUM
+  INTERMEDIATE
   ADVANCED
 }
 
